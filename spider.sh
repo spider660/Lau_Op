@@ -575,20 +575,32 @@ ins_Fail2ban() {
 
 ins_epro() {
   clear
-  print_install "Installing ePro WebSocket Proxy"
-  wget -q -O /usr/bin/ws "${REPO}ubuntu/ws" || true
-  wget -q -O /usr/bin/tun.conf "${REPO}ubuntu/tun.conf" || true
-  wget -q -O /etc/systemd/system/ws.service "${REPO}ubuntu/ws.service" || true
-  chmod +x /usr/bin/ws
-  chmod 644 /usr/bin/tun.conf
+  print_install "Installing ePro WebSocket Proxy (Python)"
+
+  # Make sure Python & PyYAML are installed
+  apt install -y python3 python3-pip >/dev/null 2>&1
+  pip3 install pyyaml >/dev/null 2>&1 || true
+
+  # Create spider dir
+  mkdir -p /opt/spider
+
+  # Copy your local Python files instead of downloading
+  cp ubuntu/ws.py /opt/spider/ws.py
+  cp ubuntu/tun.conf /opt/spider/tun.conf
+  cp ubuntu/ws.service /etc/systemd/system/ws.service
+
+  chmod +x /opt/spider/ws.py
+  chmod 644 /opt/spider/tun.conf
+
+  # Reload systemd and enable service
   systemctl daemon-reload || true
   systemctl enable --now ws || true
+
+  # Download latest geo rules for Xray (optional but useful)
   wget -q -O /usr/local/share/xray/geosite.dat "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat" || true
   wget -q -O /usr/local/share/xray/geoip.dat "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat" || true
-  wget -q -O /usr/sbin/ftvpn "${REPO}ubuntu/ftvpn" || true
-  chmod +x /usr/sbin/ftvpn || true
 
-  # Basic bittorrent block rules (best-effort; may not persist across reboots without iptables-persistent)
+  # Block BitTorrent traffic
   for rule in "get_peers" "announce_peer" "find_node" "BitTorrent" "BitTorrent protocol" "peer_id" ".torrent" "announce.php?passkey" "torrent" "announce" "info_hash"; do
     iptables -A FORWARD -m string --string "$rule" --algo bm -j DROP || true
   done
@@ -596,9 +608,10 @@ ins_epro() {
   iptables-restore -t < /etc/iptables.up.rules || true
   netfilter-persistent save || true
   netfilter-persistent reload || true
+
   apt autoclean -y >/dev/null 2>&1 || true
   apt autoremove -y >/dev/null 2>&1 || true
-  print_success "ePro WebSocket Proxy installed successfully"
+  print_success "ePro WebSocket Proxy (Python) installed successfully"
 }
 
 ins_restart(){
