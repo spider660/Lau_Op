@@ -352,8 +352,8 @@ install_xray() {
 }  # <-- Make sure the function ends here
 
   print_install "Installing Packet Configuration"
-  wget -q -O /etc/haproxy/haproxy.cfg "${REPO}ubuntu/haproxy.cfg"
-  wget -q -O /etc/nginx/conf.d/xray.conf "${REPO}ubuntu/xray.conf"
+  wget -O /etc/haproxy/haproxy.cfg "${REPO}ubuntu/haproxy.cfg"
+  wget -O /etc/nginx/conf.d/xray.conf "${REPO}ubuntu/xray.conf"
   sed -i "s/xxx/${domain}/g" /etc/haproxy/haproxy.cfg || true
   sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf || true
   curl -fsSL "${REPO}ubuntu/nginx.conf" > /etc/nginx/nginx.conf
