@@ -6,7 +6,7 @@ Wants=network-online.target
 [Service]
 User=root
 Group=root
-ExecStart=/usr/bin/python3 /opt/spider/ws.py -f /opt/spider/tun.conf
+ExecStart=/usr/bin/python3 /opt/spider/ws.py
 Restart=always
 RestartSec=2
 NoNewPrivileges=true
