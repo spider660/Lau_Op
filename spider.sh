@@ -136,24 +136,36 @@ clear
 IP="$(curl -sS ipv4.icanhazip.com || true)"
 clear
 
-# OS check
-OS_ID="$(. /etc/os-release; echo "${ID:-}")"
-OS_NAME="$(. /etc/os-release; echo "${PRETTY_NAME:-Unknown}")"
-if [[ "${OS_ID}" == "ubuntu" || "${OS_ID}" == "debian" ]]; then
-  echo -e "${GREEN}  » Your OS Is Supported ( ${OS_NAME} )${NC}"
-else
-  echo -e "${ERROR} Your OS Is Not Supported ( ${YELLOW}${OS_NAME}${NC} )"
-  exit 1
-f1
+#!/usr/bin/env bash
 
-is_root
+# Load OS info
+. /etc/os-release
+OS_ID="${ID:-}"
+OS_NAME="${PRETTY_NAME:-Unknown}"
+
+# Check supported OS
+if [[ "$OS_ID" == "ubuntu" || "$OS_ID" == "debian" ]]; then
+    echo -e "${GREEN}  » Your OS Is Supported ( ${OS_NAME} )${NC}"
+else
+    echo -e "${ERROR} Your OS Is Not Supported ( ${YELLOW}${OS_NAME}${NC} )"
+    exit 1
+fi
+
+# Check root
+if [[ "$EUID" -ne 0 ]]; then
+    echo "This script must be run as root"
+    exit 1
+fi
+
+# Check virtualization
 if systemd-detect-virt | grep -qi openvz; then
-  echo "OpenVZ is not supported"
-  exit 1
+    echo "OpenVZ is not supported"
+    exit 1
 fi
 
 echo -e "\e[32mloading...\e[0m"
 clear
+apt update -y
 apt install -y ruby wondershaper
 gem install --no-document lolcat || true
 
