@@ -144,26 +144,7 @@ if [[ "${OS_ID}" == "ubuntu" || "${OS_ID}" == "debian" ]]; then
 else
   echo -e "${ERROR} Your OS Is Not Supported ( ${YELLOW}${OS_NAME}${NC} )"
   exit 1
-fi
-
-# IP check
-if [[ -z "${IP}" ]]; then
-  echo -e "${ERROR} IP Address ( ${YELLOW}Not Detected${NC} )"
-  exit 1
-else
-  echo -e "${GREEN}  » IP Address ( ${GREEN}${IP}${NC} )"
-fi
-
-ALLOWED_IPS_URL="https://raw.githubusercontent.com/spider660/Lau_Op/main/Database"
-if curl -fsSL "$ALLOWED_IPS_URL" | grep -Ev '^###' | grep -q -F "$IP"; then
-  echo -e "${GREEN}  » Your IP is registered for installation.${NC}"
-else
-  echo -e "${ERROR}${YELLOW} ${IP} ${NC} not found in the database! Installation is aborted."
-  exit 1
-fi
-
-read -rp "$( echo -e "Press ${GREEN}[ Enter ]${NC} to start installation: " )" _
-clear
+f1
 
 is_root
 if systemd-detect-virt | grep -qi openvz; then
