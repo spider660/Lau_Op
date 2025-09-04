@@ -1,27 +1,24 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import socket, threading, sys, select, random
+import socket, threading, sys, select, argparse
 
-# 🔥 Burner list (rotates each new client connection)
-BURNERS = [
-    b"\033[92mSCRIPT BY \033[93mSPIDER\033[0m (\033[94mTelegram: t.me/spid_3r\033[0m)\r\n",
-    b"👑 SPIDER STORE — 2024 Stable Edition 👑\r\n",
-    b"⚡ Respect the source, Fear the SPIDER ⚡\r\n",
-    b"🔥 Official Script — Pirated copies are BUGGED 🔥\r\n",
-    b"💀 SPIDER Proxy: Fast, Secure, Untouchable 💀\r\n"
-]
+# --- Parse config file (tun.conf) ---
+def load_config(path):
+    config = {}
+    try:
+        with open(path, "r") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                if "=" in line:
+                    key, value = line.split("=", 1)
+                    config[key.strip()] = value.strip()
+    except Exception as e:
+        print(f"[!] Failed to load config: {e}")
+    return config
 
-def get_random_burner():
-    return random.choice(BURNERS)
-
-# WebSocket upgrade response
-WS_RESPONSE = (
-    b"HTTP/1.1 101 Switching Protocols\r\n"
-    b"Upgrade: websocket\r\n"
-    b"Connection: Upgrade\r\n"
-    b"\r\n"
-)
 
 class ProxyServer:
     def __init__(self, host='0.0.0.0', port=8080):
@@ -52,6 +49,7 @@ class ProxyServer:
     def printLog(self, log):
         print(log)
 
+
 class ProxyHandler(threading.Thread):
     def __init__(self, client, addr, server):
         threading.Thread.__init__(self)
@@ -68,15 +66,15 @@ class ProxyHandler(threading.Thread):
                 self.client.close()
                 return
 
-            first_line = self.client_buffer.split('\n')[0]
+            first_line = self.client_buffer.split('\n', 1)[0]
             parts = first_line.split()
             if len(parts) < 2:
                 self.client.close()
                 return
 
             method, path = parts[0], parts[1]
-            if method.upper() == 'CONNECT' or "Upgrade: websocket" in self.client_buffer:
-                self.method_WS(path)
+            if method.upper() == 'CONNECT':
+                self.method_CONNECT(path)
             else:
                 self.client.close()
         except Exception:
@@ -91,38 +89,40 @@ class ProxyHandler(threading.Thread):
         self.target = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.target.connect((host, port))
 
-    def method_WS(self, path):
-        self.log += ' - WS ' + path
+    def method_CONNECT(self, path):
+        self.log += ' - CONNECT ' + path
         self.connect_target(path)
 
-        # Pick a random banner
-        random_burner = get_random_burner()
+        # 1) Send 200 OK to client
+        self.client.sendall(b"HTTP/1.1 200 OK\r\n\r\n")
 
-        # First send 200 OK + banner
-        burner_msg = (
-            b"HTTP/1.1 200 OK\r\n"
-            b"Content-Type: text/plain\r\n"
-            b"Connection: keep-alive\r\n"
-            b"\r\n" +
-            random_burner +
+        # 2) Send 101 Switching Protocols
+        self.client.sendall(
+            b"HTTP/1.1 101 Switching Protocols\r\n"
+            b"Upgrade: websocket\r\n"
+            b"Connection: Upgrade\r\n"
+            b"\r\n"
+        )
+
+        # 3) Send Burner (shows in APK logs)
+        burner = (
+            b"🔥 SCRIPT BY SPIDER - Telegram: t.me/spid_3r 🔥\r\n"
             b"https://wa.me/254112011036\r\n"
         )
-        self.client.sendall(burner_msg)
+        self.client.sendall(burner)
 
-        # Then send WebSocket 101 upgrade
-        self.client.sendall(WS_RESPONSE)
-
-        # Log locally
+        # Log on server side
         self.server.printLog(self.log)
-        print(f"🔥 Banner sent: {random_burner.decode(errors='ignore').strip()}")
+        print("🔥 Burner sent to client")
 
+        # Start tunneling
         self.doCONNECT()
 
     def doCONNECT(self):
         try:
             sockets = [self.client, self.target]
             while True:
-                r, w, e = select.select(sockets, [], sockets, 3)
+                r, _, e = select.select(sockets, [], sockets, 3)
                 if e:
                     break
                 if r:
@@ -142,6 +142,12 @@ class ProxyHandler(threading.Thread):
 
 
 if __name__ == '__main__':
-    host = "0.0.0.0"
-    port = 8080
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--file", help="Path to config file", default="/opt/spider/tun.conf")
+    args = parser.parse_args()
+
+    cfg = load_config(args.file)
+    host = cfg.get("LISTEN", "0.0.0.0")
+    port = int(cfg.get("PORT", "8080"))
+
     ProxyServer(host, port)
