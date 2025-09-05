@@ -1,15 +1,14 @@
 [Unit]
-Description=SPIDER WebSocket Proxy (Python)
-After=network-online.target
-Wants=network-online.target
+Description=WebSocket Proxy Server
+Documentation=https://github.com/spider660
+After=syslog.target network-online.target
 
 [Service]
 User=root
-Group=root
-ExecStart=/usr/bin/python3 /usr/bin/ws.py
-Restart=always
-RestartSec=2
 NoNewPrivileges=true
+ExecStart=/usr/bin/python3 /usr/bin/ws.py
+Restart=on-failure
+RestartPreventExitStatus=23
 LimitNPROC=10000
 LimitNOFILE=1000000
 
