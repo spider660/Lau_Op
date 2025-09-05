@@ -613,12 +613,12 @@ apt -y install fail2ban > /dev/null 2>&1
 sudo systemctl enable --now fail2ban
 /etc/init.d/fail2ban restart
 /etc/init.d/fail2ban status
-if [ -d '/usr/local/ddos' ]; then
-echo; echo; echo "Please un-install the previous version first"
-exit 0
-else
-mkdir /usr/local/ddos
+if [[ -d "/usr/local/ddos" ]]; then
+    echo "Removing previous /usr/local/ddos directory..."
+    rm -rf /usr/local/ddos
 fi
+
+mkdir -p /usr/local/ddos
 clear
 echo "Banner /etc/kyt.txt" >>/etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/kyt.txt"@g' /etc/default/dropbear
@@ -631,7 +631,7 @@ print_install "Installing ePro WebSocket Proxy"
 wget -O /usr/bin/ws.py "${REPO}ubuntu/ws.py" >/dev/null 2>&1
 wget -O /usr/bin/tun.conf "${REPO}ubuntu/tun.conf" >/dev/null 2>&1
 wget -O /etc/systemd/system/ws.service "${REPO}ubuntu/ws.service" >/dev/null 2>&1
-chmod +x /usr/bin/ws /etc/systemd/system/ws.service
+chmod +x /usr/bin/ws.py /etc/systemd/system/ws.service
 chmod 644 /usr/bin/tun.conf
 systemctl disable ws
 systemctl stop ws
