@@ -10,7 +10,12 @@
   <img src="https://emoji.discord.st/emojis/768b108d-274f-4f44-a634-8477b16efce7.gif" width="25">
 </h3>
 <img align="center" alt="line" src="https://github.com/DalpatRathore/dalpatrathore/blob/main/assets/images/line-1.svg">
+  </p>  
+# 🕷️ SPIDERBUOY『WBX』
 
+![Rerechan02 card name](https://cardivo.vercel.app/api?name=SPIDER『WBX』&description=Hi,%20everyone!%20and%20Nice%20to%20meet%20you%20%F0%9F%91%8B&image=https://raw.githubusercontent.com/Rerechan02/simple-xray/main/funny1.jpg?v=4&backgroundColor=%23ecf0f1&telegram=/&github=spider660&pattern=leaf&colorPattern=%23eaeaea)
+
+⚡ ELITE SCRIPT FOR REAL VPN USERS — FAST | SECURE | UNBEATABLE 🔥
 <p align="center">
 <img src="https://readme-typing-svg.herokuapp.com?color=%23fbed16&center=true&vCenter=true&lines=𝐒𝐏𝐈𝐃𝐄𝐑-𝐖𝐄𝐁𝐗" />
 </p>
