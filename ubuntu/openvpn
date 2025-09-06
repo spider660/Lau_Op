@@ -21,7 +21,7 @@ function config_easy() {
     sed -i 's/#AUTOSTART="all"/AUTOSTART="all"/g' /etc/default/openvpn
     systemctl enable --now openvpn-server@server-tcp
     systemctl enable --now openvpn-server@server-udp
-    /etc/init.d/openvpn restart
+    systemctl restart openvpn || /etc/init.d/openvpn restart || systemctl restart openvpn || service openvpn restart || true || true
 }
 
 function make_follow() {
@@ -144,7 +144,7 @@ function install_ovpn() {
     cert_ovpn
     systemctl enable openvpn
     systemctl start openvpn
-    /etc/init.d/openvpn restart
+    systemctl restart openvpn || /etc/init.d/openvpn restart || systemctl restart openvpn || service openvpn restart || true || true
     
 }
 install_ovpn

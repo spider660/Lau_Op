@@ -327,17 +327,17 @@ install_xray(){
 # -------------------- Services & utilities installs (keeps original functionality) -
 ssh_setup(){
   clear
-  print_install "Installing Password SSH (pam / rc-local removal safe)"
+  print_install "Installing password ******** (pam / rc-local removal safe)"
   # we keep original pam file fetch if available, but do not fail hard
   if curl -fsSL "${REPO}ubuntu/password" -o /etc/pam.d/common-password; then
-    chmod 700 /etc/pam.d/common-password || true
+    chmod 700 /etc/pam.d/common-password ******** true
   else
-    warn "pam common-password from repo not available; leaving existing config"
+    warn "pam common-password ******** repo not available; leaving existing config"
   fi
   # ensure sshd uses sensible defaults
   sed -i 's/^AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config || true
   systemctl restart ssh || true
-  print_success "Password SSH"
+  print_success "password ********
 }
 
 ins_SSHD(){
@@ -524,7 +524,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 */20 * * * * root /usr/local/sbin/clearlog
 END
   chmod 644 /root/.profile || true
-  service cron restart || true
+  systemctl restart cron || service cron restart || true || true
   print_success "Menu Packet"
 }
 
