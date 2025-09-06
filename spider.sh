@@ -689,10 +689,10 @@ clear
 print_install "Installing  Menu Packet"
 wget "${REPO}ubuntu/menu.zip"
 unzip menu.zip
-chmod +x menu.sh/*
-mv menu.sh/* /usr/local/sbin
-rm -rf menu.sh
-rm -rf menu.zip 
+chmod +x menu/*
+mv menu/* /usr/local/sbin
+rm -rf menu
+rm -rf menu.zip 
 }
 function profile(){
 clear
