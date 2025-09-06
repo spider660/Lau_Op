@@ -806,7 +806,7 @@ ins_swab
 ins_Fail2ban
 ins_epro
 ins_restart
-menu.sh
+menu
 profile
 enable_services
 restart_system
@@ -814,7 +814,7 @@ restart_system
 instal
 echo ""
 history -c
-rm -rf /root/menu.sh
+rm -rf /root/menu
 rm -rf /root/*.zip
 rm -rf /root/*.sh
 rm -rf /root/LICENSE
