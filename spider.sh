@@ -689,10 +689,10 @@ clear
 print_install "Installing  Menu Packet"
 wget "${REPO}ubuntu/menu.zip"
 unzip menu.zip
-chmod +x menu/*
-mv menu/* /usr/local/sbin
-rm -rf menu
-rm -rf menu.zip
+chmod +x menu.sh/*
+mv menu.sh/* /usr/local/sbin
+rm -rf menu.sh
+rm -rf menu.zip 
 }
 function profile(){
 clear
@@ -806,7 +806,7 @@ ins_swab
 ins_Fail2ban
 ins_epro
 ins_restart
-menu
+menu.sh
 profile
 enable_services
 restart_system
@@ -814,7 +814,7 @@ restart_system
 instal
 echo ""
 history -c
-rm -rf /root/menu
+rm -rf /root/menu.sh
 rm -rf /root/*.zip
 rm -rf /root/*.sh
 rm -rf /root/LICENSE
