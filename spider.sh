@@ -225,8 +225,6 @@ else
     echo "Your OS is not supported ($OS_NAME)"
     exit 1
 fi
-}
-
 clear
 
 function nginx_install() {
