@@ -205,6 +205,7 @@ function first_setup() {
 }
 clear
 LATEST_PPA=$(apt-cache madison haproxy | awk '{print $3}' | grep -o 'ppa:[^ ]*' | sort -u | tail -n1)
+
 if [[ "$OS_ID" == "ubuntu" ]]; then
     if [[ -z "$LATEST_PPA" ]]; then
         echo "No PPA found for HAProxy. Adding the default PPA for HAProxy..."
@@ -215,16 +216,19 @@ if [[ "$OS_ID" == "ubuntu" ]]; then
     fi
     apt update -y
     apt-get install haproxy -y
+
 elif [[ "$OS_ID" == "debian" ]]; then
     echo "Setting up dependencies for $OS_NAME"
     curl -fsSL https://haproxy.debian.net/bernat.debian.org.gpg | gpg --dearmor >/usr/share/keyrings/haproxy.debian.net.gpg
     echo "deb [signed-by=/usr/share/keyrings/haproxy.debian.net.gpg] http://haproxy.debian.net $(lsb_release -cs)-backports main" | tee /etc/apt/sources.list.d/haproxy.list
     apt-get update -y
     apt-get install haproxy -y
+
 else
     echo "Your OS is not supported ($OS_NAME)"
     exit 1
 fi
+
 clear
 
 function nginx_install() {
@@ -234,6 +238,7 @@ function nginx_install() {
     elif [[ "$OS_ID" == "debian" ]]; then
         print_install "Setup nginx For OS: $OS_NAME"
         apt-get install nginx -y
+
     else
         echo -e "Your OS is not supported (${YELLOW}$OS_NAME${FONT})"
     fi
