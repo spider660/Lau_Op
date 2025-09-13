@@ -76,55 +76,7 @@
 
 
 
- ╭════════════════════════════════════════════╮
- │              System Information            │
- ╰════════════════════════════════════════════╯
- ╭════════════════════════════════════════════╮
- │ Operating System  = Ubuntu 20.04.6 LTS
- │ IP Server         = 156.67.105.227
- │ Domain            = test.spiderwebx.store
- ╰════════════════════════════════════════════╯
- ╭════════════════════════════════════════════╮
- │              Service Information           │
- ╰════════════════════════════════════════════╯
- ╭════════════════════════════════════════════╮
- │ Service SSH / TUN                 = Online │
- │ Service SSH UDP                   = Offline
- │ Service OpenVPN SSL               = Online │
- │ Service OpenVPN WS-SSL            = Online │
- │ Service OpenVPN UDP               = Online │
- │ Service OpenVPN TCP               = Online │
- │ Service OHP SSH                   = Online │
- │ Service OHP Dropbear              = Online │
- │ Service OHP OpenVPN               = Online │
- │ Service WS ePRO                   = Offline
- │ Service BadVPN 7100               = Online │
- │ Service BadVPN 7200               = Online │
- │ Service BadVPN 7300               = Online │
- │ Service Dropbear                  = Online │
- │ Service Haproxy                   = Offline
- │ Service Crons                     = running
- │ Service Nginx Webserver           = Offline
- │ Service Xray Vmess WS TLS         = Online │
- │ Service Xray Vmess WS Non TLS     = Online │
- │ Service Xray Vmess gRPC           = Online │
- │ Service Xray Vless WS TLS         = Online │
- │ Service Xray Vless WS Non TLS     = Online │
- │ Service Xray Vless gRPC           = Online │
- │ Service Xray Trojan WS            = Online │
- │ Service Xray Trojan Non WS        = Online │
- │ Service Xray Trojan gRPC          = Online │
- │ Service Xray Shadowsocks WS       = Online │
- │ Service Xray Shadowsocks Non WS   = Online │
- │ Service Xray Shadowsocks gRPC     = Online │
- │ Service Iptables                  = Online │
- │ Service RClocal                   = Offline
- │ Service Autoreboot                = Offline
- ╰════════════════════════════════════════════╯
- ╭════════════════════════════════════════════╮
- │             CONTACT SUPPORT / CS           │
- ╰════════════════════════════════════════════╯
- ╭════════════════════════════════════════════╮
- │ WHATSAPP   =  254704348959
- │ TELEGRAM   =  t.me/spid_3r
- ╰════════════════════════════════════════════╯
+ root@vmi2775984:~# systemctl start haproxy
+Job for haproxy.service failed because the control process exited with error code.
+See "systemctl status haproxy.service" and "journalctl -xe" for details.
+root@vmi2775984:~#
