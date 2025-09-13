@@ -76,7 +76,12 @@
 
 
 
- root@vmi2775984:~# systemctl start haproxy
-Job for haproxy.service failed because the control process exited with error code.
-See "systemctl status haproxy.service" and "journalctl -xe" for details.
+ root@vmi2775984:~# haproxy -c -f /etc/haproxy/haproxy.cfg
+[NOTICE]   (13510) : haproxy version is 2.8.15-1ppa1~focal
+[NOTICE]   (13510) : path to executable is /usr/sbin/haproxy
+[ALERT]    (13510) : config : parsing [/etc/haproxy/haproxy.cfg:42] : 'bind *:443' in section 'frontend' : unable to load certificate from file '/etc/haproxy/hap.pem': no start line.
+[ALERT]    (13510) : config : parsing [/etc/haproxy/haproxy.cfg:48] : 'bind abns@haproxy-https' in section 'frontend' : unable to load certificate from file '/etc/haproxy/hap.pem': no start line.
+[ALERT]    (13510) : config : parsing [/etc/haproxy/haproxy.cfg:126]: Missing LF on last line, file might have been truncated at position 23.
+[ALERT]    (13510) : config : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+[ALERT]    (13510) : config : Fatal errors found in configuration.
 root@vmi2775984:~#
