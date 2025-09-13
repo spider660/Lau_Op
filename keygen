@@ -4,7 +4,7 @@
 ### sketchy 2025-8-7 134.209.247.36
 ### shennnigans 2024-12-7 162.248.101.197
 ### Saf 2079-12-12 13.245.159.13
-### lau trial 2025-1-3 156.67.105.227
+### sketchy 2025-1-3 
 ### lawd 2025-11-8 45.79.67.96
 ### saf 2084-10-29 129.151.163.0
 ### chapeeybot 2089-10-27 96.126.102.65
@@ -73,15 +73,3 @@
 ### mutai-6 2024-12-12 66.179.211.99
 ### Tech-Palace 2024-12-12 31.220.4.117
 ### Nimrd 2025-1-1 48.209.82.251
-
-
-
- root@vmi2775984:~# haproxy -c -f /etc/haproxy/haproxy.cfg
-[NOTICE]   (13510) : haproxy version is 2.8.15-1ppa1~focal
-[NOTICE]   (13510) : path to executable is /usr/sbin/haproxy
-[ALERT]    (13510) : config : parsing [/etc/haproxy/haproxy.cfg:42] : 'bind *:443' in section 'frontend' : unable to load certificate from file '/etc/haproxy/hap.pem': no start line.
-[ALERT]    (13510) : config : parsing [/etc/haproxy/haproxy.cfg:48] : 'bind abns@haproxy-https' in section 'frontend' : unable to load certificate from file '/etc/haproxy/hap.pem': no start line.
-[ALERT]    (13510) : config : parsing [/etc/haproxy/haproxy.cfg:126]: Missing LF on last line, file might have been truncated at position 23.
-[ALERT]    (13510) : config : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
-[ALERT]    (13510) : config : Fatal errors found in configuration.
-root@vmi2775984:~#

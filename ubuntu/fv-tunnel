@@ -1,14 +1,14 @@
 #!/bin/bash
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # System Request : Debian 9+/Ubuntu 18.04+/20+
-# Develovers » spider
+# Develovers » chapeey
 # Email      » chapeeystore@gmail.com
-# telegram   » https://t.me/spid_3r
+# telegram   » https://t.me/chapeey
 # whatsapp   » wa.me/+254704348959
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# spider
+# chapeey
 
-REPO="https://raw.githubusercontent.com/spider660/Lau_Op/main/"
+REPO="https://raw.githubusercontent.com/Amchapeey/strategic/main/"
 
 wget -q -O /etc/systemd/system/limitvmess.service "${REPO}ubuntu/limitvmess.service" && chmod +x limitvmess.service >/dev/null 2>&1
 wget -q -O /etc/systemd/system/limitvless.service "${REPO}ubuntu/limitvless.service" && chmod +x limitvless.service >/dev/null 2>&1
