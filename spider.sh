@@ -545,20 +545,20 @@ function udp_mini() {
 }
 
 function ssh_slow() {
-  clear
-  print_install "Installing the SlowDNS Server module"
-  if wget -q -O /tmp/nameserver "${REPO}ubuntu/nameserver"; then
-    chmod +x /tmp/nameserver
-    if bash /tmp/nameserver | tee /root/install.log; then
-      print_success "SlowDNS installed successfully"
+    clear
+    print_install "Installing the SlowDNS Server module"
+
+    URL="${REPO}ubuntu/nameserver"
+    if wget -q -O /tmp/nameserver "$URL"; then
+        chmod +x /tmp/nameserver
+        if bash /tmp/nameserver | tee /root/install.log; then
+            print_success "SlowDNS installed successfully"
+        else
+            echo "[WARNING] Failed to execute nameserver script, skipping..."
+        fi
     else
-      echo "Failed to execute the nameserver script"
-      return 1
+        echo "[WARNING] SlowDNS script not found at $URL, skipping..."
     fi
-  else
-    echo "Failed to download nameserver"
-    return 1
-  fi
 }
 
 function ins_SSHD() {
