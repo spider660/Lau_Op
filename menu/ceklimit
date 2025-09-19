@@ -1,0 +1,60 @@
+#!/bin/bash
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# System Request : Debian 9+/Ubuntu 18.04+/20+
+# Develovers » ŞƤƗĐ€Ř
+# Email      » laubuoy@gmail.com
+# telegram   » https://t.me/spid_3r
+# whatsapp   » wa.me/+254112011036
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DF='\e[39m'
+Bold='\e[1m'
+Blink='\e[5m'
+yell='\e[33m'
+red='\e[31m'
+green='\e[32m'
+blue='\e[34m'
+PURPLE='\e[35m'
+cyan='\e[36m'
+Lred='\e[91m'
+Lyellow='\e[93m'
+Lgreen='\e[92m'
+NC='\e[0m'
+GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
+LIGHT='\033[0;37m'
+grenbo="\e[92;1m"
+
+log_file="/var/log/xray/access.log"
+userlist=$(grep '^#trg' /etc/xray/config.json | awk '{print $2}' | sort -u)
+
+echo -e "${YELLOW}┌────────────────────────────┐${NC}"
+echo -e "${YELLOW}│   CEK LIMIT IP TROJAN AKTIF │${NC}"
+echo -e "${YELLOW}└────────────────────────────┘${NC}"
+
+for user in $userlist; do
+    # Ambil semua IP dari log user
+    ips=$(grep "email: $user" $log_file | grep -oP 'from \K[0-9\.]+' | sort -u)
+
+    ip_total=$(echo "$ips" | wc -l)
+    ip_limit_file="/etc/trojan/${user}IP"
+
+    # Jika file limit IP tidak ada, anggap unlimited
+    if [[ -f $ip_limit_file ]]; then
+        ip_limit=$(cat "$ip_limit_file")
+    else
+        ip_limit="9999"
+    fi
+
+    # Cek apakah melebihi limit
+    if (( ip_total > ip_limit )); then
+        status="${RED}⚠️ MELAMPAUI LIMIT IP ($ip_total > $ip_limit)${NC}"
+    else
+        status="${GREEN}✅ AMAN ($ip_total / $ip_limit)${NC}"
+    fi
+
+    echo -e "USER       : $user"
+    echo -e "LOGIN IP   : $ip_total"
+    echo -e "BATAS IP   : $ip_limit"
+    echo -e "STATUS     : $status"
+    echo -e "-----------------------------"
+done
