@@ -348,17 +348,24 @@ clear
 clear && clear && clear
 clear;clear;clear
 
-# helper to print two columns aligned while handling ANSI color codes
 print_cols() {
-    local left="$1"; local right="$2"; local width=${3:-22}
-    # strip ANSI escape sequences for visible-length calculation
-    local left_clean
-    left_clean=$(echo -e "$left" | sed -r 's/\x1b\[[0-9;]*m//g')
-    local len=${#left_clean}
-    local pad=$(( width - len ))
-    if [ $pad -lt 1 ]; then pad=1; fi
-    # print left, pad, then right (right contains trailing frame chars as needed)
-    printf "%b%*s%b\n" "$left" "$pad" "" "$right"
+    local col1="$1"; local col2="$2"; local col3="$3"
+    local width=${4:-22}  # width for each column
+
+    # function to strip ANSI for length
+    strip_ansi() { sed -r 's/\x1b\[[0-9;]*m//g'; }
+
+    local c1_clean=$(echo -e "$col1" | strip_ansi)
+    local c2_clean=$(echo -e "$col2" | strip_ansi)
+
+    local len1=${#c1_clean}
+    local len2=${#c2_clean}
+
+    local pad1=$(( width - len1 )); [ $pad1 -lt 1 ] && pad1=1
+    local pad2=$(( width - len2 )); [ $pad2 -lt 1 ] && pad2=1
+
+    printf "%b%*s%b%*s%b\n" "$col1" "$pad1" "" "$col2" "$pad2" "" "$col3"
+}
 }
 
 echo -e "$COLOR1╭═══════════════════════════════════════════════════╮${NC}"
@@ -386,18 +393,32 @@ echo -e "            $COLOR1$NC${WH}    VLESS   =  ${COLOR1}$vless ${NC}${WH} AC
 echo -e "            $COLOR1$NC${WH}    TROJAN  =  ${COLOR1}$trtls ${NC}${WH} ACCOUNT${NC}"
 echo -e "   $COLOR1╰═════════════════════════════════════════════╯${NC}"
 echo -e "$COLOR1╭═══════════════════ • ${NC}${WH}LIST MENU${NC}${COLOR1} • ═════════════════╮${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}01${WH}]${NC}${COLOR1}${WH}SSH VPN" "${WH}[${COLOR1}09${WH}]${NC}${COLOR1}${WH}UPDATE     ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}02${WH}]${NC}${COLOR1}${WH}VMESS"   "${WH}[${COLOR1}10${WH}]${NC}${COLOR1}${WH}SYSTEM     ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}03${WH}]${NC}${COLOR1}${WH}VLESS"   "${WH}[${COLOR1}11${WH}]${NC}${COLOR1}${WH}BACKUP     ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}04${WH}]${NC}${COLOR1}${WH}TRJAN"   "${WH}[${COLOR1}12${WH}]${NC}${COLOR1}${WH}ONLINE     ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}05${WH}]${NC}${COLOR1}${WH}BACKUP"  "${WH}[${COLOR1}13${WH}]${NC}${COLOR1}${WH}LIMIT SPEED${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}06${WH}]${NC}${COLOR1}${WH}RUNNING" "${WH}[${COLOR1}14${WH}]${NC}${COLOR1}${WH}CLEAR CACHE${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}07${WH}]${NC}${COLOR1}${WH}RESTART" "${WH}[${COLOR1}15${WH}]${NC}${COLOR1}${WH}BOT PANEL  ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}08${WH}]${NC}${COLOR1}${WH}REBOOT"  "${WH}[${COLOR1}16${WH}]${NC}${COLOR1}${WH}BANDWIDTH  ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}17${WH}]${NC}${COLOR1}${WH}CLEAR C" "${WH}[${COLOR1}18${WH}]${NC}${COLOR1}${WH}DEL EXPIRED ${COLOR1}│ ${NC}"
-echo -e    "$COLOR1│                                                   $COLOR1│ $NC"
-print_cols "$COLOR1│ ${WH}[${COLOR1}19${WH}]${NC}${COLOR1}${WH}SPEEDTEST ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}20${WH}]${NC}${COLOR1}${WH}GOTOP     ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}01${WH}]${NC}${COLOR1}${WH}SSH VPN"     \
+           "${WH}[${COLOR1}02${WH}]${NC}${COLOR1}${WH}VMESS"        \
+           "${WH}[${COLOR1}03${WH}]${NC}${COLOR1}${WH}VLESS     ${COLOR1}│ ${NC}"
+
+print_cols "$COLOR1│ ${WH}[${COLOR1}04${WH}]${NC}${COLOR1}${WH}TROJAN"      \
+           "${WH}[${COLOR1}05${WH}]${NC}${COLOR1}${WH}BACKUP"       \
+           "${WH}[${COLOR1}06${WH}]${NC}${COLOR1}${WH}RUNNING   ${COLOR1}│ ${NC}"
+
+print_cols "$COLOR1│ ${WH}[${COLOR1}07${WH}]${NC}${COLOR1}${WH}RESTART"     \
+           "${WH}[${COLOR1}08${WH}]${NC}${COLOR1}${WH}REBOOT"       \
+           "${WH}[${COLOR1}09${WH}]${NC}${COLOR1}${WH}UPDATE    ${COLOR1}│ ${NC}"
+
+print_cols "$COLOR1│ ${WH}[${COLOR1}10${WH}]${NC}${COLOR1}${WH}SYSTEM"      \
+           "${WH}[${COLOR1}11${WH}]${NC}${COLOR1}${WH}BACKUP"       \
+           "${WH}[${COLOR1}12${WH}]${NC}${COLOR1}${WH}ONLINE    ${COLOR1}│ ${NC}"
+
+print_cols "$COLOR1│ ${WH}[${COLOR1}13${WH}]${NC}${COLOR1}${WH}LIMIT SPEED" \
+           "${WH}[${COLOR1}14${WH}]${NC}${COLOR1}${WH}CLEAR CACHE" \
+           "${WH}[${COLOR1}15${WH}]${NC}${COLOR1}${WH}BOT PANEL ${COLOR1}│ ${NC}"
+
+print_cols "$COLOR1│ ${WH}[${COLOR1}16${WH}]${NC}${COLOR1}${WH}BANDWIDTH"   \
+           "${WH}[${COLOR1}17${WH}]${NC}${COLOR1}${WH}CLEAR C"      \
+           "${WH}[${COLOR1}18${WH}]${NC}${COLOR1}${WH}DEL EXPIRED${COLOR1}│ ${NC}"
+
+print_cols "$COLOR1│ ${WH}[${COLOR1}19${WH}]${NC}${COLOR1}${WH}SPEEDTEST"   \
+           "${WH}[${COLOR1}20${WH}]${NC}${COLOR1}${WH}GOTOP      ${COLOR1}│ ${NC}"
 echo -e "$COLOR1╰═══════════════════════════════════════════════════╯${NC}"
 echo -e "$COLOR1╭═══════════════════════════════════════════════════╮${NC}"
 echo -e "$COLOR1│ ${WH}Traffic${NC}      ${WH}Today     Yesterday       Month       ${NC}"
