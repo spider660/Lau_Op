@@ -339,7 +339,6 @@ trtls=$(grep -c -E "^#trg " "/etc/xray/config.json")
 # TOTAL ACC CREATE OVPN SSH
 total_ssh=$(grep -c -E "^### " "/etc/xray/ssh")
 #total_ssh="$(awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd | wc -l)"
-
 # Main Display
 clear
 get_sys_info
@@ -347,12 +346,10 @@ get_net_info
 clear
 clear && clear && clear
 clear;clear;clear
-
 print_cols() {
-    local col1="$1"; local col2="$2"; local col3="$3"
-    local width=${4:-22}  # width for each column
+    local col1="${1:-}"; local col2="${2:-}"; local col3="${3:-}"
+    local width=${4:-22}
 
-    # function to strip ANSI for length
     strip_ansi() { sed -r 's/\x1b\[[0-9;]*m//g'; }
 
     local c1_clean=$(echo -e "$col1" | strip_ansi)
@@ -366,6 +363,7 @@ print_cols() {
 
     printf "%b%*s%b%*s%b\n" "$col1" "$pad1" "" "$col2" "$pad2" "" "$col3"
 }
+
 echo -e "$COLOR1╭═══════════════════════════════════════════════════╮${NC}"
 echo -e "$COLOR1│${NC} ${COLBG1}         ${WH}• SPIDER PREMIUM SCRIPT •              ${NC} $COLOR1│ $NC"
 echo -e "$COLOR1╰═══════════════════════════════════════════════════╯${NC}"
@@ -379,9 +377,11 @@ echo -e "$COLOR1│ $NC${WH}❈ Domain             ${COLOR1}: ${WH}$(cat /etc/xr
 echo -e "$COLOR1│ $NC${WH}❈ IP-VPS             ${COLOR1}: ${WH}$IPVPS${NC}"
 echo -e "$COLOR1│ $NC${WH}❈ Uptime             ${COLOR1}: ${WH}$SERONLINE${NC}"
 echo -e "$COLOR1╰═══════════════════════════════════════════════════╯${NC}"
-echo -e "$COLOR1╭═════════════════ • ${NC}${WH}STATUS SERVER${NC}${COLOR1} • ═══════════════╮${NC}"
+
+echo -e "$COLOR1╭═══════════════════ • ${NC}${WH}STATUS SERVER${NC}${COLOR1} • ═══════════════╮${NC}"
 echo -e " ${WH} SSH WS : ${status_ws} ${WH} XRAY : ${status_xray} ${WH} NGINX : ${status_nginx} ${WH} DROPBEAR : ${status_beruangjatuh}$NC"
 echo -e "$COLOR1╰═══════════════════════════════════════════════════╯${NC}"
+
 echo -e "   $COLOR1╭════════════════════════════════════════════╮${NC}"
 echo -e "            $COLOR1$NC${WH}    LIST ACCOUNT PREMIUM ${NC}"
 echo -e "   $COLOR1      ═════════════════════════════════ ${NC}"
@@ -390,7 +390,9 @@ echo -e "            $COLOR1$NC${WH}    VMESS   =  ${COLOR1}$vmess ${NC}${WH} AC
 echo -e "            $COLOR1$NC${WH}    VLESS   =  ${COLOR1}$vless ${NC}${WH} ACCOUNT ${NC}"
 echo -e "            $COLOR1$NC${WH}    TROJAN  =  ${COLOR1}$trtls ${NC}${WH} ACCOUNT${NC}"
 echo -e "   $COLOR1╰═════════════════════════════════════════════╯${NC}"
+
 echo -e "$COLOR1╭═══════════════════ • ${NC}${WH}LIST MENU${NC}${COLOR1} • ═════════════════╮${NC}"
+
 print_cols "$COLOR1│ ${WH}[${COLOR1}01${WH}]${NC}${COLOR1}${WH}SSH VPN"     \
            "${WH}[${COLOR1}02${WH}]${NC}${COLOR1}${WH}VMESS"        \
            "${WH}[${COLOR1}03${WH}]${NC}${COLOR1}${WH}VLESS     ${COLOR1}│ ${NC}"
@@ -404,7 +406,7 @@ print_cols "$COLOR1│ ${WH}[${COLOR1}07${WH}]${NC}${COLOR1}${WH}RESTART"     \
            "${WH}[${COLOR1}09${WH}]${NC}${COLOR1}${WH}UPDATE    ${COLOR1}│ ${NC}"
 
 print_cols "$COLOR1│ ${WH}[${COLOR1}10${WH}]${NC}${COLOR1}${WH}SYSTEM"      \
-           "${WH}[${COLOR1}11${WH}]${NC}${COLOR1}${WH}BACKUP"       \
+           "${WH}[${COLOR1}11${WH}]${NC}${COLOR1}${WH}RESTORE BACKUP" \
            "${WH}[${COLOR1}12${WH}]${NC}${COLOR1}${WH}ONLINE    ${COLOR1}│ ${NC}"
 
 print_cols "$COLOR1│ ${WH}[${COLOR1}13${WH}]${NC}${COLOR1}${WH}LIMIT SPEED" \
@@ -412,12 +414,14 @@ print_cols "$COLOR1│ ${WH}[${COLOR1}13${WH}]${NC}${COLOR1}${WH}LIMIT SPEED" \
            "${WH}[${COLOR1}15${WH}]${NC}${COLOR1}${WH}BOT PANEL ${COLOR1}│ ${NC}"
 
 print_cols "$COLOR1│ ${WH}[${COLOR1}16${WH}]${NC}${COLOR1}${WH}BANDWIDTH"   \
-           "${WH}[${COLOR1}17${WH}]${NC}${COLOR1}${WH}CLEAR C"      \
+           "${WH}[${COLOR1}17${WH}]${NC}${COLOR1}${WH}CLEAR LOGS"  \
            "${WH}[${COLOR1}18${WH}]${NC}${COLOR1}${WH}DEL EXPIRED${COLOR1}│ ${NC}"
 
 print_cols "$COLOR1│ ${WH}[${COLOR1}19${WH}]${NC}${COLOR1}${WH}SPEEDTEST"   \
            "${WH}[${COLOR1}20${WH}]${NC}${COLOR1}${WH}GOTOP      ${COLOR1}│ ${NC}"
+
 echo -e "$COLOR1╰═══════════════════════════════════════════════════╯${NC}"
+
 echo -e "$COLOR1╭═══════════════════════════════════════════════════╮${NC}"
 echo -e "$COLOR1│ ${WH}Traffic${NC}      ${WH}Today     Yesterday       Month       ${NC}"
 echo -e "$COLOR1│ ${COLOR1}Total${NC}    ${COLOR1}  $todayd $today_v    $yesterday $yesterday_v     $month $month_v$COLOR1  ${NC} "
