@@ -347,13 +347,9 @@ clear
 clear && clear && clear
 clear;clear;clear
 print_cols() {
-    local col1="${1:-}"
-    local col2="${2:-}"
-    local col3="${3:-}"
+    local col1="${1:-}"; local col2="${2:-8}"; local col3="${3:-18}"
     local width=${4:-18}
-    local col3_shift=10  # ⬅️ You control this value
 
-    # Function to remove ANSI escape sequences
     strip_ansi() { sed -r 's/\x1b\[[0-9;]*m//g'; }
 
     local c1_clean=$(echo -e "$col1" | strip_ansi)
@@ -365,13 +361,7 @@ print_cols() {
     local pad1=$(( width - len1 )); [ $pad1 -lt 1 ] && pad1=1
     local pad2=$(( width - len2 )); [ $pad2 -lt 1 ] && pad2=1
 
-    # Add extra padding before column 3
-    local pad_between_col2_col3=$(( pad2 + col3_shift ))
-
-    printf "%b%*s%b%*s%b\n" \
-        "$col1" "$pad1" "" \
-        "$col2" "$pad_between_col2_col3" "" \
-        "$col3"
+    printf "%b%*s%b%*s%b\n" "$col1" "$pad1" "" "$col2" "$pad2" "" "$col3"
 }
 
 echo -e "$COLOR1╭═══════════════════════════════════════════════════╮${NC}"
@@ -429,7 +419,6 @@ print_cols "$COLOR1│ ${WH}[${COLOR1}16${WH}]${NC}${COLOR1}${WH}BANDWIDTH"   \
 
 print_cols "$COLOR1│ ${WH}[${COLOR1}19${WH}]${NC}${COLOR1}${WH}SPEEDTEST"   \
            "${WH}[${COLOR1}20${WH}]${NC}${COLOR1}${WH}GOTOP      ${COLOR1}│ ${NC}"
-
 echo -e "$COLOR1╰═══════════════════════════════════════════════════╯${NC}"
 
 echo -e "$COLOR1╭═══════════════════════════════════════════════════╮${NC}"
