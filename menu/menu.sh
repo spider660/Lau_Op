@@ -347,8 +347,8 @@ clear
 clear && clear && clear
 clear;clear;clear
 print_cols() {
-    local col1="${1:-}"; local col2="${2:-10}"; local col3="${3:-20}"
-    local width=${4:-20}
+    local col1="${1:-}"; local col2="${2:-8}"; local col3="${3:-18}"
+    local width=${4:-18}
 
     strip_ansi() { sed -r 's/\x1b\[[0-9;]*m//g'; }
 
