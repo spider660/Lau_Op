@@ -350,7 +350,7 @@ clear;clear;clear
 
 # helper to print two columns aligned while handling ANSI color codes
 print_cols() {
-    local left="$1"; local right="$2"; local width=${3:-30}
+    local left="$1"; local right="$2"; local width=${3:-22}
     # strip ANSI escape sequences for visible-length calculation
     local left_clean
     left_clean=$(echo -e "$left" | sed -r 's/\x1b\[[0-9;]*m//g')
@@ -386,14 +386,14 @@ echo -e "            $COLOR1$NC${WH}    VLESS   =  ${COLOR1}$vless ${NC}${WH} AC
 echo -e "            $COLOR1$NC${WH}    TROJAN  =  ${COLOR1}$trtls ${NC}${WH} ACCOUNT${NC}"
 echo -e "   $COLOR1╰═════════════════════════════════════════════╯${NC}"
 echo -e "$COLOR1╭═══════════════════ • ${NC}${WH}LIST MENU${NC}${COLOR1} • ═════════════════╮${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}01 ${WH}]${NC}${COLOR1}${WH}SSH VPN" "${WH}[${COLOR1}09 ${WH}]${NC}${COLOR1}${WH}UPDATE     ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}02 ${WH}]${NC}${COLOR1}${WH}VMESS"   "${WH}[${COLOR1}10 ${WH}]${NC}${COLOR1}${WH}SYSTEM     ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}03 ${WH}]${NC}${COLOR1}${WH}VLESS"   "${WH}[${COLOR1}11 ${WH}]${NC}${COLOR1}${WH}BACKUP     ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}04 ${WH}]${NC}${COLOR1}${WH}TRJAN"   "${WH}[${COLOR1}12 ${WH}]${NC}${COLOR1}${WH}ONLINE     ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}05 ${WH}]${NC}${COLOR1}${WH}BACKUP"  "${WH}[${COLOR1}13 ${WH}]${NC}${COLOR1}${WH}LIMIT SPEED${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}06 ${WH}]${NC}${COLOR1}${WH}RUNNING" "${WH}[${COLOR1}14 ${WH}]${NC}${COLOR1}${WH}CLEAR CACHE${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}07 ${WH}]${NC}${COLOR1}${WH}RESTART" "${WH}[${COLOR1}15 ${WH}]${NC}${COLOR1}${WH}BOT PANEL  ${COLOR1}│ ${NC}"
-print_cols "$COLOR1│ ${WH}[${COLOR1}08 ${WH}]${NC}${COLOR1}${WH}REBOOT"  "${WH}[${COLOR1}16 ${WH}]${NC}${COLOR1}${WH}BANDWIDTH  ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}01${WH}]${NC}${COLOR1}${WH}SSH VPN" "${WH}[${COLOR1}09${WH}]${NC}${COLOR1}${WH}UPDATE     ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}02${WH}]${NC}${COLOR1}${WH}VMESS"   "${WH}[${COLOR1}10${WH}]${NC}${COLOR1}${WH}SYSTEM     ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}03${WH}]${NC}${COLOR1}${WH}VLESS"   "${WH}[${COLOR1}11${WH}]${NC}${COLOR1}${WH}BACKUP     ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}04${WH}]${NC}${COLOR1}${WH}TRJAN"   "${WH}[${COLOR1}12${WH}]${NC}${COLOR1}${WH}ONLINE     ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}05${WH}]${NC}${COLOR1}${WH}BACKUP"  "${WH}[${COLOR1}13${WH}]${NC}${COLOR1}${WH}LIMIT SPEED${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}06${WH}]${NC}${COLOR1}${WH}RUNNING" "${WH}[${COLOR1}14${WH}]${NC}${COLOR1}${WH}CLEAR CACHE${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}07${WH}]${NC}${COLOR1}${WH}RESTART" "${WH}[${COLOR1}15${WH}]${NC}${COLOR1}${WH}BOT PANEL  ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}08${WH}]${NC}${COLOR1}${WH}REBOOT"  "${WH}[${COLOR1}16${WH}]${NC}${COLOR1}${WH}BANDWIDTH  ${COLOR1}│ ${NC}"
 print_cols "$COLOR1│ ${WH}[${COLOR1}17${WH}]${NC}${COLOR1}${WH}CLEAR C" "${WH}[${COLOR1}18${WH}]${NC}${COLOR1}${WH}DEL EXPIRED ${COLOR1}│ ${NC}"
 echo -e    "$COLOR1│                                                   $COLOR1│ $NC"
 print_cols "$COLOR1│ ${WH}[${COLOR1}19${WH}]${NC}${COLOR1}${WH}SPEEDTEST ${COLOR1}│ ${NC}"
