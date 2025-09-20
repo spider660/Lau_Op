@@ -347,7 +347,6 @@ clear
 clear && clear && clear
 clear;clear;clear
 print_cols() {
-print_cols() {
     local col1="${1:-}"
     local col2="${2:-}"
     local col3="${3:-}"
