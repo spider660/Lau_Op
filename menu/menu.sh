@@ -350,7 +350,7 @@ clear;clear;clear
 
 # helper to print two columns aligned while handling ANSI color codes
 print_cols() {
-    local left="$1"; local right="$2"; local width=${3:-48}
+    local left="$1"; local right="$2"; local width=${3:-30}
     # strip ANSI escape sequences for visible-length calculation
     local left_clean
     left_clean=$(echo -e "$left" | sed -r 's/\x1b\[[0-9;]*m//g')
