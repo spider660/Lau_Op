@@ -62,7 +62,7 @@ IP_VPS=$(curl -s ipv4.icanhazip.com)
 # =============================================
 #          [ Pengecekan IP ]
 # =============================================
-echo -e "${GREEN}⌛ Memeriksa lisensi...${NC}"
+echo -e "${GREEN}⌛ Checking license...${NC}"
 if check_ip_and_get_info "$IP_VPS"; then
 
     # Validasi format tanggal ISO 8601
@@ -184,7 +184,7 @@ ISP=$(curl -s ipinfo.io/org | cut -d ' ' -f 2-10)
 CITY=$(curl -s ipinfo.io/city)
 #######################################
 
-mai="datediff "$Exp" "$DATE""
+mai="datediff $Exp $DATE"
 
 # CERTIFICATE STATUS
 d1=$(date -d "$Exp2" +%s)
@@ -316,9 +316,13 @@ else
     status_xray="${RED}OFF${NC}"
 fi
 # STATUS EXPIRED ACTIVE
-Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[4$below" && Font_color_suffix="\033[0m"
+Green_font_prefix="\033[32m"
+Red_font_prefix="\033[31m"
+Green_background_prefix="\033[42;37m"
+Red_background_prefix="\033[41;37m"
+Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}( Registered )${Font_color_suffix}"
-Error="${Green_font_prefix}${Font_color_suffix}${Red_font_prefix}[ EXPIRED ]${Font_color_suffix}"
+Error="${Red_font_prefix}[ EXPIRED ]${Font_color_suffix}"
 
 today=$(date -d "0 days" +"%Y-%m-%d")
 if [[ $today < $Exp2 ]]; then
@@ -343,6 +347,20 @@ get_net_info
 clear
 clear && clear && clear
 clear;clear;clear
+
+# helper to print two columns aligned while handling ANSI color codes
+print_cols() {
+    local left="$1"; local right="$2"; local width=${3:-48}
+    # strip ANSI escape sequences for visible-length calculation
+    local left_clean
+    left_clean=$(echo -e "$left" | sed -r 's/\x1b\[[0-9;]*m//g')
+    local len=${#left_clean}
+    local pad=$(( width - len ))
+    if [ $pad -lt 1 ]; then pad=1; fi
+    # print left, pad, then right (right contains trailing frame chars as needed)
+    printf "%b%*s%b\n" "$left" "$pad" "" "$right"
+}
+
 echo -e "$COLOR1╭═══════════════════════════════════════════════════╮${NC}"
 echo -e "$COLOR1│${NC} ${COLBG1}         ${WH}• SPIDER PREMIUM SCRIPT •              ${NC} $COLOR1│ $NC"
 echo -e "$COLOR1╰═══════════════════════════════════════════════════╯${NC}"
@@ -368,12 +386,18 @@ echo -e "            $COLOR1$NC${WH}    VLESS   =  ${COLOR1}$vless ${NC}${WH} AC
 echo -e "            $COLOR1$NC${WH}    TROJAN  =  ${COLOR1}$trtls ${NC}${WH} ACCOUNT${NC}"
 echo -e "   $COLOR1╰═════════════════════════════════════════════╯${NC}"
 echo -e "$COLOR1╭═══════════════════ • ${NC}${WH}LIST MENU${NC}${COLOR1} • ═════════════════╮${NC}"
-echo -e "$COLOR1│                                                   $COLOR1│ $NC"
-echo -e "$COLOR1│ ${WH}[${COLOR1}01${WH}]${NC} ${COLOR1}• ${WH}SSH VPN  ${WH}[${COLOR1}Menu${WH}]     ${WH}[${COLOR1}06${WH}]${NC} ${COLOR1}• ${WH}RUNNING  ${WH}[${COLOR1}Menu${WH}]$COLOR1 │ $NC"
-echo -e "$COLOR1│ ${WH}[${COLOR1}02${WH}]${NC} ${COLOR1}• ${WH}VMESS    ${WH}[${COLOR1}Menu${WH}]     ${WH}[${COLOR1}07${WH}]${NC} ${COLOR1}• ${WH}RESTART  ${WH}[${COLOR1}Menu${WH}]$COLOR1 │ $NC"
-echo -e "$COLOR1│ ${WH}[${COLOR1}03${WH}]${NC} ${COLOR1}• ${WH}VLESS    ${WH}[${COLOR1}Menu${WH}]     ${WH}[${COLOR1}08${WH}]${NC} ${COLOR1}• ${WH}REBOOT   ${WH}[${COLOR1}Menu${WH}]$COLOR1 │ $NC"
-echo -e "$COLOR1│ ${WH}[${COLOR1}04${WH}]${NC} ${COLOR1}• ${WH}TRJAN    ${WH}[${COLOR1}Menu${WH}]     ${WH}[${COLOR1}09${WH}]${NC} ${COLOR1}• ${WH}UPDATE   ${WH}[${COLOR1}Menu${WH}]$COLOR1 │ $NC"
-echo -e "$COLOR1│ ${WH}[${COLOR1}05${WH}]${NC} ${COLOR1}• ${WH}BACKUP   ${WH}[${COLOR1}Menu${WH}]     ${WH}[${COLOR1}10${WH}]${NC} ${COLOR1}• ${WH}SETTING  ${WH}[${COLOR1}Menu${WH}]$COLOR1 │ $NC"
+print_cols "$COLOR1│ ${WH}[${COLOR1}01 ${WH}]${NC}${COLOR1}${WH}SSH VPN" "${WH}[${COLOR1}09 ${WH}]${NC}${COLOR1}${WH}UPDATE     ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}02 ${WH}]${NC}${COLOR1}${WH}VMESS"   "${WH}[${COLOR1}10 ${WH}]${NC}${COLOR1}${WH}SYSTEM     ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}03 ${WH}]${NC}${COLOR1}${WH}VLESS"   "${WH}[${COLOR1}11 ${WH}]${NC}${COLOR1}${WH}BACKUP     ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}04 ${WH}]${NC}${COLOR1}${WH}TRJAN"   "${WH}[${COLOR1}12 ${WH}]${NC}${COLOR1}${WH}ONLINE     ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}05 ${WH}]${NC}${COLOR1}${WH}BACKUP"  "${WH}[${COLOR1}13 ${WH}]${NC}${COLOR1}${WH}LIMIT SPEED${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}06 ${WH}]${NC}${COLOR1}${WH}RUNNING" "${WH}[${COLOR1}14 ${WH}]${NC}${COLOR1}${WH}CLEAR CACHE${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}07 ${WH}]${NC}${COLOR1}${WH}RESTART" "${WH}[${COLOR1}15 ${WH}]${NC}${COLOR1}${WH}BOT PANEL  ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}08 ${WH}]${NC}${COLOR1}${WH}REBOOT"  "${WH}[${COLOR1}16 ${WH}]${NC}${COLOR1}${WH}BANDWIDTH  ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}17${WH}]${NC}${COLOR1}${WH}CLEAR C" "${WH}[${COLOR1}18${WH}]${NC}${COLOR1}${WH}DEL EXPIRED ${COLOR1}│ ${NC}"
+echo -e    "$COLOR1│                                                   $COLOR1│ $NC"
+print_cols "$COLOR1│ ${WH}[${COLOR1}19${WH}]${NC}${COLOR1}${WH}SPEEDTEST ${COLOR1}│ ${NC}"
+print_cols "$COLOR1│ ${WH}[${COLOR1}20${WH}]${NC}${COLOR1}${WH}GOTOP     ${COLOR1}│ ${NC}"
 echo -e "$COLOR1╰═══════════════════════════════════════════════════╯${NC}"
 echo -e "$COLOR1╭═══════════════════════════════════════════════════╮${NC}"
 echo -e "$COLOR1│ ${WH}Traffic${NC}      ${WH}Today     Yesterday       Month       ${NC}"
@@ -381,7 +405,6 @@ echo -e "$COLOR1│ ${COLOR1}Total${NC}    ${COLOR1}  $todayd $today_v    $yeste
 echo -e "$COLOR1╰═══════════════════════════════════════════════════╯${NC}"
 
 echo -e "$COLOR1╭═══════════════════════════════════════════════════╮${NC}"
-echo -e "$COLOR1│ $NC ${WH}My Love       ${COLOR1}: ${WH}GESEL🥰${NC}$COLOR1"
 echo -e "$COLOR1│ $NC ${WH}Developer     ${COLOR1}: ${WH}AM Spider${NC}$COLOR1"
 echo -e "$COLOR1│ $NC ${WH}Client        ${COLOR1}: ${WH}$client_name${NC}"
 echo -e "$COLOR1│ $NC ${WH}Sisa Hari     ${COLOR1}: ${WH}$days_remaining hari${NC}"
@@ -402,6 +425,14 @@ case $opt in
 10 | 10) clear ; system ;;
 11 | 11) clear ; menu-backup;;
 12 | 12) clear ; online;;
+13 | 13) clear ; limitspeed;;
+14 | 14) clear ; clearcache;;
+15 | 15) clear ; botadd-bot-panel;;
+16 | 16) clear ; bw;; 
+17 | 17) clear ; clearcache;;
+18 | 18) clear ; xp;;
+19 | 19) clear ; speedtest;;
+20 | 20) clear ; gotop;;
 00 | 0) clear ; menu ;;
 *) clear ; menu ;;
 esac

@@ -1,12 +1,6 @@
 #!/bin/bash
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# System Request : Debian 9+/Ubuntu 18.04+/20+
-# Develovers » ŞƤƗĐ€Ř
-# Email      » laubuoy@gmail.com
-# telegram   » https://t.me/spid_3r
-# whatsapp   » wa.me/+254112011036
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 DF='\e[39m'
+RED='\033[0;31m'
 Bold='\e[1m'
 Blink='\e[5m'
 yell='\e[33m'
@@ -25,10 +19,20 @@ LIGHT='\033[0;37m'
 grenbo="\e[92;1m"
 red() { echo -e "\\033[32;1m${*}\\033[0m"; }
 # Getting
-ipsaya=$(curl -sS ipv4.icanhazip.com)
+#satusbot
+bot_kyt=$(systemctl status kyt | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+# STATUS SERVICE  BOT 
+if [[ $bot_kyt == "running" ]]; then 
+   status_bot="${GREEN}Online$NC${c} $NC"
+else
+   status_bot="${RED}Offline${NC} "
+fi
+#####
+KIRI="\033[1;32m>\033[1;33m>\033[1;31m>\033[1;31m$NC"
+ipsaya=$(wget -qO- ipinfo.io/ip)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
-data_ip="https://raw.githubusercontent.com/spider660/key/refs/heads/main/net"
+data_ip="https://raw.githubusercontent.com/spxbuoy/Lau_Op/main/keygen"
 checking_sc() {
   useexp=$(wget -qO- $data_ip | grep $ipsaya | awk '{print $3}')
   if [[ $date_list < $useexp ]]; then
@@ -42,23 +46,29 @@ checking_sc() {
     echo -e "   \033[0;33mYour VPS${NC} $ipsaya \033[0;33mHas been Banned${NC}"
     echo -e "     \033[0;33mBuy access permissions for scripts${NC}"
     echo -e "             \033[0;33mContact Admin :${NC}"
-    echo -e "      ${GREEN}TELEGRAM${NC} https://t.me/spid_3r"
-	echo -e "      ${GREEN}WHATS APP ${NC} 0112011036"
+    echo -e "      \033[0;36mTelegram${NC} t.me/spid_3r"
+    echo -e "      ${GREEN}WhatsApp${NC} wa.me/254112011036"
     echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
-    exit 0
+    sleep 5
+    reboot
   fi
 }
 checking_sc
+
+echo -e "\e[32mloading...\e[0m"
 clear
 MYIP=$(wget -qO- ipinfo.io/ip);
 clear 
 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "             • Backup Menu •         "
+echo -e "         • MENU BOT PANEL •         "
 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "" 
-echo -e " [\e[36m•1\e[0m] Backup VPS Data"
-echo -e " [\e[36m•2\e[0m] Restore VPS Data"
-echo -e " [\e[36m•3\e[0m] Jadwal Backup"
+echo -e " ${KIRI} Status Bot ( ${status_bot} )"
+echo -e ""
+echo -e " [\e[36m•1\e[0m] Add Bot Panel"
+echo -e " [\e[36m•2\e[0m] Delete Bot Panel"
+echo -e " [\e[36m•3\e[0m] Stop Bot Panel"
+echo -e " [\e[36m•4\e[0m] Restart Bot Panel"
 echo -e "" 
 echo -e " [\e[31m•0\e[0m] \e[31mBack To Menu\033[0m"
 echo -e "" 
@@ -67,9 +77,9 @@ echo -e ""
 read -p " Select menu :  "  opt
 echo -e   ""
 case $opt in
-01 | 1) clear ; backup ;;
-02 | 2) clear ; restore ;;
-02 | 3) clear ; atur-backup ;;
-00 | 0) clear ; menu ;;
-*) clear ; menu-backup ;;
+01 | 1) clear ; wget https://raw.githubusercontent.com/spxbuoy/Lau_Op/main/kyt.sh && chmod +x kyt.sh && ./kyt.sh ;;
+02 | 2) clear ; hapus-bot ;;
+02 | 3) clear ; stop-bot ;;
+00 | 4) clear ; restart-bot ;;
+*) clear ; menu ;;
 esac

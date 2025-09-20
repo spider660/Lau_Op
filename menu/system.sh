@@ -63,22 +63,22 @@ IP_VPS=$(curl -s ipv4.icanhazip.com)
 # =============================================
 #          [ Pengecekan IP ]
 # =============================================
-echo -e "${GREEN}⌛ Memeriksa lisensi...${NC}"
+echo -e "${GREEN}⌛ Checking license...${NC}"
 if check_ip_and_get_info "$IP_VPS"; then
     
     # Validasi format tanggal ISO 8601
     if ! [[ "$exp_date" =~ ^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$ ]]; then
-        echo -e "${RED}❌ Format tanggal invalid: '$exp_date' (harus YYYY-MM-DD)${NC}"
+        echo -e "${RED}❌ Invalid date format: '$exp_date' (must be YYYY-MM-DD)${NC}"
         exit 1
     fi
 
     # Validasi tanggal menggunakan date
     if ! date -d "$exp_date" "+%s" &>/dev/null; then
-        echo -e "${RED}❌ Tanggal tidak valid secara kalender: $exp_date${NC}"
+        echo -e "${RED}❌ Date is not valid according to the calendar: $exp_date${NC}"
         exit 1
     fi
 else
-    echo -e "${RED}❌ IP tidak terdaftar!${NC}"
+    echo -e "${RED}❌ IP not registered!${NC}"
     echo -e "➥ Hubungi admin ${CYAN}「 ✦ @HokageLegend ✦ 」${NC}"
     exit 1
 fi
@@ -472,5 +472,5 @@ case $opt in
 09 |9) clear ; check-port ;; 
 10 |10) clear ; wget -q https://raw.githubusercontent.com/spider660/Lau_Op/refs/heads/main/rebuildpepesmenu && bash rebuildpepesmenu ;; 
 00 |0) clear ; menu ;; 
-*) echo -e "" ; echo "Anda salah tekan" ; sleep 1 ; system ;;
+*) echo -e "" ; echo "You pressed it wrong" ; sleep 1 ; system ;;
 esac

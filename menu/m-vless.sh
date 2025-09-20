@@ -72,23 +72,23 @@ IP_VPS=$(curl -s ipv4.icanhazip.com)
 # =============================================
 #          [ Pengecekan IP ]
 # =============================================
-echo -e "${GREEN}⌛ Memeriksa lisensi...${NC}"
+echo -e "${GREEN}⌛ Checking license...${NC}"
 if check_ip_and_get_info "$IP_VPS"; then
     
     # Validasi format tanggal ISO 8601
     if ! [[ "$exp_date" =~ ^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$ ]]; then
-        echo -e "${RED}❌ Format tanggal invalid: '$exp_date' (harus YYYY-MM-DD)${NC}"
+        echo -e "${RED}❌ Invalid date format: '$exp_date' (must be YYYY-MM-DD)${NC}"
         exit 1
     fi
 
     # Validasi tanggal menggunakan date
     if ! date -d "$exp_date" "+%s" &>/dev/null; then
-        echo -e "${RED}❌ Tanggal tidak valid secara kalender: $exp_date${NC}"
+        echo -e "${RED}❌ Date is not valid according to the calendar: $exp_date${NC}"
         exit 1
     fi
 else
-    echo -e "${RED}❌ IP tidak terdaftar!${NC}"
-    echo -e "➥ Hubungi admin ${CYAN}「 ✦ @spid_3r ✦ 」${NC}"
+    echo -e "${RED}❌ IP not registered!${NC}"
+    echo -e "➥ Contact admin ${CYAN}「 ✦ @spid_3r ✦ 」${NC}"
     exit 1
 fi
 
@@ -976,7 +976,7 @@ echo -e "$COLOR1│${NC}${COLBG1}           ${WH}• SETTING MULTI LOGIN •    
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌───────────────────────────────────────────────┐${NC}"
 echo -e "${COLOR1}│ $NC SILAHKAN TULIS JUMLAH NOTIFIKASI UNTUK LOCK    ${NC}"
-echo -e "${COLOR1}│ $NC AKUN USER YANG MULTI LOGIN     ${NC}"
+echo -e "${COLOR1}│ $NC ACCOUNT USER YANG MULTI LOGIN     ${NC}"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 read -rp "   Jika Mau 3x Notif baru kelock tulis 3, dst: " -e notif
 cd /etc/vless
@@ -1261,17 +1261,17 @@ echo -e " $COLOR1╔════════════════════
 echo -e " $COLOR1║${NC}${COLBG1}             ${WH}• VLESS PANEL MENU •                   ${NC}$COLOR1║ $NC"
 echo -e " $COLOR1╚════════════════════════════════════════════════════╝${NC}"
 echo -e " $COLOR1╔════════════════════════════════════════════════════╗${NC}"
-echo -e " $COLOR1║ $NC ${WH}[${COLOR1}01${WH}]${NC} ${COLOR1}• ${WH}ADD AKUN${NC}         ${WH}[${COLOR1}06${WH}]${NC} ${COLOR1}• ${WH}CEK USER CONFIG${NC}    $COLOR1║ $NC"
+echo -e " $COLOR1║ $NC ${WH}[${COLOR1}01${WH}]${NC} ${COLOR1}• ${WH}ADD ACCOUNT${NC}         ${WH}[${COLOR1}06${WH}]${NC} ${COLOR1}• ${WH}CEK USER CONFIG${NC}    $COLOR1║ $NC"
 echo -e " $COLOR1║ $NC                                                  ${NC} $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC ${WH}[${COLOR1}02${WH}]${NC} ${COLOR1}• ${WH}TRIAL AKUN${NC}       ${WH}[${COLOR1}07${WH}]${NC} ${COLOR1}• ${WH}CHANGE USER LIMIT${NC}  $COLOR1║ $NC"
+echo -e " $COLOR1║ $NC ${WH}[${COLOR1}02${WH}]${NC} ${COLOR1}• ${WH}TRIAL ACCOUNT${NC}       ${WH}[${COLOR1}07${WH}]${NC} ${COLOR1}• ${WH}CHANGE USER LIMIT${NC}  $COLOR1║ $NC"
 echo -e " $COLOR1║ $NC                                                  ${NC} $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC ${WH}[${COLOR1}03${WH}]${NC} ${COLOR1}• ${WH}RENEW AKUN${NC}       ${WH}[${COLOR1}08${WH}]${NC} ${COLOR1}• ${WH}SETTING LOCK LOGIN${NC} $COLOR1║ $NC"
+echo -e " $COLOR1║ $NC ${WH}[${COLOR1}03${WH}]${NC} ${COLOR1}• ${WH}RENEW ACCOUNT${NC}       ${WH}[${COLOR1}08${WH}]${NC} ${COLOR1}• ${WH}SETTING LOCK LOGIN${NC} $COLOR1║ $NC"
 echo -e " $COLOR1║ $NC                                                  ${NC} $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC ${WH}[${COLOR1}04${WH}]${NC} ${COLOR1}• ${WH}DELETE AKUN${NC}      ${WH}[${COLOR1}09${WH}]${NC} ${COLOR1}• ${WH}UNLOCK USER LOGIN${NC}  $COLOR1║ $NC"
+echo -e " $COLOR1║ $NC ${WH}[${COLOR1}04${WH}]${NC} ${COLOR1}• ${WH}DELETE ACCOUNT${NC}      ${WH}[${COLOR1}09${WH}]${NC} ${COLOR1}• ${WH}UNLOCK USER LOGIN${NC}  $COLOR1║ $NC"
 echo -e " $COLOR1║ $NC                                                  ${NC} $COLOR1║ $NC"
 echo -e " $COLOR1║ $NC ${WH}[${COLOR1}05${WH}]${NC} ${COLOR1}• ${WH}CEK USER LOGIN${NC}   ${WH}[${COLOR1}10${WH}]${NC} ${COLOR1}• ${WH}UNLOCK USER QUOTA ${NC} $COLOR1║ $NC"
 echo -e " $COLOR1║ $NC                                                  ${NC} $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC ${WH}[${COLOR1}00${WH}]${NC} ${COLOR1}• ${WH}GO BACK${NC}          ${WH}[${COLOR1}11${WH}]${NC} ${COLOR1}• ${WH}RESTORE AKUN   ${NC}    $COLOR1║ $NC"
+echo -e " $COLOR1║ $NC ${WH}[${COLOR1}00${WH}]${NC} ${COLOR1}• ${WH}GO BACK${NC}          ${WH}[${COLOR1}11${WH}]${NC} ${COLOR1}• ${WH}RESTORE ACCOUNT   ${NC}    $COLOR1║ $NC"
 echo -e " $COLOR1╚════════════════════════════════════════════════════╝${NC}"
 echo -e " $COLOR1╔═════════════════════════ ${WH}BY${NC} ${COLOR1}═══════════════════════╗ ${NC}"
 echo -e "  $COLOR1${NC}           ${WH}   • SELMA MULIATI STORE •                $COLOR1 $NC"

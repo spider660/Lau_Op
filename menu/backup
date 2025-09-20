@@ -156,7 +156,7 @@ Waktu         : $(date +"%H:%M:%S")
 File Backup   : $BACKUP_FILE_NAME
 Lokasi Local  : $BACKUP_FILE
 ==================================
-*****AM GANTENG STORE*********
+*****SPIDER WEBX STORE*********
 "
 
 # Check if mailutils is installed

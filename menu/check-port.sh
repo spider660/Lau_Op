@@ -20,7 +20,7 @@ LIGHT='\033[0;37m'
 
 clear
 echo -e "${tyblue}|━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━|${NC}"
-echo -e "${tyblue}|    ♡ PORT SERVER VPS AKTIF ♡          ${NC}"
+echo -e "${tyblue}|    ♡ PORT SERVER VPS ♡          ${NC}"
 echo -e "${tyblue}|━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━|${NC}"
 echo -e "${tyblue}|●⏩ Open VPN                : 2086      ${NC}"
 echo -e "${tyblue}|●⏩ SSH SSL Websocket       : 443       ${NC}"
@@ -39,6 +39,6 @@ echo -e "${tyblue}|●⏩ Vless WS none TLS       : 80        ${NC}"
 echo -e "${tyblue}|●⏩ Trojan WS none TLS      : 80        ${NC}"
 echo -e "${tyblue}|●⏩ Shadowsocks WS none TLS : 80        ${NC}"
 echo -e "${tyblue}|━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━|${NC}"
-echo -e "${tyblue}|  ♡ SCRIPT BY AM GANTENG STORE ♡    ${NC}"
+echo -e "${tyblue}|  ♡ SCRIPT BY SPIDER WEBX STORE ♡    ${NC}"
 echo -e "${tyblue}|━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━|${NC}"
 echo -e ""

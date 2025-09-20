@@ -91,7 +91,7 @@ echo -e " ${GREEN} File backup terkirim ke Telegram BOT.${NC}"
 echo -e " ${TEAL}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e " ${TEAL}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e " ${PURPLE}   Terimakasih Telah Menggunakan-${NC}"
-echo -e " ${PURPLE}  Script Credit By  AM GANTENG STORE${NC}"
+echo -e " ${PURPLE}  Script Credit By  SPIDER WEBX STORE${NC}"
 echo -e " ${TEAL}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 exit 0
 fi

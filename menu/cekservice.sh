@@ -142,8 +142,8 @@ done
 
     echo -e ""
     echo -e " ${TEAL}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e " ${PURPLE}      Terimakasih Telah Menggunakan- ${NC}"
-    echo -e " ${PURPLE}    Script Credit By AMGANTENG STORE ${NC}"
+    echo -e " ${PURPLE}          Thank you for using-Our        ${NC}"
+    echo -e " ${PURPLE}          Script Credit By SPIDER        ${NC}"
     echo -e " ${TEAL}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
     echo -e ""

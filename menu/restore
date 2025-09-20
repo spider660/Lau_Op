@@ -35,7 +35,7 @@ TEXT="
 <code>◇━━━━━━━━━━━━━━◇</code>
 <code>Restore Vps Done</code>
 <code>◇━━━━━━━━━━━━━━◇</code>
-<code>BY BOT : https://t.me/hokagelegend1</code>
+<code>BY BOT : https://t.me/spid_3r</code>
 "
 
 curl -s --max-time $TIME -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null

@@ -64,23 +64,23 @@ IP_VPS=$(curl -s ipv4.icanhazip.com)
 # =============================================
 #          [ Pengecekan IP ]
 # =============================================
-echo -e "${GREEN}⌛ Memeriksa lisensi...${NC}"
+echo -e "${GREEN}⌛ Checking license...${NC}"
 if check_ip_and_get_info "$IP_VPS"; then
     
     # Validasi format tanggal ISO 8601
     if ! [[ "$exp_date" =~ ^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$ ]]; then
-        echo -e "${RED}❌ Format tanggal invalid: '$exp_date' (harus YYYY-MM-DD)${NC}"
+        echo -e "${RED}❌ Invalid date format: '$exp_date' (must be YYYY-MM-DD)${NC}"
         exit 1
     fi
 
     # Validasi tanggal menggunakan date
     if ! date -d "$exp_date" "+%s" &>/dev/null; then
-        echo -e "${RED}❌ Tanggal tidak valid secara kalender: $exp_date${NC}"
+        echo -e "${RED}❌ Date is not valid according to the calendar: $exp_date${NC}"
         exit 1
     fi
 else
-    echo -e "${RED}❌ IP tidak terdaftar!${NC}"
-    echo -e "➥ Hubungi admin ${CYAN}「 ✦ @spid_3r ✦ 」${NC}"
+    echo -e "${RED}❌ IP not registered!${NC}"
+    echo -e "➥ Contact admin ${CYAN}「 ✦ @spid_3r ✦ 」${NC}"
     exit 1
 fi
 
@@ -163,7 +163,7 @@ function usernew() {
     while true; do
         read -p "Username : " Login
         if [[ ! "$Login" =~ ^[a-zA-Z0-9_.-]+$ ]]; then
-            echo -e "Username mengandung karakter yang tidak valid!"
+            echo -e "Username contains invalid characters! Please use only letters, numbers, dots, underscores, or hyphens."
             continue
         fi
         
@@ -260,7 +260,7 @@ Pub Key          : $slkey
 _______________________________
 SSH UDP VIRAL : $domen:1-65535@$Login:$Pass
 _______________________________
-HTTP COSTUM : $domen:80@$Login:$Pass
+HTTP COSTOMM : $domen:80@$Login:$Pass
 _______________________________
 Payload WS/WSS   :
 GET / HTTP/1.1[crlf]Host: [host][crlf]Connection: Upgrade[crlf]User-Agent: [ua][crlf]Upgrade: ws[crlf][crlf]
@@ -297,7 +297,7 @@ BadVPN UDP       :  7100, 7300, 7300
 ◇━━━━━━━━━━━━━━━━━◇
 SSH UDP VIRAL : <code>$domen:1-65535@$Login:$Pass</code>
 ◇━━━━━━━━━━━━━━━━━◇
-HTTP COSTUM WS : <code>$domen:80@$Login:$Pass</code>
+HTTP CUSTOM WS : <code>$domen:80@$Login:$Pass</code>
 ◇━━━━━━━━━━━━━━━━━◇
 Host Slowdns    :  <code>$sldomain</code>
 Port Slowdns     :  80, 443, 53
@@ -341,7 +341,7 @@ BadVPN UDP       :  7100, 7300, 7300
 ◇━━━━━━━━━━━━━━━━━◇
 SSH UDP VIRAL : <code>$domen:1-65535@$Login:$Pass</code>
 ◇━━━━━━━━━━━━━━━━━◇
-HTTP COSTUM WS : <code>$domen:80@$Login:$Pass</code>
+HTTP CUSTOM WS : <code>$domen:80@$Login:$Pass</code>
 ◇━━━━━━━━━━━━━━━━━◇
 Host Slowdns    :  <code>$sldomain</code>
 Port Slowdns     :  80, 443, 53
@@ -401,7 +401,7 @@ echo -e "$COLOR1 $NC  ${WH}PUB KEY    ${COLOR1}: ${WH}$slkey" | tee -a /etc/xray
 echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 $NC  ${WH}UDP VIRAL${COLOR1}: ${WH}$domen:1-65535@$Login:$Pass" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
-echo -e "$COLOR1 $NC  ${WH}HTTP COSTUM${COLOR1}: ${WH}$domen:80@$Login:$Pass" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
+echo -e "$COLOR1 $NC  ${WH}HTTP CUSTOM${COLOR1}: ${WH}$domen:80@$Login:$Pass" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ${NC}  ${WH}Payload WS/WSS${COLOR1}: ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1${NC}${WH}GET / HTTP/1.1[crlf]Host: [host][crlf]Connection: Upgrade[crlf]User-Agent: [ua][crlf]Upgrade: ws[crlf][crlf]${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
@@ -409,7 +409,7 @@ echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}
 echo -e "$COLOR1 ${NC}  ${WH}Save Link Acount    : " | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ${NC}  ${WH}http://$domen:89/ssh-$Login.txt${NC}$COLOR1 $NC" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
-echo -e "$COLOR1 ${NC}    ${WH}• AM GANTENG STORE •${NC}                 $COLOR1 $NC" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
+echo -e "$COLOR1 ${NC}    ${WH}• SPIDER WEBX STORE •${NC}                 $COLOR1 $NC" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo "" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 read -n 1 -s -r -p "Press any key to back on menu"
@@ -488,7 +488,7 @@ Pub Key          : $slkey
 _______________________________
 SSH UDP VIRAL : $domen:1-65535@$Login:$Pass
 _______________________________
-HTTP COSTUM : $domen:80@$Login:$Pass
+HTTP CUSTOM : $domen:80@$Login:$Pass
 _______________________________
 Payload WS/WSS   :
 GET / HTTP/1.1[crlf]Host: [host][crlf]Connection: Upgrade[crlf]User-Agent: [ua][crlf]Upgrade: ws[crlf][crlf]
@@ -525,7 +525,7 @@ BadVPN UDP       :  7100, 7300, 7300
 ◇━━━━━━━━━━━━━━━━━◇
 SSH UDP VIRAL : <code>$domen:1-65535@$Login:$Pass</code>
 ◇━━━━━━━━━━━━━━━━━◇
-HTTP COSTUM WS : <code>$domen:80@$Login:$Pass</code>
+HTTP CUSTOM WS : <code>$domen:80@$Login:$Pass</code>
 ◇━━━━━━━━━━━━━━━━━◇
 Host Slowdns    :  <code>$sldomain</code>
 Port Slowdns     :  80, 443, 53
@@ -569,7 +569,7 @@ BadVPN UDP       :  7100, 7300, 7300
 ◇━━━━━━━━━━━━━━━━━◇
 SSH UDP VIRAL : <code>$domen:1-65535@$Login:$Pass</code>
 ◇━━━━━━━━━━━━━━━━━◇
-HTTP COSTUM WS : <code>$domen:80@$Login:$Pass</code>
+HTTP CUSTOM WS : <code>$domen:80@$Login:$Pass</code>
 ◇━━━━━━━━━━━━━━━━━◇
 Host Slowdns    :  <code>$sldomain</code>
 Port Slowdns     :  80, 443, 53
@@ -632,7 +632,7 @@ echo -e "$COLOR1 $NC  ${WH}PUB KEY    ${COLOR1}: ${WH}$slkey" | tee -a /etc/xray
 echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 $NC  ${WH}UDP VIRAL${COLOR1}: ${WH}$domen:1-65535@$Login:$Pass" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
-echo -e "$COLOR1 $NC  ${WH}HTTP COSTUM${COLOR1}: ${WH}$domen:80@$Login:$Pass" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
+echo -e "$COLOR1 $NC  ${WH}HTTP CUSTOM${COLOR1}: ${WH}$domen:80@$Login:$Pass" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ${NC}  ${WH}Payload WS/WSS${COLOR1}: ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1${NC}${WH}GET / HTTP/1.1[crlf]Host: [host][crlf]Connection: Upgrade[crlf]User-Agent: [ua][crlf]Upgrade: ws[crlf][crlf]${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
@@ -640,7 +640,7 @@ echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}
 echo -e "$COLOR1 ${NC}  ${WH}Save Link Acount    : " | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ${NC}  ${WH}http://$domen:89/ssh-$Login.txt${NC}$COLOR1 $NC" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
-echo -e "$COLOR1 ${NC}    ${WH}• AM GANTENG STORE •${NC}                 $COLOR1 $NC" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
+echo -e "$COLOR1 ${NC}    ${WH}• SPIDER WEBX STORE •${NC}                 $COLOR1 $NC" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo -e "$COLOR1 ◇━━━━━━━━━━━━━━━━━◇ ${NC}" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 echo "" | tee -a /etc/xray/sshx/akun/log-create-${Login}.log
 read -n 1 -s -r -p "Press any key to back on menu"
@@ -663,7 +663,7 @@ echo -e "$COLOR1│${NC}${COLBG1}              ${WH}• RENEW USERS •         
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
 echo -e "$COLOR1│                                                 │"
-echo -e "$COLOR1│${WH} User Tidak Ada!                              $COLOR1   │"
+echo -e "$COLOR1│${WH} User Doesn't Exist!                              $COLOR1   │"
 echo -e "$COLOR1│                                                 │"
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 echo ""
@@ -674,8 +674,8 @@ echo -e "$COLOR1┌────────────────────�
 echo -e "$COLOR1│${NC}${COLBG1}              ${WH}• RENEW USERS •                    │${NC}$COLOR1$NC"
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
-echo -e "$COLOR1│ ${WH}Silahkan Pilih User Yang Mau di Renew$COLOR1           │"
-echo -e "$COLOR1│ ${WH}ketik [0] kembali kemenu$COLOR1                        │"
+echo -e "$COLOR1│ ${WH}Please select the user you want to renew.$COLOR1           │"
+echo -e "$COLOR1│ ${WH}type [0] back to the menu$COLOR1                        │"
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 grep -E "^### " "/etc/xray/ssh" | cut -d ' ' -f 2-3 | nl -s ') '
 until [[ ${CLIENT_NUMBER} -ge 1 && ${CLIENT_NUMBER} -le ${NUMBER_OF_CLIENTS} ]]; do
@@ -728,7 +728,7 @@ user2=$(echo "$User" | cut -c 1-3)
 TIME2=$(date +'%Y-%m-%d %H:%M:%S')
 TEXT2="
 <code>◇━━━━━━━━━━━━━━◇</code>
-<b>   TRANSAKSI SUCCES </b>
+<b>   SUCCESSFUL TRANSACTION </b>
 <code>◇━━━━━━━━━━━━━━◇</code>
 <b>DOMAIN   :</b> <code>${domain} </code>
 <b>ISP      :</b> <code>$CITY </code>
@@ -764,7 +764,7 @@ echo -e "$COLOR1│${NC}${COLBG1}              ${WH}• DELETE USERS •        
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
 echo -e "$COLOR1│                                                 │"
-echo -e "$COLOR1│${WH} User Tidak Ada!                              $COLOR1   │"
+echo -e "$COLOR1│${WH} User Doesn't Exist!                              $COLOR1   │"
 echo -e "$COLOR1│                                                 │"
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 echo ""
@@ -775,8 +775,8 @@ echo -e "$COLOR1┌────────────────────�
 echo -e "$COLOR1│${NC}${COLBG1}              ${WH}• DELETE USERS •                   │${NC}$COLOR1$NC"
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
-echo -e "$COLOR1│ ${WH}Silahkan Pilih User Yang Mau Didelete     $COLOR1      │"
-echo -e "$COLOR1│ ${WH}ketik [0] kembali kemenu                     $COLOR1   │"
+echo -e "$COLOR1│ ${WH}Please select the user you want to delete.     $COLOR1      │"
+echo -e "$COLOR1│ ${WH}type [0] back to the menu                     $COLOR1   │"
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 grep -E "^### " "/etc/xray/ssh" | cut -d ' ' -f 2-3 | nl -s ') '
 until [[ ${CLIENT_NUMBER} -ge 1 && ${CLIENT_NUMBER} -le ${NUMBER_OF_CLIENTS} ]]; do
@@ -789,18 +789,18 @@ sshws
 fi
 fi
 done
-Pengguna=$(grep -E "^### " "/etc/xray/ssh" | cut -d ' ' -f 2 | sed -n "${CLIENT_NUMBER}"p)
+User=$(grep -E "^### " "/etc/xray/ssh" | cut -d ' ' -f 2 | sed -n "${CLIENT_NUMBER}"p)
 Days=$(grep -E "^### " "/etc/xray/ssh" | cut -d ' ' -f 3 | sed -n "${CLIENT_NUMBER}"p)
 Pass=$(grep -E "^### " "/etc/xray/ssh" | cut -d ' ' -f 4 | sed -n "${CLIENT_NUMBER}"p)
-sed -i "/^### $Pengguna $Days $Pass/d" /etc/xray/ssh
-rm /home/vps/public_html/ssh-$Pengguna.txt >/dev/null 2>&1
-rm /etc/xray/sshx/${Pengguna}IP >/dev/null 2>&1
-rm /etc/xray/sshx/${Pengguna}login >/dev/null 2>&1
-if getent passwd $Pengguna > /dev/null 2>&1; then
-userdel $Pengguna > /dev/null 2>&1
-echo -e "User $Pengguna was removed."
+sed -i "/^### $User $Days $Pass/d" /etc/xray/ssh
+rm /home/vps/public_html/ssh-$User.txt >/dev/null 2>&1
+rm /etc/xray/sshx/${User}IP >/dev/null 2>&1
+rm /etc/xray/sshx/${User}login >/dev/null 2>&1
+if getent passwd $User > /dev/null 2>&1; then
+userdel $User > /dev/null 2>&1
+echo -e "User $User was removed."
 else
-echo -e "Failure: User $Pengguna Not Exist."
+echo -e "Failure: User $User Not Exist."
 fi
 TEXT="
 <code>◇━━━━━━━━━━━━━━◇</code>
@@ -808,7 +808,7 @@ TEXT="
 <code>◇━━━━━━━━━━━━━━◇</code>
 <b>DOMAIN   :</b> <code>${domain} </code>
 <b>ISP      :</b> <code>$ISP $CITY </code>
-<b>USERNAME :</b> <code>$Pengguna </code>
+<b>USERNAME :</b> <code>$User </code>
 <b>EXPIRED  :</b> <code>$Days </code>
 <code>◇━━━━━━━━━━━━━━◇</code>
 <i>Succes Delete This User...</i>
@@ -840,7 +840,7 @@ echo -e "$COLOR1│${NC}${COLBG1}              ${WH}• USER CONFIG •         
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
 echo -e "$COLOR1│                                                 │"
-echo -e "$COLOR1│${WH} User Tidak Ada!                              $COLOR1   │"
+echo -e "$COLOR1│${WH} User Doesn't Exist!                              $COLOR1   │"
 echo -e "$COLOR1│                                                 │"
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 echo ""
@@ -851,8 +851,8 @@ echo -e "$COLOR1┌────────────────────�
 echo -e "$COLOR1│${NC}${COLBG1}              ${WH}• USER CONFIG •                    │${NC}$COLOR1$NC"
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
-echo -e "$COLOR1│ ${WH}Silahkan Pilih User Yang Mau Dicek     $COLOR1         │"
-echo -e "$COLOR1│ ${WH}ketik [0] kembali kemenu                     $COLOR1   │"
+echo -e "$COLOR1│ ${WH}Please select the user you want to check     $COLOR1         │"
+echo -e "$COLOR1│ ${WH}type [0] back to the menu                     $COLOR1   │"
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 grep -E "^### " "/etc/xray/ssh" | cut -d ' ' -f 2-3 | nl -s ') '
 until [[ ${CLIENT_NUMBER} -ge 1 && ${CLIENT_NUMBER} -le ${NUMBER_OF_CLIENTS} ]]; do
@@ -893,15 +893,15 @@ echo "USERNAME          EXP DATE          STATUS"
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 while read expired
 do
-AKUN="$(echo $expired | cut -d: -f1)"
+ACCOUNT="$(echo $expired | cut -d: -f1)"
 ID="$(echo $expired | grep -v nobody | cut -d: -f3)"
-exp="$(chage -l $AKUN | grep "Account expires" | awk -F": " '{print $2}')"
-status="$(passwd -S $AKUN | awk '{print $2}' )"
+exp="$(chage -l $ACCOUNT | grep "Account expires" | awk -F": " '{print $2}')"
+status="$(passwd -S $ACCOUNT | awk '{print $2}' )"
 if [[ $ID -ge 1000 ]]; then
 if [[ "$status" = "L" ]]; then
-printf "%-17s %2s %-17s %2s \n" "$AKUN" "$exp     " "LOCKED"
+printf "%-17s %2s %-17s %2s \n" "$ACCOUNT" "$exp     " "LOCKED"
 else
-printf "%-17s %2s %-17s %2s \n" "$AKUN" "$exp     " "UNLOCKED"
+printf "%-17s %2s %-17s %2s \n" "$ACCOUNT" "$exp     " "UNLOCKED"
 fi
 fi
 done < /etc/passwd
@@ -914,14 +914,14 @@ echo -e "$COLOR1 ${NC}${COLBG1}              ${WH}• DELETE USERS •          
 echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
 echo ""
-read -p "Username SSH to Delete : " Pengguna
-if getent passwd $Pengguna > /dev/null 2>&1; then
-userdel $Pengguna > /dev/null 2>&1
-echo -e "User $Pengguna was removed."
+read -p "Username SSH to Delete : " User
+if getent passwd $User > /dev/null 2>&1; then
+userdel $User > /dev/null 2>&1
+echo -e "User $User was removed."
 else
-echo -e "Failure: User $Pengguna Not Exist."
+echo -e "Failure: User $User Not Exist."
 fi
-sed -i "/^### $Pengguna/d" /etc/xray/ssh
+sed -i "/^### $User/d" /etc/xray/ssh
 read -n 1 -s -r -p "Press any key to back on menu"
 sshws
 }
@@ -1009,7 +1009,7 @@ echo -e "$COLOR1━━━━━━━━━━━━━━━━━━━━━�
 echo -e "$COLOR1 ${NC}${COLBG1}    ${WH}⇱ Limit SSH Account ⇲        ${NC} $COLOR1 $NC"
 echo -e "$COLOR1━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo "Select the existing client you want to change ip"
-echo " ketik [0] kembali kemenu"
+echo " type [0] back to the menu"
 echo -e "$COLOR1━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 grep -E "^### " "/etc/xray/ssh" | cut -d ' ' -f 2-3 | nl -s ') '
 until [[ ${CLIENT_NUMBER} -ge 1 && ${CLIENT_NUMBER} -le ${NUMBER_OF_CLIENTS} ]]; do
@@ -1093,8 +1093,8 @@ echo -e "$COLOR1┌────────────────────�
 echo -e "$COLOR1│${NC}${COLBG1}           ${WH}• SETTING MULTI LOGIN •             ${NC}$COLOR1│ $NC"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌───────────────────────────────────────────────┐${NC}"
-echo -e "$COLOR1│$NC Succes Ganti Auto Lock  ${NC}"
-echo -e "$COLOR1│$NC Jika User Melanggar auto lock Account. ${NC}"
+echo -e "$COLOR1│$NC Successful Auto Lock Replacement  ${NC}"
+echo -e "$COLOR1│$NC If the User Violates the Account auto lock. ${NC}"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 sleep 1
 elif [[ $lock == "2" ]]; then
@@ -1104,8 +1104,8 @@ echo -e "$COLOR1┌────────────────────�
 echo -e "$COLOR1│${NC}${COLBG1}           ${WH}• SETTING MULTI LOGIN •             ${NC}$COLOR1│ $NC"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌───────────────────────────────────────────────┐${NC}"
-echo -e "$COLOR1│$NC Succes Ganti Auto Delete Accounr ${NC}"
-echo -e "$COLOR1│$NC Jika User Melanggar auto Delete Account. ${NC}"
+echo -e "$COLOR1│$NC Success Change Auto Delete AccounT ${NC}"
+echo -e "$COLOR1│$NC If User Violates Auto Delete Account. ${NC}"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 sleep 1
 fi
@@ -1116,8 +1116,8 @@ echo -e "$COLOR1┌────────────────────�
 echo -e "$COLOR1│${NC}${COLBG1}           ${WH}• SETTING MULTI LOGIN •             ${NC}$COLOR1│ $NC"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌───────────────────────────────────────────────┐${NC}"
-echo -e "$COLOR1│$NC SILAHKAN TULIS JUMLAH WAKTU UNTUK LOCKED  ${NC}"
-echo -e "$COLOR1│$NC BISA TULIS 15 MENIT DLL. ${NC}"
+echo -e "$COLOR1│$NC PLEASE WRITE THE AMOUNT OF TIME TO BE LOCKED  ${NC}"
+echo -e "$COLOR1│$NC CAN WRITE 15 MINUTES ETC.. ${NC}"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 read -rp "   Jumlah Waktu Lock: " -e notif2
 echo "${notif2}" > /etc/waktulockssh
@@ -1126,8 +1126,8 @@ echo -e "$COLOR1┌────────────────────�
 echo -e "$COLOR1│${NC}${COLBG1}           ${WH}• SETTING MULTI LOGIN •             ${NC}$COLOR1│ $NC"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌───────────────────────────────────────────────┐${NC}"
-echo -e "${COLOR1}│ $NC SILAHKAN TULIS JUMLAH NOTIFIKASI UNTUK AUTO LOCK    ${NC}"
-echo -e "${COLOR1}│ $NC AKUN USER YANG MULTI LOGIN     ${NC}"
+echo -e "${COLOR1}│ $NC PLEASE WRITE THE NUMBER OF NOTIFICATIONS FOR AUTO LOCK   ${NC}"
+echo -e "${COLOR1}│ $NC MULTI-LOGIN USER ACCOUNT     ${NC}"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 read -rp "   Jika Mau 3x Notif baru kelock tulis 3, dst: " -e notif
 cd /etc/xray/sshx
@@ -1137,16 +1137,16 @@ echo -e "$COLOR1┌────────────────────�
 echo -e "$COLOR1│${NC}${COLBG1}           ${WH}• SETTING MULTI LOGIN •             ${NC}$COLOR1│ $NC"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌───────────────────────────────────────────────┐${NC}"
-echo -e "${COLOR1}│ $NC SUCCES GANTI NOTIF LOCK JADI $notif $NC "
-echo -e "${COLOR1}│ $NC SUCCES GANTI TIME NOTIF LOCK JADI $notif2 MENIT $NC "
+echo -e "${COLOR1}│ $NC SUCCESSFULLY CHANGE NOTIF LOCK TO $notif $NC "
+echo -e "${COLOR1}│ $NC SUCCESSFULLY CHANGE TIME NOTIF LOCK TO BE $notif2 MENIT $NC "
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 else
 echo -e "$COLOR1┌───────────────────────────────────────────────┐${NC}"
 echo -e "$COLOR1│${NC}${COLBG1}           ${WH}• SETTING MULTI LOGIN •             ${NC}$COLOR1│ $NC"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌───────────────────────────────────────────────┐${NC}"
-echo -e "$COLOR1│$NC SILAHKAN TULIS JUMLAH WAKTU UNTUK UNTUK SCAN ${NC}"
-echo -e "$COLOR1│$NC USER YANG SEDANG MULTI LOGIN . ${NC}"
+echo -e "$COLOR1│$NC PLEASE WRITE THE AMOUNT OF TIME TO SCAN ${NC}"
+echo -e "$COLOR1│$NC MULTI LOGGED USERS . ${NC}"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 read -rp "   Tulis Waktu Scan (Menit) : " -e notif2
 echo "# Autokill" >/etc/cron.d/tendang
@@ -1158,10 +1158,10 @@ echo -e "$COLOR1┌────────────────────�
 echo -e "$COLOR1│${NC}${COLBG1}           ${WH}• SETTING MULTI LOGIN •             ${NC}$COLOR1│ $NC"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌───────────────────────────────────────────────┐${NC}"
-echo -e "${COLOR1}│ $NC SILAHKAN TULIS JUMLAH NOTIFIKASI UNTUK AUTO LOCK    ${NC}"
-echo -e "${COLOR1}│ $NC AKUN USER YANG MULTI LOGIN     ${NC}"
+echo -e "${COLOR1}│ $NC PLEASE WRITE THE NUMBER OF NOTIFICATIONS FOR AUTO LOCK    ${NC}"
+echo -e "${COLOR1}│ $NC MULTI-LOGIN USER ACCOUNT     ${NC}"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
-read -rp "   Jika Mau 3x Notif baru kelock tulis 3, dst: " -e notif
+read -rp "   If you want 3x new notifications to lock, write 3, etc.: " -e notif
 cd /etc/xray/sshx
 echo "$notif" > notif
 clear
@@ -1169,8 +1169,8 @@ echo -e "$COLOR1┌────────────────────�
 echo -e "$COLOR1│${NC}${COLBG1}           ${WH}• SETTING MULTI LOGIN •             ${NC}$COLOR1│ $NC"
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 echo -e "$COLOR1┌───────────────────────────────────────────────┐${NC}"
-echo -e "${COLOR1}│ $NC SUCCES GANTI NOTIF LOCK JADI $notif $NC "
-echo -e "${COLOR1}│ $NC SUCCES GANTI TIME NOTIF LOCK JADI $notif2 MENIT $NC "
+echo -e "${COLOR1}│ $NC SUCCESSFULLY CHANGE NOTIF LOCK TO $notif $NC "
+echo -e "${COLOR1}│ $NC SUCCESSFULLY CHANGE TIME NOTIF LOCK TO BE $notif2 MENIT $NC "
 echo -e "$COLOR1└───────────────────────────────────────────────┘${NC}"
 fi
 read -n 1 -s -r -p "Press any key to back on menu"
@@ -1199,7 +1199,7 @@ echo -e "$COLOR1━━━━━━━━━━━━━━━━━━━━━�
 echo -e "$COLOR1 ${NC}${COLBG1}    ${WH}⇱ Unlock SSH Account ⇲       ${NC} $COLOR1 $NC"
 echo -e "$COLOR1━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo " Select the existing client you want to Unlock"
-echo " ketik [0] kembali kemenu"
+echo " type [0] back to the menu"
 echo " tulis clear untuk delete semua Akun"
 echo -e "$COLOR1━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo "     No  User      Expired"
@@ -1257,23 +1257,24 @@ sshws
 }
 clear
 author=$(cat /etc/profil)
-echo -e " $COLOR1╔════════════════════════════════════════════════════╗${NC}"
-echo -e " $COLOR1║${NC}${COLBG1}             ${WH}• SSH PANEL MENU •                     ${NC}$COLOR1║ $NC"
-echo -e " $COLOR1╚════════════════════════════════════════════════════╝${NC}"
-echo -e " $COLOR1╔════════════════════════════════════════════════════╗${NC}"
-echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}01${WH}]${NC} ${COLOR1}• ${WH}ADD AKUN${NC}        ${WH}[${COLOR1}05${WH}]${NC} ${COLOR1}• ${WH}CEK USER ONLINE${NC}    $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC                                                  ${NC} $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}02${WH}]${NC} ${COLOR1}• ${WH}TRIAL AKUN${NC}      ${WH}[${COLOR1}06${WH}]${NC} ${COLOR1}• ${WH}CEK USER CONFIG${NC}    $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC                                                  ${NC} $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}03${WH}]${NC} ${COLOR1}• ${WH}RENEW AKUN${NC}      ${WH}[${COLOR1}07${WH}]${NC} ${COLOR1}• ${WH}CHANGE IP LIMIT${NC}    $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC                                                  ${NC} $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}04${WH}]${NC} ${COLOR1}• ${WH}DELETE AKUN${NC}     ${WH}[${COLOR1}08${WH}]${NC} ${COLOR1}• ${WH}SETTING LOCK LOGIN${NC} $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC                                                  ${NC} $COLOR1║ $NC"
-echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}00${WH}]${NC} ${COLOR1}• ${WH}GO BACK${NC}         ${WH}[${COLOR1}09${WH}]${NC} ${COLOR1}• ${WH}UNLOCK LOGIN${NC}      $COLOR1 ║$NC"
-echo -e " $COLOR1╚════════════════════════════════════════════════════╝${NC}"
-echo -e " $COLOR1╔═════════════════════════ ${WH}BY${NC} ${COLOR1}═══════════════════════╗ ${NC}"
-echo -e "  $COLOR1${NC}              ${WH}   • AM STORE VPN •                 $COLOR1 $NC"
-echo -e " $COLOR1╚════════════════════════════════════════════════════╝${NC}"
+echo -e " $COLOR1╔══════════════════════════════════════╗${NC}"
+echo -e " $COLOR1║${NC}${COLBG1} ${WH}•SSH PANEL MENU•${NC}$COLOR1║ $NC"
+echo -e " $COLOR1╚══════════════════════════════════════╝${NC}"
+echo -e " $COLOR1╔══════════════════════════════════════╗${NC}"
+echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}01${WH}]${NC} ${COLOR1}• ${WH}ADD ACCOUNT${NC}"         
+echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}02${WH}]${NC} ${COLOR1}• ${WH}TRIAL ACCOUNT${NC}"      
+echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}03${WH}]${NC} ${COLOR1}• ${WH}RENEW ACCOUNT${NC}"      
+echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}04${WH}]${NC} ${COLOR1}• ${WH}DELETE ACCOUNT${NC}"
+echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}05${WH}]${NC} ${COLOR1}• ${WH}CEK LOGIN USER${NC}"      
+echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}06${WH}]${NC} ${COLOR1}• ${WH}CEK USER CONFIG${NC}"      
+echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}07${WH}]${NC} ${COLOR1}• ${WH}CHANGE IP LIMIT${NC}"       
+echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}08${WH}]${NC} ${COLOR1}• ${WH}SETTING LOCK LOGIN${NC}"    
+echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}09${WH}]${NC} ${COLOR1}• ${WH}UNLOCK LOGIN${NC}" 
+echo -e " $COLOR1║ $NC  ${WH}[${COLOR1}00${WH}]${NC} ${COLOR1}• ${WH}GO BACK${NC}"     
+echo -e " $COLOR1╚══════════════════════════════════════╝${NC}"
+echo -e " $COLOR1╔═══════════════${WH}BY${NC} ${COLOR1}══════════════╗ ${NC}"
+echo -e " $COLOR1${NC}${WH}  • SPIDER WEBX STORE •     $COLOR1 $NC"
+echo -e " $COLOR1╚═════════════════════════════════════╝${NC}"
 echo -e ""
 echo -ne " ${WH}Select menu ${COLOR1}: ${WH}"; read opt
 case $opt in
@@ -1290,5 +1291,5 @@ case $opt in
 00 | 0) clear ; menu  ;;
 X  | 0) clear ; sshws ;;
 x) exit ;;
-*) echo "Anda salah tekan " ; sleep 1 ; sshws ;;
+*) echo "You pressed it wrong " ; sleep 1 ; sshws ;;
 esac

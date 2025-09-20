@@ -39,7 +39,7 @@ show_options() {
 show_footer() {
     local author=$(cat "$AUTHOR_FILE" 2>/dev/null || echo "Unknown")
     echo -e " ${COLOR1}╔══════════════════════ ${WH}CREDIT BY${NC} ${COLOR1}═══════════════════╗${NC}"
-    echo -e " ${COLOR1}║             ${WH}• AM GANTENG STORE VPS •                ${COLOR1}║${NC}"
+    echo -e " ${COLOR1}║             ${WH}• SPIDER WEBX STORE VPS •                ${COLOR1}║${NC}"
     echo -e " ${COLOR1}╚════════════════════════════════════════════════════╝${NC}"
 }
 
