@@ -28,7 +28,7 @@
 
 ### INSTALL SCRIPT 
 ```
-wget --no-check-certificate https://raw.githubusercontent.com/chapeey660/Lau_Op/main/chapeey.sh -O chapeey.sh && chmod +x chapeey.sh && ./chapeey.sh
+wget --no-check-certificate https://raw.githubusercontent.com/chapeey660/Lau_Op/chapeey.sh -O chapeey.sh && chmod +x chapeey.sh && ./chapeey.sh
 
 ```
 
