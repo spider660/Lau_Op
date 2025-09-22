@@ -444,32 +444,34 @@ apt update -y
 apt upgrade -y
 apt dist-upgrade -y
 
-systemctl enable chronyd
-systemctl restart chronyd
-systemctl enable chrony
-systemctl restart chrony
-chronyc sourcestats -v
-chronyc tracking -v
+systemctl enable chronyd 2>/dev/null || true
+systemctl restart chronyd 2>/dev/null || true
+systemctl enable chrony 2>/dev/null || true
+systemctl restart chrony 2>/dev/null || true
+chronyc sourcestats -v 2>/dev/null || true
+chronyc tracking -v 2>/dev/null || true
 
 apt install -y ntpdate sudo debconf-utils
-ntpdate pool.ntp.org
+ntpdate pool.ntp.org || true
 
-apt-get clean all
-apt-get autoremove -y
-apt-get remove --purge exim4 ufw firewalld -y
+apt-get clean all || true
+apt-get autoremove -y || true
+apt-get remove --purge exim4 ufw firewalld -y || true
 
 apt-get install -y --no-install-recommends software-properties-common
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
 echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
 
-apt-get install -y speedtest-cli vnstat libnss3-dev libnspr4-dev pkg-config libpam0g-dev \
-libcap-ng-dev libcap-ng-utils libselinux1-dev libcurl4-nss-dev flex bison make \
-libnss3-tools libevent-dev bc rsyslog dos2unix zlib1g-dev libssl-dev libsqlite3-dev \
-sed dirmngr libxml-parser-perl build-essential gcc g++ python htop lsof tar wget curl \
-ruby zip unzip p7zip-full python3-pip libc6 util-linux build-essential msmtp-mta \
-ca-certificates bsd-mailx iptables iptables-persistent netfilter-persistent net-tools \
-openssl ca-certificates gnupg gnupg2 lsb-release shc cmake git screen socat xz-utils \
-apt-transport-https gnupg1 dnsutils cron bash-completion ntpdate chrony jq openvpn easy-rsa
+# Cleaned, explicit package list (no virtual 'awk', no duplicates)
+apt-get install -y --no-install-recommends \
+  speedtest-cli vnstat libnss3-dev libnspr4-dev pkg-config libpam0g-dev \
+  libcap-ng-dev libcap-ng-utils libselinux1-dev libcurl4-nss-dev flex bison make \
+  libnss3-tools libevent-dev bc rsyslog dos2unix zlib1g-dev libssl-dev libsqlite3-dev \
+  sed dirmngr libxml-parser-perl build-essential gcc g++ python3 htop lsof tar wget curl \
+  ruby zip unzip p7zip-full python3-pip libc6 util-linux msmtp-mta \
+  ca-certificates bsd-mailx iptables iptables-persistent netfilter-persistent net-tools \
+  gnupg gnupg2 lsb-release shc cmake git screen socat xz-utils \
+  apt-transport-https dnsutils jq openvpn easy-rsa rsync gawk
 
 print_success "Required Packages Installed"
 }
