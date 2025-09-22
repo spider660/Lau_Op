@@ -23,12 +23,52 @@ clear
 
 # -- BEGIN: ensure required commands are available to avoid "command not found" --
 ensure_commands() {
+  echo "Detecting OS and required package names..."
+  if [ -f /etc/os-release ]; then
+    # shellcheck disable=SC1091
+    . /etc/os-release
+    DETECTED_ID="${ID,,}"
+    DETECTED_VER="${VERSION_ID:-}"
+  else
+    DETECTED_ID="unknown"
+    DETECTED_VER=""
+  fi
+
+  # Set OS-specific package name choices
+  case "${DETECTED_ID}" in
+    ubuntu|debian)
+      PKG_NETCAT="netcat-openbsd"
+      PKG_LSB="lsb-release"
+      PKG_GPG="gnupg"
+      PKG_GREP="grep"
+      PKG_AWK="gawk"
+      # Pick widely-available libcurl dev package and python packages
+      PKG_LIBCURL="libcurl4-openssl-dev"
+      PKG_PY="python3"
+      PKG_PIP="python3-pip"
+      PKG_PY_ALIAS="python-is-python3"  # install if available
+      ;;
+    *)
+      PKG_NETCAT="netcat"
+      PKG_LSB="lsb-release"
+      PKG_GPG="gnupg"
+      PKG_GREP="grep"
+      PKG_AWK="gawk"
+      PKG_LIBCURL="libcurl4-openssl-dev"
+      PKG_PY="python3"
+      PKG_PIP="python3-pip"
+      PKG_PY_ALIAS="python-is-python3"
+      ;;
+  esac
+
+  echo "Detected OS: ${DETECTED_ID} ${DETECTED_VER}. Using ${PKG_NETCAT} for netcat."
+
   echo "Checking required system commands..."
   declare -A pkgmap=(
     [curl]=curl
     [wget]=wget
-    [gpg]=gnupg
-    [lsb_release]=lsb-release
+    [gpg]="${PKG_GPG}"
+    [lsb_release]="${PKG_LSB}"
     [unzip]=unzip
     [tar]=tar
     [jq]=jq
@@ -36,8 +76,10 @@ ensure_commands() {
     [iptables]=iptables
     [git]=git
     [sed]=sed
-    [awk]=gawk
-    [nc]=netcat-openbsd    # <- ensure 'nc' command is provided explicitly by netcat-openbsd
+    [awk]="${PKG_AWK}"
+    [nc]="${PKG_NETCAT}"
+    [python3]="${PKG_PY}"
+    [pip3]="${PKG_PIP}"
   )
 
   missing_pkgs=()
@@ -56,6 +98,9 @@ ensure_commands() {
   else
     echo "All required commands present."
   fi
+
+  # export chosen names for later use
+  export PKG_NETCAT PKG_LSB PKG_GPG PKG_AWK PKG_LIBCURL PKG_PY PKG_PIP PKG_PY_ALIAS
 }
 # Call the checker early to prevent later 'command not found' errors
 ensure_commands
@@ -274,16 +319,39 @@ else
   echo -e " Your OS Is Not Supported ( ${YELLOW}${OS_PRETTY}${FONT} )"
 fi
 }
+# New helper: build a safe package list based on chosen package names
+build_pkg_list() {
+  PKG_LIST=(\
+    zip pwgen openssl "${PKG_NETCAT}" socat cron bash-completion \
+    figlet \
+    "${PKG_LIBCURL}" \
+    "${PKG_PY}" "${PKG_PIP}" \
+    ca-certificates curl wget gnupg lsb-release \
+    jq net-tools dnsutils iptables iptables-persistent netfilter-persistent \
+    make gcc g++ build-essential pkg-config \
+    sed dirmngr python3-venv htop lsof tar unzip p7zip-full \
+    git screen sudo rsyslog cron dos2unix bc \
+    xz-utils apt-transport-https ca-certificates \
+    libnss3-dev libnspr4-dev libpam0g-dev libcap-ng-dev libcap-ng-utils \
+    libselinux1-dev libevent-dev zlib1g-dev libssl-dev libsqlite3-dev \
+    libxml-parser-perl pkg-config cmake cmake-data \
+    speedtest-cli vnstat easy-rsa openvpn \
+    msmtp-mta bsd-mailx rclone \
+  )
+
+  # optionally include python-is-python3 if present in repo (safe: apt will ignore if unavailable)
+  PKG_LIST+=("${PKG_PY_ALIAS}")
+}
 function base_package() {
 clear
 print_install "Installing the Required Packages"
-# replaced ambiguous 'netcat' with explicit 'netcat-openbsd'
-apt install zip pwgen openssl netcat-openbsd socat cron bash-completion -y
-apt install figlet -y
-apt update -y
-apt upgrade -y
-apt dist-upgrade -y
 
+# build OS-aware package list and install once
+build_pkg_list
+apt-get update -y || true
+apt-get install -y "${PKG_LIST[@]}" || true
+
+# keep the safe chrony / time logic as before
 # ensure a reliable time service is installed; prefer 'chrony'
 apt-get install -y chrony ntpdate >/dev/null 2>&1 || true
 
