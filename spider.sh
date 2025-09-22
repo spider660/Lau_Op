@@ -163,9 +163,8 @@ ensure_dependencies() {
 	COMMON_PKGS=(
 		apt-transport-https ca-certificates curl wget gnupg lsb-release software-properties-common
 		build-essential unzip zip sudo dnsutils lsof htop net-tools iproute2 iptables iptables-persistent
-		netfilter-persistent cron chrony ntpdate rsyslog bash-completion jq git sed awk coreutils openssl
-		ruby figlet pwgen make gcc g++ python3-pip p7zip-full netcat socat unzip gnupg2 gpg wget curl
-		python3 curl cron rsync bc
+		netfilter-persistent cron chrony ntpdate rsyslog bash-completion jq git sed gawk coreutils openssl
+		ruby figlet pwgen make gcc g++ python3-pip p7zip-full netcat socat gnupg2 gpg rsync bc
 	)
 
 	apt_wait_lock
@@ -580,24 +579,40 @@ clear
 print_install "Installing SSL On Domain"
 rm -rf /etc/xray/xray.key
 rm -rf /etc/xray/xray.crt
-domain=$(cat /root/domain)
 
-STOPWEBSERVER=$(lsof -i:80 | awk 'NR==2 {print $1}')
+# ensure domain exists
+domain="$(cat /root/domain 2>/dev/null || true)"
+if [ -z "$domain" ]; then
+  echo -e "${RED}No domain configured in /root/domain — cannot issue certificate.${NC}"
+  return 1
+fi
+
+# Stop common webserver services that may bind :80 (safe, best-effort)
+for svc in nginx apache2 httpd; do
+  if systemctl list-units --type=service --all | grep -q "^${svc}.service"; then
+    systemctl stop "$svc" >/dev/null 2>&1 || true
+  fi
+done
 
 rm -rf /root/.acme.sh
 mkdir -p /root/.acme.sh
-systemctl stop "$STOPWEBSERVER"
-systemctl stop nginx
 
-curl -s https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh
+curl -s https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh || { echo "Failed to download acme.sh"; return 1; }
 chmod +x /root/.acme.sh/acme.sh
-/root/.acme.sh/acme.sh --upgrade --auto-upgrade
-/root/.acme.sh/acme.sh --set-default-ca --server letsencrypt
-/root/.acme.sh/acme.sh --issue -d "$domain" --standalone -k ec-256
-~/.acme.sh/acme.sh --installcert -d "$domain" \
---fullchainpath /etc/xray/xray.crt \
---keypath /etc/xray/xray.key --ecc
-chmod 777 /etc/xray/xray.key
+/root/.acme.sh/acme.sh --upgrade --auto-upgrade >/dev/null 2>&1 || true
+/root/.acme.sh/acme.sh --set-default-ca --server letsencrypt >/dev/null 2>&1 || true
+# Issue cert (standalone will bind :80 temporarily)
+if ! /root/.acme.sh/acme.sh --issue -d "$domain" --standalone -k ec-256 >/dev/null 2>&1; then
+  echo -e "${RED}acme.sh failed to issue certificate for ${domain}${NC}"
+  return 1
+fi
+
+# Install the cert
+/root/.acme.sh/acme.sh --installcert -d "$domain" \
+  --fullchainpath /etc/xray/xray.crt \
+  --keypath /etc/xray/xray.key --ecc >/dev/null 2>&1 || { echo "Installing certificate failed"; return 1; }
+
+chmod 600 /etc/xray/xray.key
 print_success "SSL Certificate"
 }
 
@@ -1302,9 +1317,6 @@ final_message_and_reboot() {
 		reboot
 	fi
 }
-
-# OLD: unconditional call
-# final_message_and_reboot || true
 
 # NEW: call only when script run directly (not sourced)
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
