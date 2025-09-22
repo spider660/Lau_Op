@@ -882,6 +882,9 @@ clear
 first_setup
 nginx_install
 base_package
+safe_enable chrony
+safe_restart chrony
+base_package
 make_folder_xray
 install_domain
 password_default
