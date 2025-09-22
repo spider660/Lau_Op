@@ -84,7 +84,7 @@ sleep 0.1  # Adjust speed
 done
 echo -e "${NC}"  # Reset color
 }
-clear
+
 echo -e "\e[92m$(figlet -f small -w 80 'WELCOME TO CHAPEEY STORE')\e[0m"  # Changed font to 'small'
 typing_banner "Programmer: CHAPEEY" "$Green"
 typing_banner "©2024: STABLE EDITION" "$Green"
@@ -182,6 +182,11 @@ chmod 755 /var/log/xray || true
 touch /var/log/xray/access.log
 touch /var/log/xray/error.log
 mkdir -p /var/lib/kyt >/dev/null 2>&1
+
+# Initialize memory tracking variables to avoid "unbound variable" under set -u
+mem_used=0
+mem_total=0
+
 while IFS=":" read -r a b; do
 case $a in
 "MemTotal") ((mem_used+=${b/kB})); mem_total="${b/kB}" ;;
@@ -191,8 +196,15 @@ mem_used="$((mem_used-=${b/kB}))"
 ;;
 esac
 done < /proc/meminfo
-Ram_Usage="$((mem_used / 1024))"
-Ram_Total="$((mem_total / 1024))"
+
+# Safety: avoid division by zero if mem_total wasn't set for some reason
+if [ "${mem_total:-0}" -gt 0 ]; then
+  Ram_Usage="$((mem_used / 1024))"
+  Ram_Total="$((mem_total / 1024))"
+else
+  Ram_Usage=0
+  Ram_Total=0
+fi
 export tanggal=`date -d "0 days" +"%d-%m-%Y - %X" `
 export OS_Name=$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/PRETTY_NAME//g' | sed 's/=//g' | sed 's/"//g' )
 export Kernel=$( uname -r )
