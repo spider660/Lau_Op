@@ -37,6 +37,7 @@ ensure_commands() {
     [git]=git
     [sed]=sed
     [awk]=gawk
+    [nc]=netcat-openbsd    # <- ensure 'nc' command is provided explicitly by netcat-openbsd
   )
 
   missing_pkgs=()
@@ -59,6 +60,28 @@ ensure_commands() {
 # Call the checker early to prevent later 'command not found' errors
 ensure_commands
 # -- END: ensure required commands are available to avoid "command not found" --
+
+# -- BEGIN: safe systemd helpers (must exist before use) --
+service_exists() {
+  local unit="$1"
+  # quiet check if systemd knows this unit
+  systemctl list-unit-files --type=service --all 2>/dev/null | awk '{print $1}' | grep -Fxq "$unit" && return 0 || return 1
+}
+
+safe_enable() {
+  local unit="$1"
+  if service_exists "$unit"; then
+    systemctl enable --now "$unit" >/dev/null 2>&1 || true
+  fi
+}
+
+safe_restart() {
+  local unit="$1"
+  if service_exists "$unit"; then
+    systemctl restart "$unit" >/dev/null 2>&1 || true
+  fi
+}
+# -- END: safe systemd helpers --
 
 # Use /etc/os-release reliably
 # load ID, PRETTY_NAME, ID_LIKE
@@ -254,7 +277,8 @@ fi
 function base_package() {
 clear
 print_install "Installing the Required Packages"
-apt install zip pwgen openssl netcat socat cron bash-completion -y
+# replaced ambiguous 'netcat' with explicit 'netcat-openbsd'
+apt install zip pwgen openssl netcat-openbsd socat cron bash-completion -y
 apt install figlet -y
 apt update -y
 apt upgrade -y
@@ -881,9 +905,6 @@ function instal(){
 clear
 first_setup
 nginx_install
-base_package
-safe_enable chrony
-safe_restart chrony
 base_package
 make_folder_xray
 install_domain
