@@ -84,7 +84,7 @@ sleep 0.1  # Adjust speed
 done
 echo -e "${NC}"  # Reset color
 }
-
+clear
 echo -e "\e[92m$(figlet -f small -w 80 'WELCOME TO CHAPEEY STORE')\e[0m"  # Changed font to 'small'
 typing_banner "Programmer: CHAPEEY" "$Green"
 typing_banner "©2024: STABLE EDITION" "$Green"
