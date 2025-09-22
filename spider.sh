@@ -18,6 +18,10 @@ if [ "$(id -u)" -ne 0 ]; then
 	exit 1
 fi
 
+# Make apt/dpkg non-interactive to avoid prompts during automated installs
+export DEBIAN_FRONTEND=noninteractive
+export APT_LISTCHANGES_FRONTEND=none
+
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y figlet
@@ -79,97 +83,93 @@ fi
 export ADMIN_NAME
 
 echo ""
-read -p "$( echo -e "Press ${Green}[ ${NC}${Green}Enter${NC} ${Green}]${NC} For Starting Installation") "
-echo ""
-clear
-if [ "${EUID}" -ne 0 ]; then
-echo "You need to run this script as root"
-exit 1
-fi
-if [ "$(systemd-detect-virt)" == "openvz" ]; then
-echo "OpenVZ is not supported"
-exit 1
-fi
-red='\e[1;31m'
-green='\e[0;32m'
-NC='\e[0m'
-MYIP=$(curl -sS ipv4.icanhazip.com)
-echo -e "\e[32mloading...\e[0m"
+# NEW: remove manual "Press Enter to start" pause so install is automatic
+# OLD:
+# echo ""
+# read -p "$( echo -e "Press ${Green}[ ${NC}${Green}Enter${NC} ${Green}]${NC} For Starting Installation") "
+# echo ""
+# clear
+# NEW: just clear and continue automatically
 clear
 
-# Replace the older per-OS install blocks with a robust universal installer
-ensure_dependencies() {
-	# non-interactive
+# ...existing code...
+
+function ssh() {
+	clear
+	print_install "Installing Password SSH"
+
+	wget -q -O /etc/pam.d/common-password "${REPO}ubuntu/password"
+	chmod 700 /etc/pam.d/common-password
+
+	# ensure noninteractive keyboard reconfiguration
 	export DEBIAN_FRONTEND=noninteractive
-	set -o errexit
-	set -o nounset
-	set -o pipefail
+	DEBCONF_DB_OVERRIDE=1
+	DEBIAN_PRIORITY=critical
 
-	# Detect OS fields robustly
-	OS_ID="$(. /etc/os-release && echo "${ID:-}" )"
-	OS_NAME="$(. /etc/os-release && echo "${PRETTY_NAME:-}" | tr -d '"')"
-	OS_VER="$(. /etc/os-release && echo "${VERSION_ID:-}" )"
-	OS_CODENAME="$(lsb_release -cs 2>/dev/null || echo "")"
+	# run in noninteractive mode to avoid prompts
+	DEBIAN_FRONTEND=noninteractive dpkg-reconfigure -f noninteractive keyboard-configuration >/dev/null 2>&1 || true
 
-	echo -e "${Green}  » Detected OS: ${OS_NAME} (ID=${OS_ID} VERSION=${OS_VER} CODENAME=${OS_CODENAME})${FONT}"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/altgr select The default for the keyboard layout"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/compose select No compose key"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/ctrl_alt_bksp boolean false"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/layoutcode string de"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/layout select English"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/modelcode string pc105"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/model select Generic 105-key (Intl) PC"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/optionscode string "
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/store_defaults_in_debconf_db boolean true"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/switch select No temporary switch"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/toggle select No toggling"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/unsupported_config_layout boolean true"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/unsupported_config_options boolean true"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/unsupported_layout boolean true"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/unsupported_options boolean true"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/variantcode string "
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/variant select English"
+	debconf-set-selections <<<"keyboard-configuration keyboard-configuration/xkb-keymap select "
 
-	# helper: wait for apt/dpkg locks
-	apt_wait_lock() {
-		local n=0
-		while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1 || fuser /var/lib/apt/lists/lock >/dev/null 2>&1 || fuser /var/cache/apt/archives/lock >/dev/null 2>&1; do
-			n=$((n+1))
-			if [ "$n" -gt 30 ]; then
-				echo -e "${ERROR} apt/dpkg lock held too long. Aborting."
-				return 1
-			fi
-			echo -e "${YELLOW} Waiting for apt/dpkg lock... (${n})${FONT}"
-			sleep 2
-		done
-		return 0
-	}
+	# Proper rc-local service + rc.local script (fixed)
+	cat >/etc/systemd/system/rc-local.service <<'UNIT'
+[Unit]
+Description=/etc/rc.local Compatibility
+ConditionPathExists=/etc/rc.local
+[Service]
+Type=forking
+ExecStart=/etc/rc.local start
+TimeoutSec=0
+StandardOutput=tty
+RemainAfterExit=yes
+SysVStartPriority=99
+[Install]
+WantedBy=multi-user.target
+UNIT
 
-	# helper: retry wrapper
-	retry_cmd() {
-		local tries=4
-		local wait=3
-		local i=0
-		until "$@"; do
-			i=$((i+1))
-			if [ "$i" -ge "$tries" ]; then
-				echo -e "${ERROR} Command failed after ${tries} attempts: $*"
-				return 1
-			fi
-			echo -e "${YELLOW}Retrying: $* (${i}/${tries})${FONT}"
-			sleep "$wait"
-		done
-		return 0
-	}
+	cat >/etc/rc.local <<'EOF'
+#!/bin/bash
+echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
+exit 0
+EOF
 
-	# update apt lists safely
-	apt_wait_lock
-	retry_cmd apt-get update -y
-	retry_cmd apt-get upgrade -y || true
+	chmod +x /etc/rc.local
 
-	# Add common backports or safe repos for older distros (best-effort)
-	if [ "$OS_ID" = "debian" ]; then
-		# try to enable backports for common codenames if not present
-		if [ -n "$OS_CODENAME" ] && ! grep -q "backports" /etc/apt/sources.list /etc/apt/sources.list.d/*.list 2>/dev/null; then
-			echo "deb http://deb.debian.org/debian ${OS_CODENAME}-backports main" >/etc/apt/sources.list.d/${OS_CODENAME}-backports.list || true
-			retry_cmd apt-get update -y || true
-		fi
-	fi
+	echo -e "[INFO] Enabling and starting rc-local service..."
+	systemctl enable rc-local >/dev/null 2>&1 || true
+	systemctl start rc-local.service >/dev/null 2>&1 || true
 
-	# Install a comprehensive package set needed by the rest of the script
-	COMMON_PKGS=(
-		apt-transport-https ca-certificates curl wget gnupg lsb-release software-properties-common
-		build-essential unzip zip sudo dnsutils lsof htop net-tools iproute2 iptables iptables-persistent
-		netfilter-persistent cron chrony ntpdate rsyslog bash-completion jq git sed gawk coreutils openssl
-		ruby figlet pwgen make gcc g++ python3-pip p7zip-full netcat socat gnupg2 gpg rsync bc
-	)
+	echo -e "[INFO] Configuring rc.local to disable IPv6 on startup..."
+	# ensure line exists once
+	grep -qxF 'echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local 2>/dev/null || \
+		sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local >/dev/null 2>&1 || true
 
-	apt_wait_lock
-	retry_cmd apt-get install -y --no-install-recommends "${COMMON_PKGS[@]}"
+	ln -fs /usr/share/zoneinfo/Africa/Nairobi /etc/localtime
+	sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 
+	print_success "Password SSH"
+}
+
+# ...existing code...
+# Final reboot prompt remains unchanged (only keypress at end)
+# ...existing code...
 	# optional extras
 	retry_cmd apt-get install -y wondershaper || true
 	# install lolcat if ruby gem present
