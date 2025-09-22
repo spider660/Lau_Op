@@ -259,12 +259,23 @@ apt install figlet -y
 apt update -y
 apt upgrade -y
 apt dist-upgrade -y
-systemctl enable chronyd
-systemctl restart chronyd
-systemctl enable chrony
-systemctl restart chrony
-chronyc sourcestats -v
-chronyc tracking -v
+
+# ensure a reliable time service is installed; prefer 'chrony'
+apt-get install -y chrony ntpdate >/dev/null 2>&1 || true
+
+# Use safe enable/restart to avoid "unit file does not exist" errors
+safe_enable chrony
+safe_restart chrony
+
+# If chronyc present, display stats (guarded)
+if command -v chronyc >/dev/null 2>&1; then
+  chronyc sourcestats -v || true
+  chronyc tracking -v || true
+else
+  # fallback to ntpdate to sync time if chrony isn't available
+  ntpdate -u pool.ntp.org >/dev/null 2>&1 || true
+fi
+
 apt install ntpdate -y
 ntpdate pool.ntp.org
 apt install sudo -y
@@ -669,9 +680,23 @@ chown root:root /swapfile
 chmod 0600 /swapfile >/dev/null 2>&1
 swapon /swapfile >/dev/null 2>&1
 sed -i '$ i\/swapfile      swap swap   defaults    0 0' /etc/fstab
-chronyd -q 'server 0.id.pool.ntp.org iburst'
-chronyc sourcestats -v
-chronyc tracking -v
+
+# Try to step time using available tools without raising unit-not-found errors
+if command -v chronyd >/dev/null 2>&1; then
+  chronyd -q 'server 0.id.pool.ntp.org iburst' || true
+elif command -v chronyc >/dev/null 2>&1; then
+  # chronyc doesn't have same cli flags; attempt a safe sync
+  chronyc -a 'burst 4/4' >/dev/null 2>&1 || true
+else
+  ntpdate -u pool.ntp.org >/dev/null 2>&1 || true
+fi
+
+# show chrony stats if available
+if command -v chronyc >/dev/null 2>&1; then
+  chronyc sourcestats -v || true
+  chronyc tracking -v || true
+fi
+
 wget "${REPO}ubuntu/bbr.sh" &&  chmod +x bbr.sh && ./bbr.sh
 print_success "Swap 1 G"
 }
