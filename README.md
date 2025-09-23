@@ -33,7 +33,7 @@ wget --no-check-certificate https://raw.githubusercontent.com/spider660/Lau_Op/m
 
 ### UPDATED SCRIPT
 ```
-wget https://raw.githubusercontent.com/Amchapeey/strategic/main/update.sh && chmod +x update.sh && ./update.sh
+wget https://raw.githubusercontent.com/spider660/Lau_Op/main/update.sh && chmod +x update.sh && ./update.sh
 
 ```
 ### TESTED ON OS 
