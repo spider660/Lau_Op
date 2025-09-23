@@ -342,6 +342,7 @@ build_pkg_list() {
   # optionally include python-is-python3 if present in repo (safe: apt will ignore if unavailable)
   PKG_LIST+=("${PKG_PY_ALIAS}")
 }
+# Replace bulk-install logic: iterate and ensure each package is installed
 function base_package() {
 clear
 print_install "Installing the Required Packages"
@@ -379,8 +380,62 @@ sudo apt-get remove --purge ufw firewalld -y
 sudo apt-get install -y --no-install-recommends software-properties-common
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
 echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
-sudo apt-get install -y speedtest-cli vnstat libnss3-dev libnspr4-dev pkg-config libpam0g-dev libcap-ng-dev libcap-ng-utils libselinux1-dev libcurl4-nss-dev flex bison make libnss3-tools libevent-dev bc rsyslog dos2unix zlib1g-dev libssl-dev libsqlite3-dev sed dirmngr libxml-parser-perl build-essential gcc g++ python htop lsof tar wget curl ruby zip unzip p7zip-full python3-pip libc6 util-linux build-essential msmtp-mta ca-certificates bsd-mailx iptables iptables-persistent netfilter-persistent net-tools openssl ca-certificates gnupg gnupg2 ca-certificates lsb-release gcc shc make cmake git screen socat xz-utils apt-transport-https gnupg1 dnsutils cron bash-completion ntpdate chrony jq openvpn easy-rsa
+
+# Replace the previous long hardcoded install line that referenced
+# obsolete packages (e.g. libcurl4-nss-dev, python) with a resilient,
+# variable-driven and deduplicated list. This uses the PKG_LIBCURL and PKG_PY
+# variables selected earlier in ensure_commands().
+ADDITIONAL_PKGS=( \
+  speedtest-cli vnstat libnss3-dev libnspr4-dev pkg-config \
+  libpam0g-dev libcap-ng-dev libcap-ng-utils libselinux1-dev \
+  flex bison make libnss3-tools libevent-dev bc \
+  rsyslog dos2unix zlib1g-dev libssl-dev libsqlite3-dev sed dirmngr \
+  libxml-parser-perl build-essential gcc g++ "${PKG_PY}" \
+  htop lsof tar wget curl ruby zip unzip p7zip-full "${PKG_PIP}" \
+  libc6 util-linux msmtp-mta ca-certificates bsd-mailx iptables \
+  iptables-persistent netfilter-persistent net-tools openssl gnupg \
+  gnupg2 lsb-release shc make cmake git screen socat xz-utils \
+  apt-transport-https gnupg1 dnsutils cron bash-completion ntpdate \
+  chrony jq openvpn easy-rsa "${PKG_LIBCURL}" \
+)
+
+# Ensure network and update
+apt-get update -y >/dev/null 2>&1 || true
+
+# Install each package with safe installer and collect failures
+failed_pkgs=()
+for p in "${ADDITIONAL_PKGS[@]}"; do
+  [ -z "$p" ] && continue
+  if ! install_pkg_safely "$p"; then
+    failed_pkgs+=("$p")
+  fi
+done
+
+if [ "${#failed_pkgs[@]}" -gt 0 ]; then
+  echo -e "${YELLOW}[WARN] The following packages could not be installed: ${failed_pkgs[*]}${NC}"
+  echo -e "${YELLOW}[WARN] Script will continue but some features may be unavailable on this release.${NC}"
+fi
+
 print_success "Required Packages"
+
+# Post-install quick service checks: warn if expected services are missing
+check_services_after_install() {
+  local services=(nginx haproxy openvpn dropbear fail2ban vnstat netfilter-persistent xray)
+  for s in "${services[@]}"; do
+    # xray may be installed to /usr/local/bin and have a systemd unit installed by its installer
+    if systemctl list-unit-files --type=service --all 2>/dev/null | awk '{print $1}' | grep -Fxq "${s}.service"; then
+      echo "[INFO] Service unit ${s}.service exists."
+    else
+      # as fallback check package presence
+      if dpkg -l | awk '{print $2}' | grep -Fxq "$s" ; then
+        echo "[INFO] Package '$s' installed but no systemd unit found."
+      else
+        echo -e "${YELLOW}[WARN] Expected service/package '$s' not found on this system. Some functionality may be missing.${NC}"
+      fi
+    fi
+  done
+}
+check_services_after_install || true
 }
 clear
 function install_domain() {
@@ -415,6 +470,30 @@ clear
 fi
 }
 clear
+# Initialize/Detect network interface used by vnstat if not already set
+NET="${NET:-$(ip -o -4 route show to default 2>/dev/null | awk '{print $5}' || true)}"
+if [ -z "$NET" ]; then
+  echo "[WARN] Could not detect default network interface. vnStat interface steps will be skipped."
+fi
+
+# Provide a small stub for password_default if it's referenced but not defined
+password_default() {
+  # original script expected to configure default passwords; stub prevents "command not found"
+  echo "[INFO] password_default() not provided in script. Skipping default password changes."
+}
+
+# Helper: check apt-cache for candidate package and warn (non-fatal)
+ensure_pkg_available() {
+  local pkg="$1"
+  if apt-cache policy "$pkg" >/dev/null 2>&1; then
+    if ! apt-cache policy "$pkg" | grep -q 'Candidate:'; then
+      echo "[WARN] Package $pkg has no candidate in apt repos."
+    fi
+  else
+    echo "[WARN] apt-cache could not evaluate package $pkg"
+  fi
+}
+
 restart_system(){
 MYIP=$(curl -sS ipv4.icanhazip.com)
 echo -e "\e[32mloading...\e[0m"
@@ -442,7 +521,7 @@ mai="datediff "$Exp" "$DATE""
 ISP=$(curl -s ipinfo.io/org | cut -d " " -f 2-10 )
 Info="(${green}Active${NC})"
 Error="(${RED}Expired${NC})"
-today=`date -d "0 days" +"%Y-%m-%d"`
+today="$(date -d "0 days" +"%Y-%m-%d")"
 Exp1=$(curl $izinsc | grep $MYIP | awk '{print $4}')
 if [[ $today < $Exp1 ]]; then
 sts="${Info}"
@@ -481,16 +560,16 @@ rm -rf /etc/xray/xray.crt
 domain=$(cat /root/domain)
 STOPWEBSERVER=$(lsof -i:80 | cut -d' ' -f1 | awk 'NR==2 {print $1}')
 rm -rf /root/.acme.sh
-mkdir /root/.acme.sh
-systemctl stop $STOPWEBSERVER
-systemctl stop nginx
+mkdir -p /root/.acme.sh
+systemctl stop "$STOPWEBSERVER" >/dev/null 2>&1 || true
+systemctl stop nginx >/dev/null 2>&1 || true
 curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh
 chmod +x /root/.acme.sh/acme.sh
 /root/.acme.sh/acme.sh --upgrade --auto-upgrade
 /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt
-/root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256
-~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc
-chmod 777 /etc/xray/xray.key
+/root/.acme.sh/acme.sh --issue -d "$domain" --standalone -k ec-256
+/root/.acme.sh/acme.sh --installcert -d "$domain" --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc
+chmod 600 /etc/xray/xray.key || true
 print_success "SSL Certificate"
 }
 function make_folder_xray() {
@@ -709,12 +788,16 @@ tar zxvf vnstat-2.8.tar.gz
 cd vnstat-2.8
 ./configure --prefix=/usr --sysconfdir=/etc && make && make install
 cd
-vnstat -u -i $NET
-sed -i 's/Interface "'""eth0""'"/Interface "'""$NET""'"/g' /etc/vnstat.conf
-chown vnstat:vnstat /var/lib/vnstat -R
-systemctl enable vnstat
-/etc/init.d/vnstat restart
-/etc/init.d/vnstat status
+if [ -n "$NET" ]; then
+  vnstat -u -i "$NET"
+  sed -i "s/Interface \"eth0\"/Interface \"$NET\"/g" /etc/vnstat.conf || true
+  chown vnstat:vnstat /var/lib/vnstat -R || true
+  systemctl enable vnstat || true
+  /etc/init.d/vnstat restart || true
+  /etc/init.d/vnstat status || true
+else
+  echo "[WARN] NET not set; skipping vnstat interface setup"
+fi
 rm -f /root/vnstat-2.8.tar.gz
 rm -rf /root/vnstat-2.8
 print_success "Vnstat"
@@ -991,6 +1074,28 @@ ins_swab
 ins_Fail2ban
 ins_epro
 ins_restart
+menu
+profile
+enable_services
+restart_system
+}
+instal
+echo ""
+history -c
+rm -rf /root/menu /root/*.zip /root/*.sh /root/LICENSE /root/README.md /root/domain || true
+secs_to_human "$(($(date +%s) - ${start}))"
+if [[ -n "${username:-}" ]]; then
+  sudo hostnamectl set-hostname "$username" || true
+fi
+echo -e "${green} Installation is completed Happy Tunneling"
+read -p "$( echo -e "Press ${YELLOW}[ ${NC}${YELLOW}Enter${NC} ${YELLOW}]${NC} For reboot") "
+reboot
+  sudo hostnamectl set-hostname "$username" || true
+fi
+echo -e "${green} Installation is completed Happy Tunneling"
+echo ""
+read -p "$( echo -e "Press ${YELLOW}[ ${NC}${YELLOW}Enter${NC} ${YELLOW}]${NC} For reboot") "
+reboot
 menu
 profile
 enable_services
