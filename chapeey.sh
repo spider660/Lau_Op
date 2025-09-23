@@ -319,6 +319,117 @@ else
   echo -e " Your OS Is Not Supported ( ${YELLOW}${OS_PRETTY}${FONT} )"
 fi
 }
+# Detect distro codename early (work for Ubuntu/Debian current and future releases)
+DIST_CODENAME="$(lsb_release -cs 2>/dev/null || echo "")"
+# fallback to VERSION_CODENAME from /etc/os-release if lsb_release missing
+if [ -z "$DIST_CODENAME" ] && [ -f /etc/os-release ]; then
+  DIST_CODENAME="$(awk -F= '/^VERSION_CODENAME=/{print $2}' /etc/os-release | tr -d '"')" || true
+fi
+# final fallback to VERSION_ID (may be numeric)
+if [ -z "$DIST_CODENAME" ]; then
+  DIST_CODENAME="$(awk -F= '/^VERSION_ID=/{print $2}' /etc/os-release | tr -d '"' | cut -d'.' -f1 || true)"
+fi
+export DIST_CODENAME
+
+# --- improved repo enable + safe installer (works for current and newer Ubuntu/Debian) ---
+enable_extra_repos() {
+  # ensure add-apt-repository helper exists
+  if ! command -v add-apt-repository >/dev/null 2>&1; then
+    apt-get update -y >/dev/null 2>&1 || true
+    apt-get install -y --no-install-recommends software-properties-common >/dev/null 2>&1 || true
+  fi
+
+  # Ubuntu: enable universe & multiverse; try enabling proposed/backports carefully
+  if [[ "${OS_ID:-}" == "ubuntu" || "${OS_LIKE:-}" == *"ubuntu"* ]]; then
+    echo "[INFO] Enabling Ubuntu universe/multiverse (if available)..."
+    add-apt-repository -y universe >/dev/null 2>&1 || true
+    add-apt-repository -y multiverse >/dev/null 2>&1 || true
+    # also ensure backports component exists (many Ubuntu releases use -backports pocket)
+    apt-get update -y >/dev/null 2>&1 || true
+    return 0
+  fi
+
+  # Debian: add backports for detected codename (idempotent)
+  if [[ "${OS_ID:-}" == "debian" || "${OS_LIKE:-}" == *"debian"* ]]; then
+    if [ -n "$DIST_CODENAME" ]; then
+      BACKPORTS_FILE="/etc/apt/sources.list.d/${DIST_CODENAME}-backports.list"
+      if [ ! -f "$BACKPORTS_FILE" ] || ! grep -q "backports" "$BACKPORTS_FILE" 2>/dev/null; then
+        echo "deb http://deb.debian.org/debian ${DIST_CODENAME}-backports main" | tee "$BACKPORTS_FILE" >/dev/null 2>&1 || true
+        apt-get update -y >/dev/null 2>&1 || true
+      fi
+    fi
+    return 0
+  fi
+
+  return 0
+}
+
+# map known obsolete names to safe alternatives
+declare -A ALT_MAP=( \
+  ["libcurl4-nss-dev"]="${PKG_LIBCURL:-libcurl4-openssl-dev}" \
+  ["python"]="python3" \
+  ["python2"]="python2" \
+  ["python3-pip"]="${PKG_PIP:-python3-pip}" \
+)
+
+# robust installer: try candidate -> alternative -> enable repos -> backports -> repair
+install_pkg_safely() {
+  local pkg="$1" alt cand cand2
+
+  # already present by command or package
+  if command -v "$pkg" >/dev/null 2>&1 || dpkg -s "$pkg" >/dev/null 2>&1; then
+    return 0
+  fi
+
+  echo "[INFO] Ensuring '$pkg' is installed (codename=${DIST_CODENAME:-unknown})..."
+
+  # 1) try apt candidate
+  if apt-cache policy "$pkg" >/dev/null 2>&1; then
+    cand=$(apt-cache policy "$pkg" 2>/dev/null | awk '/Candidate:/ {print $2}')
+    if [ -n "$cand" ] && [ "$cand" != "(none)" ]; then
+      apt-get install -y --no-install-recommends "$pkg" && return 0 || true
+    fi
+  fi
+
+  # 2) try mapped alternative
+  alt="${ALT_MAP[$pkg]:-}"
+  if [ -n "$alt" ]; then
+    echo "[INFO] Trying alternative '$alt' for '$pkg'..."
+    if apt-cache policy "$alt" >/dev/null 2>&1; then
+      cand2=$(apt-cache policy "$alt" 2>/dev/null | awk '/Candidate:/ {print $2}')
+      if [ -n "$cand2" ] && [ "$cand2" != "(none)" ]; then
+        apt-get install -y --no-install-recommends "$alt" && return 0 || true
+      fi
+    fi
+  fi
+
+  # 3) enable extra repos and retry
+  echo "[INFO] Enabling extra repos and retrying install for '$pkg'..."
+  enable_extra_repos
+  apt-get update -y >/dev/null 2>&1 || true
+  apt-get install -y --no-install-recommends "$pkg" >/dev/null 2>&1 && return 0 || true
+  if [ -n "$alt" ]; then
+    apt-get install -y --no-install-recommends "$alt" >/dev/null 2>&1 && return 0 || true
+  fi
+
+  # 4) try distribution backports (if codename detected)
+  if [ -n "$DIST_CODENAME" ]; then
+    echo "[INFO] Trying backports (-t ${DIST_CODENAME}-backports) for '$pkg'..."
+    apt-get -t "${DIST_CODENAME}-backports" install -y --no-install-recommends "$pkg" >/dev/null 2>&1 && return 0 || true
+    if [ -n "$alt" ]; then
+      apt-get -t "${DIST_CODENAME}-backports" install -y --no-install-recommends "$alt" >/dev/null 2>&1 && return 0 || true
+    fi
+  fi
+
+  # 5) final repair attempt
+  apt-get -f install -y >/dev/null 2>&1 || true
+  apt-get install -y --no-install-recommends "$pkg" >/dev/null 2>&1 && return 0 || true
+
+  echo -e "${YELLOW}[WARN] Could not install '$pkg' or alternatives on ${OS_ID}-${DIST_CODENAME}. Continuing.${NC}"
+  return 1
+}
+# --- END: improved install helper ---
+
 # New helper: build a safe package list based on chosen package names
 build_pkg_list() {
   PKG_LIST=(\
@@ -1088,33 +1199,5 @@ if [[ -n "${username:-}" ]]; then
   sudo hostnamectl set-hostname "$username" || true
 fi
 echo -e "${green} Installation is completed Happy Tunneling"
-read -p "$( echo -e "Press ${YELLOW}[ ${NC}${YELLOW}Enter${NC} ${YELLOW}]${NC} For reboot") "
-reboot
-  sudo hostnamectl set-hostname "$username" || true
-fi
-echo -e "${green} Installation is completed Happy Tunneling"
-echo ""
-read -p "$( echo -e "Press ${YELLOW}[ ${NC}${YELLOW}Enter${NC} ${YELLOW}]${NC} For reboot") "
-reboot
-menu
-profile
-enable_services
-restart_system
-}
-instal
-echo ""
-history -c
-rm -rf /root/menu
-rm -rf /root/*.zip
-rm -rf /root/*.sh
-rm -rf /root/LICENSE
-rm -rf /root/README.md
-rm -rf /root/domain
-secs_to_human "$(($(date +%s) - ${start}))"
-if [[ -n "${username:-}" ]]; then
-  sudo hostnamectl set-hostname "$username" || true
-fi
-echo -e "${green} Installation is completed Happy Tunneling"
-echo ""
 read -p "$( echo -e "Press ${YELLOW}[ ${NC}${YELLOW}Enter${NC} ${YELLOW}]${NC} For reboot") "
 reboot
