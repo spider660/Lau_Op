@@ -872,10 +872,11 @@ SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 */20 * * * * root /usr/local/sbin/clearlog
 END
-cat >/etc/cron.d/daily_reboot <<-END
+cat >/etc/cron.d/daily_reboot <<'END'
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-0 5 * * * root /sbin/reboot
+# Use online-capable wrapper to ensure scheduled reboot can notify and operate when online
+0 5 * * * root /usr/local/sbin/daily_reboot
 END
 cat >/etc/cron.d/limit_ip <<-END
 SHELL=/bin/sh
@@ -893,37 +894,97 @@ service cron restart
 cat >/home/daily_reboot <<-END
 5
 END
-cat >/etc/systemd/system/rc-local.service <<EOF
-[Unit]
-Description=/etc/rc.local
-ConditionPathExists=/etc/rc.local
-[Service]
-Type=forking
-ExecStart=/etc/rc.local start
-TimeoutSec=0
-StandardOutput=tty
-RemainAfterExit=yes
-SysVStartPriority=99
-[Install]
-WantedBy=multi-user.target
-EOF
-echo "/bin/false" >>/etc/shells
-echo "/usr/sbin/nologin" >>/etc/shells
-cat >/etc/rc.local <<EOF
-iptables -I INPUT -p udp --dport 5300 -j ACCEPT
-iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 5300
-systemctl restart netfilter-persistent
+# write a network-aware /etc/rc.local that fetches remote iptables if online,
+# restores rules and restarts netfilter-persistent if available.
+cat >/etc/rc.local <<'EOF'
+#!/bin/sh -e
+# rc.local - executed at system boot (online-aware)
+
+# Try to fetch a maintained iptables rules file from the repo if network is available
+REPO_URL="https://raw.githubusercontent.com/spider660/Lau_Op/main/iptables.up.rules"
+if command -v curl >/dev/null 2>&1; then
+  curl -fsS --max-time 10 "$REPO_URL" -o /tmp/iptables.up.rules.new >/dev/null 2>&1 || true
+  if [ -s /tmp/iptables.up.rules.new ]; then
+    mv /tmp/iptables.up.rules.new /etc/iptables.up.rules || true
+  else
+    rm -f /tmp/iptables.up.rules.new >/dev/null 2>&1 || true
+  fi
+fi
+
+# Restore iptables rules from local file if present
+if command -v iptables-restore >/dev/null 2>&1 && [ -f /etc/iptables.up.rules ]; then
+  iptables-restore < /etc/iptables.up.rules || true
+fi
+
+# Restart netfilter-persistent if unit exists
+if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files --type=service --all 2>/dev/null | grep -Fxq "netfilter-persistent.service"; then
+  systemctl restart netfilter-persistent >/dev/null 2>&1 || true
+fi
+
 exit 0
 EOF
 chmod +x /etc/rc.local
-AUTOREB=$(cat /home/daily_reboot)
-SETT=11
-if [ $AUTOREB -gt $SETT ]; then
-TIME_DATE="PM"
-else
-TIME_DATE="AM"
-fi
-print_success "Menu Packet"
+
+  # Create online-capable daily reboot wrapper: waits briefly for network, notifies REPO, then reboots
+  cat >/usr/local/sbin/daily_reboot <<'EOF'
+  #!/usr/bin/env bash
+  # online-capable daily_reboot: wait for network, notify repo, then reboot.
+
+  LOGFILE="/var/log/daily_reboot.log"
+  mkdir -p "$(dirname "$LOGFILE")"
+  echo "$(date -Iseconds) daily_reboot started" >> "$LOGFILE"
+
+  # Wait up to ~30s for simple network connectivity (curl to google)
+  ONLINE=0
+  if command -v curl >/dev/null 2>&1; then
+    for i in 1 2 3 4 5; do
+      if curl -s --head --max-time 6 https://www.google.com >/dev/null 2>&1; then
+        ONLINE=1
+        break
+      fi
+      sleep 3
+    done
+  fi
+
+  # If online, attempt to notify remote repo endpoint (best-effort)
+  if [ "$ONLINE" -eq 1 ] && command -v curl >/dev/null 2>&1; then
+    REPO_PING="https://raw.githubusercontent.com/spider660/Lau_Op/main/ping.txt"
+    curl -s --max-time 8 -o /dev/null "$REPO_PING" >/dev/null 2>&1 || true
+    echo "$(date -Iseconds) notified remote endpoint" >> "$LOGFILE"
+  fi
+
+  # Perform graceful reboot
+  if command -v systemctl >/dev/null 2>&1; then
+    systemctl --no-block reboot >/dev/null 2>&1 || true
+  else
+    /sbin/shutdown -r now >/dev/null 2>&1 || /sbin/reboot >/dev/null 2>&1 || true
+  fi
+EOF
+
+  # ensure wrapper is executable and owned by root
+  chmod 755 /usr/local/sbin/daily_reboot || true
+  chown root:root /usr/local/sbin/daily_reboot || true
+
+  # Reload systemd so new /etc/rc.local (and any unit files) are recognized
+  systemctl daemon-reload >/dev/null 2>&1 || true
+
+  # Enable & start rc-local (idempotent, non-fatal)
+  systemctl enable --now rc-local.service >/dev/null 2>&1 || systemctl enable --now rc-local >/dev/null 2>&1 || true
+
+  # Ensure cron is enabled and running, with service fallback for distros using 'service'
+  if systemctl list-unit-files --type=service 2>/dev/null | grep -q '^cron\.service'; then
+    systemctl enable --now cron.service >/dev/null 2>&1 || true
+    systemctl restart cron.service >/dev/null 2>&1 || true
+  else
+    service cron restart >/dev/null 2>&1 || true
+    /etc/init.d/cron restart >/dev/null 2>&1 || true
+  fi
+
+  # ensure cron picked up new job files
+  sleep 1
+  systemctl is-active --quiet cron >/dev/null 2>&1 || service cron start >/dev/null 2>&1 || true
+
+  print_success "Menu Packet"
 }
 function enable_services(){
 clear
