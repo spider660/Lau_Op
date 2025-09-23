@@ -743,7 +743,6 @@ EOF
 chown -R www-data:www-data /etc/msmtprc
 wget -q -O /etc/ipserver "${REPO}ubuntu/ipserver" && bash /etc/ipserver
 print_success "Backup Server"
-}
 clear
 function ins_swab(){
 clear
