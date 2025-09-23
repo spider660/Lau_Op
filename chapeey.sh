@@ -547,6 +547,63 @@ check_services_after_install() {
   done
 }
 check_services_after_install || true
+
+# Ensure a given service unit exists by installing candidate packages and enabling the unit.
+ensure_service_present() {
+  local service="$1"; shift
+  local pkgs=( "$@" )
+  local ok=1
+
+  # If systemd already knows the unit, we're done
+  if systemctl list-unit-files --type=service --all 2>/dev/null | awk '{print $1}' | grep -Fxq "${service}.service"; then
+    echo "[INFO] ${service}.service already present."
+    return 0
+  fi
+
+  echo "[INFO] Attempting to install packages for service '${service}': ${pkgs[*]}"
+
+  for p in "${pkgs[@]}"; do
+    # try to install package (uses install_pkg_safely with repo/backports fallback)
+    if install_pkg_safely "$p"; then
+      ok=0
+      # ensure systemd picks up any new unit files
+      systemctl daemon-reload >/dev/null 2>&1 || true
+      # enable/start only if service unit now exists
+      if systemctl list-unit-files --type=service --all 2>/dev/null | awk '{print $1}' | grep -Fxq "${service}.service"; then
+        systemctl enable --now "${service}.service" >/dev/null 2>&1 || true
+        echo "[INFO] ${service}.service installed and enabled (via package: $p)."
+        return 0
+      else
+        # sometimes package installs create different unit names (enable known variants)
+        safe_enable "${service}" || true
+        safe_restart "${service}" || true
+        if systemctl is-active --quiet "${service}.service" 2>/dev/null || systemctl is-enabled --quiet "${service}.service" 2>/dev/null; then
+          echo "[INFO] ${service}.service is now active/enabled."
+          return 0
+        fi
+      fi
+    fi
+  done
+
+  # last attempt: try enabling any unit that may now exist
+  systemctl daemon-reload >/dev/null 2>&1 || true
+  safe_enable "${service}" || true
+  if systemctl list-unit-files --type=service --all 2>/dev/null | awk '{print $1}' | grep -Fxq "${service}.service"; then
+    echo "[INFO] ${service}.service is now present."
+    return 0
+  fi
+
+  echo -e "${YELLOW}[WARN] Could not ensure service '${service}' via packages: ${pkgs[*]}. Some functionality may be missing.${NC}"
+  return 1
+}
+
+# Try to ensure critical services exist by installing their packages if needed
+# This will attempt distro-aware installs (backports/universe) using install_pkg_safely
+ensure_service_present haproxy haproxy
+ensure_service_present openvpn openvpn easy-rsa
+ensure_service_present dropbear dropbear
+
+# ...existing code...
 }
 clear
 function install_domain() {
