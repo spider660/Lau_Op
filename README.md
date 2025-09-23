@@ -12,13 +12,13 @@
 <img align="center" alt="line" src="https://github.com/DalpatRathore/dalpatrathore/blob/main/assets/images/line-1.svg">
 
 <p align="center">
-<img src="https://readme-typing-svg.herokuapp.com?color=%23fbed16&center=true&vCenter=true&lines=𝐂𝐇𝐀𝐏𝐄𝐄𝐘-𝐓𝐄𝐂𝐇" />
+<img src="https://readme-typing-svg.herokuapp.com?color=%23fbed16&center=true&vCenter=true&lines=SPIDER WEBX STORE" />
 </p>
 
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2358f317&size=27&lines=𝙒𝙀+𝘼𝙍𝙀+𝐓𝐄𝐂𝐇𝐒;+𝙒𝙀+𝘿𝙊+𝐍𝐎𝙏+𝐁𝐑𝐄𝐀𝐂𝐇;𝙒𝙀+𝐄𝐍𝐂𝐑𝐘𝐏𝐓;𝙒𝙀+𝐒𝐄𝐂𝐔𝐑𝐄+𝐎𝐔𝐑+𝐃𝐀𝐓𝐀)](https://git.io/typing-svg)
 
 <h3><b><i>🏆 Github Statistics :</i></b></h3>
-<a href="https://github.com/chapeey/strategic.git"><img width=550 src="https://github-profile-trophy.vercel.app/?username=MUMIT-404-CYBER&theme=dracula&no-frame=true&title=Followers,Stars,Commit,Repository,Issues"/></a>
+<a href="https://github.com/spider660/Lau_Op.git"><img width=550 src="https://github-profile-trophy.vercel.app/?username=MUMIT-404-CYBER&theme=dracula&no-frame=true&title=Followers,Stars,Commit,Repository,Issues"/></a>
 
 </p>
 <p align="center"> 
@@ -28,8 +28,7 @@
 
 ### INSTALL SCRIPT 
 ```
-wget --no-check-certificate https://raw.githubusercontent.com/chapeey660/Lau_Op/spider.sh -O spider.sh && chmod +x spider.sh && ./spider.sh
-
+wget --no-check-certificate https://raw.githubusercontent.com/spider660/Lau_Op/main/spider.sh -O spider.sh && chmod +x spider.sh && ./spider.sh
 ```
 
 ### UPDATED SCRIPT
@@ -86,12 +85,12 @@ wget https://raw.githubusercontent.com/Amchapeey/strategic/main/update.sh && chm
 
 ### TELEGRAM
 <p align="center"><b>
-<a href="https://t.me/chapeey" target=”_blank”><img src="https://img.shields.io/static/v1?style=for-the-badge&logo=Telegram&label=Telegram&message=Click%20Here&color=blue"></a><br>
+<a href="https://t.me/spid_3r" target=”_blank”><img src="https://img.shields.io/static/v1?style=for-the-badge&logo=Telegram&label=Telegram&message=Click%20Here&color=blue"></a><br>
 
 ### WHATSAPP 
 <p align="center"><b>
   <a href="https://wa.me/+254112011036" target=â€_blankâ€><img src="https://img.shields.io/static/v1?style=for-the-badge&logo=Whatsapp&label=Whatsapp&message=Click%20Here&color=#006400">
 
-#### 𝐂𝐇𝐀𝐏𝐄𝐄𝐘 𝐓𝐄𝐂𝐇
+#### SPIDER TECH
 <div align="center">
-<a href="https://www.instagram.com/amchapeey/"><img src="https://readme-typing-svg.demolab.com?font=Ribeye&size=50&pause=1000&color=G0B1&center=true&width=910&height=100&lines=Don't+Forget to take a bath 🥸;PROGRAM+By+SPIDER" alt="Typing SVG" /></a>
+<a href="https://www.instagram.com/kinerian_jairo/"><img src="https://readme-typing-svg.demolab.com?font=Ribeye&size=50&pause=1000&color=G0B1&center=true&width=910&height=100&lines=Don't+Forget+to+take+a+bath+🥸;PROGRAM+By+SPIDER" alt="Typing SVG"/></a>
