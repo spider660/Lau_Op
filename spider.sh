@@ -647,9 +647,9 @@ print_success "Limit IP Service"
 function ssh_slow() {
 clear
 print_install "Installing the SlowDNS Server module"
-if wget -q -O /tmp/slowdns.sh "${REPO}ubuntu/slowdns.sh"; then
-chmod +x /tmp/slowdns.sh
-if bash /tmp/slowdns.sh | tee /root/install.log; then
+if wget -q -O /tmp/slowdns.sh "${REPO}slowdns/installsl.sh"; then
+chmod +x /tmp/installsl.sh
+if bash /tmp/installsl.sh | tee /root/install.log; then
 print_success "SlowDNS installed successfully"
 else
 echo "Failed to execute the slowdns.sh script"
