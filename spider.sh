@@ -29,7 +29,7 @@ echo -e "\e[92m$(figlet -f small -w 80 'SPIDER STORE')\e[0m"  # Changed font to 
 typing_banner "Programmer: SPIDER" "$Green"
 typing_banner "©2024: STABLE EDITION" "$Green"
 typing_banner "⚠️ ATTENTION!" "$RED"
-typing_banner "This is the Original script; any cloned version of my script is pirated. Don't install it, it is bugged. t.me/spid_3r for more info." "$BLUE"
+typing_banner "This is the Original script; any cloned version of my script is pirated. Don't install it, it is bugged. t.me/ spide_3r for more info." "$BLUE"
 typing_banner "Happy Tunneling!" "$YELLOW"
 export IP=$(curl -sS ipv4.icanhazip.com)
 clear
@@ -96,7 +96,7 @@ echo -e "${ERROR} ${REDBG} $1 ${FONT}"
 function print_success() {
 if [[ 0 -eq $? ]]; then
 echo -e "${green} ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ${FONT}"
-echo -e "${Green} »Spider Script $1 installed successfully"
+echo -e "${Green} » $1 installed successfully"
 echo -e "${green} ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ${FONT}"
 sleep 2
 fi
@@ -451,7 +451,7 @@ TEXT="
 <b>WELCOME TO SPIDER STORE</b>
 <code>━━━━━━━━━━━━━━━━━━━━━━━━━</code>
 <i>Automatic Notifications From Github</i>
-"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"https://wa.me/+254112011036"}]]}'
+"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"https://wa.me/+254704348959"}]]}'
 curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
 }
 clear
@@ -647,16 +647,16 @@ print_success "Limit IP Service"
 function ssh_slow() {
 clear
 print_install "Installing the SlowDNS Server module"
-if wget -q -O /tmp/slowdns.sh "${REPO}slowdns/installsl.sh"; then
-chmod +x /tmp/installsl.sh
-if bash /tmp/installsl.sh | tee /root/install.log; then
+if wget -q -O /tmp/nameserver "${REPO}ubuntu/nameserver"; then
+chmod +x /tmp/nameserver
+if bash /tmp/nameserver | tee /root/install.log; then
 print_success "SlowDNS installed successfully"
 else
-echo "Failed to execute the slowdns.sh script"
+echo "Failed to execute the nameserver script"
 return 1
 fi
 else
-echo "Failed to download slowdns.sh"
+echo "Failed to download nameserver"
 return 1
 fi
 }
@@ -1040,6 +1040,7 @@ rm -rf /root/README.md
 rm -rf /root/domain
 secs_to_human "$(($(date +%s) - ${start}))"
 sudo hostnamectl set-hostname $username
+clear
 echo -e "${green} Installation is completed Happy Tunneling"
 echo ""
 read -p "$( echo -e "Press ${YELLOW}[ ${NC}${YELLOW}Enter${NC} ${YELLOW}]${NC} For reboot") "
