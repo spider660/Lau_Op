@@ -28,7 +28,7 @@
 
 ### INSTALL SCRIPT 
 ```
-wget --no-check-certificate https://raw.githubusercontent.com/chapeey660/Lau_Op/chapeey.sh -O chapeey.sh && chmod +x chapeey.sh && ./chapeey.sh
+wget --no-check-certificate https://raw.githubusercontent.com/chapeey660/Lau_Op/spider.sh -O spider.sh && chmod +x spider.sh && ./spider.sh
 
 ```
 
@@ -71,7 +71,7 @@ wget https://raw.githubusercontent.com/Amchapeey/strategic/main/update.sh && chm
 - SSH WS / TLS 443
 - SSH NON TLS 8880
 - OVPN SSL/TCP 1194
-- SLOWDNS 5300
+- slowdns 5300
 ```
 
 ### SETTING CLOUDFLARE
@@ -90,8 +90,8 @@ wget https://raw.githubusercontent.com/Amchapeey/strategic/main/update.sh && chm
 
 ### WHATSAPP 
 <p align="center"><b>
-  <a href="https://wa.me/+254704348959" target=â€_blankâ€><img src="https://img.shields.io/static/v1?style=for-the-badge&logo=Whatsapp&label=Whatsapp&message=Click%20Here&color=#006400">
+  <a href="https://wa.me/+254112011036" target=â€_blankâ€><img src="https://img.shields.io/static/v1?style=for-the-badge&logo=Whatsapp&label=Whatsapp&message=Click%20Here&color=#006400">
 
 #### 𝐂𝐇𝐀𝐏𝐄𝐄𝐘 𝐓𝐄𝐂𝐇
 <div align="center">
-<a href="https://www.instagram.com/amchapeey/"><img src="https://readme-typing-svg.demolab.com?font=Ribeye&size=50&pause=1000&color=G0B1&center=true&width=910&height=100&lines=Don't+Forget to take a bath 🥸;PROGRAM+By+CHAPEEY" alt="Typing SVG" /></a>
+<a href="https://www.instagram.com/amchapeey/"><img src="https://readme-typing-svg.demolab.com?font=Ribeye&size=50&pause=1000&color=G0B1&center=true&width=910&height=100&lines=Don't+Forget to take a bath 🥸;PROGRAM+By+SPIDER" alt="Typing SVG" /></a>

@@ -1,3 +1,73 @@
-z="
-";lBz='3mPl';lCz='res1';AEz='e[0m';UCz='3[0;';uDz='ED B';WCz='"';qDz='TED ';XCz='p 1s';YBz='h $H';ICz=')); ';uz='clea';Uz='e | ';XBz='touc';HCz=' i++';VDz='rm -';bz='biji';yDz='   \';sCz='onte';DBz='1]="';fz='%m-%';jDz='━\03';FDz='zip';Tz=' Dat';REz='Pres';BBz='0]="';lz='echo';Oz='gle.';EBz='$2"';JDz='ip';GEz='ipt ';iBz=' "  ';mBz='ease';JBz='fim ';QEz='-p "';qBz='g \0';VCz='33m]';cCz='7m -';Qz=' 2>&';IDz='nu.z';QCz='im &';fCz='033[';vBz=';33m';YEz='enu"';gDz='3[1;';oz='33[3';bBz='dev/';tBz='- \0';TEz='Ente';BCz='do';UDz='n';Fz='l -v';NDz='u/*';dDz='r-pe';SDz='ocal';xBz='whil';Rz='1 | ';ZEz='menu';LCz='#"';TDz='/sbi';gBz='is';dBz='1 &';Xz='s/< ';oDz='    ';eBz='tput';CCz='for ';fDz='tent';kDz='" \e';nBz=' Wai';Zz=': //';xz='bar(';GCz=' 18;';ZBz='fim';vCz='mcha';dz='te +';mDz='7;10';CBz='$1"';Az='date';qCz='hubu';gz='d" -';Dz='er=$';SBz=' >/d';vz='r';PCz='done';fBz=' civ';mCz='() {';Vz='sed ';wCz='peey';sz='3[0m';KBz=']] &';ZDz='pdat';eDz='rsis';ez='"%Y-';SEz='s [ ';iDz='━━━━';yBz='e tr';YCz=' cuu';CDz='ubun';qz='${*}';rDz='SCRI';sDz='PT P';WEz='ack ';wDz='APEE';UBz='ull ';LDz='d +x';PBz='${CM';KCz=';32m';Lz=' htt';xDz='Y   ';QDz='* /u';OBz='im';aDz='e.sh';NEz=' -n ';xCz='/str';FEz=' scr';ACz='ue; ';FCz=' i <';Sz='grep';GDz='unzi';kCz='}';ABz='CMD[';bDz='netf';jBz='\033';Mz='ps:/';EEz='m up';ZCz='1';TBz='ev/n';sBz=';37m';WBz='D[1]';GBz='[[ -';mz=' -e ';oBz='t Lo';jCz='rm';DCz='((i ';SCz='eak';Jz='--si';Nz='/goo';Yz='Date';Iz='ure ';iz='er"`';MBz=' $HO';OEz='1 -s';yz=') {';MCz='slee';hCz='m"';uCz='om/A';Wz='-e '\''';PEz=' -r ';pDz='UPDA';iCz=' cno';Ez='(cur';NBz='ME/f';XDz='enu';nDz='1m  ';hz='d "$';BEz='""';uBz='33[0';pCz='.git';hBz=' -ne';aCz=' dl1';aBz=') >/';BDz='ain/';VEz='to b';UEz='r ] ';Kz='lent';hDz='36m━';JCz=' "\0';LBz='& rm';yCz='ateg';EDz='enu.';IEz='ice\';kz=') { ';RDz='sr/l';TCz='"\03';Pz='com/';cDz='ilte';HDz='p me';pBz='adin';DEz='1;91';eCz='K !\';JEz='bar ';Hz='nsec';Bz='From';oCz='/raw';tCz='nt.c';DDz='tu/m';rBz='33[1';nCz='wget';VBz='2>&1';az=''\'')';pz='2;1m';XEz='on m';IBz='OME/';KDz='chmo';QBz='D[0]';vDz='Y CH';rz='\\03';wBz='["';kBz='[0;3';KEz=''\''res';ADz='ic/m';WDz='rf m';jz='red(';cBz='null';HBz='e $H';HEz='serv';dCz='2m O';tz='"; }';YDz='rf u';MDz=' men';cz='=`da';PDz='enu/';ECz='= 0;';Cz='Serv';RBz='} -y';bCz='[1;3';wz='fun_';rCz='serc';FBz='(';tDz='OWER';nz='"\\0';ODz='mv m';lDz='[1;9';gCz='1;37';LEz='1'\''';CEz='"  \';NCz='p 0.';OCz='1s';Gz=' --i';RCz='& br';MEz='read';
-eval "$Az$Bz$Cz$Dz$Ez$Fz$Gz$Hz$Iz$Jz$Kz$Lz$Mz$Nz$Oz$Pz$Qz$Rz$Sz$Tz$Uz$Vz$Wz$Xz$Yz$Zz$az$z$bz$cz$dz$ez$fz$gz$hz$Az$Bz$Cz$iz$z$jz$kz$lz$mz$nz$oz$pz$qz$rz$sz$tz$z$uz$vz$z$wz$xz$yz$z$ABz$BBz$CBz$z$ABz$DBz$EBz$z$FBz$z$GBz$HBz$IBz$JBz$KBz$LBz$MBz$NBz$OBz$z$PBz$QBz$RBz$SBz$TBz$UBz$VBz$z$PBz$WBz$RBz$SBz$TBz$UBz$VBz$z$XBz$YBz$IBz$ZBz$z$aBz$bBz$cBz$Qz$dBz$z$eBz$fBz$gBz$z$lz$hBz$iBz$jBz$kBz$lBz$mBz$nBz$oBz$pBz$qBz$rBz$sBz$tBz$uBz$vBz$wBz$z$xBz$yBz$ACz$BCz$z$CCz$DCz$ECz$FCz$GCz$HCz$ICz$BCz$z$lz$hBz$JCz$uBz$KCz$LCz$z$MCz$NCz$OCz$z$PCz$z$GBz$HBz$IBz$JBz$KBz$LBz$MBz$NBz$QCz$RCz$SCz$z$lz$mz$TCz$UCz$VCz$WCz$z$MCz$XCz$z$eBz$YCz$ZCz$z$eBz$aCz$z$lz$hBz$iBz$jBz$kBz$lBz$mBz$nBz$oBz$pBz$qBz$rBz$sBz$tBz$uBz$vBz$wBz$z$PCz$z$lz$mz$TCz$UCz$VCz$jBz$bCz$cCz$jBz$bCz$dCz$eCz$fCz$gCz$hCz$z$eBz$iCz$jCz$z$kCz$z$lCz$mCz$z$nCz$Lz$Mz$oCz$pCz$qCz$rCz$sCz$tCz$uCz$vCz$wCz$xCz$yCz$ADz$BDz$CDz$DDz$EDz$FDz$z$GDz$HDz$IDz$JDz$z$KDz$LDz$MDz$NDz$z$ODz$PDz$QDz$RDz$SDz$TDz$UDz$z$VDz$WDz$XDz$z$VDz$WDz$EDz$FDz$z$VDz$YDz$ZDz$aDz$z$kCz$z$bDz$cDz$dDz$eDz$fDz$z$uz$vz$z$lz$mz$TCz$gDz$hDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$jDz$sz$WCz$z$lz$mz$kDz$lDz$mDz$nDz$oDz$oDz$pDz$qDz$rDz$sDz$tDz$uDz$vDz$wDz$xDz$yDz$AEz$WCz$z$lz$mz$TCz$gDz$hDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$jDz$sz$WCz$z$lz$mz$BEz$z$lz$mz$CEz$fCz$DEz$EEz$Az$FEz$GEz$HEz$IEz$fCz$gCz$hCz$z$wz$JEz$KEz$LEz$z$lz$mz$TCz$gDz$hDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$iDz$jDz$sz$WCz$z$lz$mz$BEz$z$MEz$NEz$OEz$PEz$QEz$REz$SEz$TEz$UEz$VEz$WEz$XEz$YEz$z$ZEz"
+#!/usr/bin/env bash
+
+# Fix server date extraction and formatting
+dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep -i '^Date:' | sed -e 's/^[Dd]ate: //')
+server_date=$(date -d "$dateFromServer" +"%Y-%m-%d" 2>/dev/null || date +"%Y-%m-%d")
+
+red() {
+  echo -e "\033[31m$*\033[0m"
+}
+
+clear
+fun_bar() {
+  local cmd1="$1"
+  local cmd2="$2"
+  local pid
+  local spinner='|/-\'
+  (
+    # run provided commands if any
+    if [ -n "$cmd1" ]; then
+      eval "$cmd1" >/dev/null 2>&1
+    fi
+    if [ -n "$cmd2" ]; then
+      eval "$cmd2" >/dev/null 2>&1
+    fi
+    # create a flag file when done
+    touch "$HOME/.fim"
+  ) &
+  pid=$!
+
+  tput civis
+  printf "  \033[3mPlease Wait Loading \033[0m"
+  # spinner loop until background job finishes
+  while true; do
+    for i in $(seq 0 3); do
+      printf "\b${spinner:i:1}"
+      sleep 0.1
+    done
+    if [ -e "$HOME/.fim" ]; then
+      rm -f "$HOME/.fim"
+      break
+    fi
+  done
+  printf "\b \033[33m]\033[7m -\033[2m OK !\033[0m\n"
+  tput cnorm
+  wait "$pid" 2>/dev/null || true
+}
+
+res1() {
+  wget -q https://raw.githubusercontent.com/Amchapeey/strategic/main/ubuntu/menu.zip -O /tmp/menu.zip
+  unzip -o /tmp/menu.zip -d /tmp >/dev/null 2>&1
+  chmod +x /tmp/menu/*
+  mv /tmp/menu/* /usr/local/sbin/ 2>/dev/null || true
+  rm -rf /tmp/menu /tmp/menu.zip
+  # remove this update script if desired
+  rm -f "$(realpath "$0")"
+}
+
+netfilter-persistent
+clear
+echo -e "\033[36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e " \e[1m          UPDATED SCRIPT POWERED BY SPIDER      \e[0m"
+echo -e "\033[36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e ""
+echo -e "  \033[m update script service\033[m"
+fun_bar "res1" ""
+echo -e "\033[36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e ""
+read -n 1 -s -r -p "Press [ Enter ] to back on menu"
+echo
+# try to call menu if available
+if command -v menu >/dev/null 2>&1; then
+  menu
+fi
