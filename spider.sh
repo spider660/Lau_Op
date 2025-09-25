@@ -86,7 +86,7 @@ echo -e "${OK} ${BLUE} $1 ${FONT}"
 }
 function print_install() {
 echo -e "${green} ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ${FONT}"
-echo -e "${YELLOW} » $1 ${FONT}"
+echo -e "${YELLOW} » $1 ${FONT} $OS_ID ($OS_CODENAME)"
 echo -e "${green} ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ${FONT}"
 sleep 1
 }
