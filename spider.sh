@@ -173,27 +173,56 @@ function nginx_install() {
 
     # Import nginx signing key
     curl -fsSL https://nginx.org/keys/nginx_signing.key \
-        | sudo gpg --dearmor -o /usr/share/keyrings/nginx-archive-keyring.gpg
+        | gpg --dearmor -o /usr/share/keyrings/nginx-archive-keyring.gpg
 
     # Add nginx repo
     if [[ "$OS_ID" == "ubuntu" ]]; then
         echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
 http://nginx.org/packages/ubuntu $OS_CODENAME nginx" \
-        | sudo tee /etc/apt/sources.list.d/nginx.list
+        | tee /etc/apt/sources.list.d/nginx.list
     elif [[ "$OS_ID" == "debian" ]]; then
         echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
 http://nginx.org/packages/debian $OS_CODENAME nginx" \
-        | sudo tee /etc/apt/sources.list.d/nginx.list
+        | tee /etc/apt/sources.list.d/nginx.list
     else
-        echo -e "Your OS ($OS_ID) is not supported by this installer."
+        echo "Your OS ($OS_ID) is not supported by this installer."
         return 1
     fi
 
-    # Update and install
-    sudo apt update
-    sudo apt install -y nginx
-
+    apt update -y
+    apt install -y nginx
     print_success "Nginx installed successfully with full module support."
+}
+
+function haproxy_install() {
+    print_install "Installing HAProxy (official build)…"
+
+    OS_ID=$(grep -w ID /etc/os-release | head -n1 | cut -d= -f2 | tr -d '"')
+    OS_VER=$(grep -w VERSION_CODENAME /etc/os-release | head -n1 | cut -d= -f2)
+
+    # Remove any old HAProxy
+    apt remove --purge -y haproxy* || true
+
+    # Add HAProxy repo
+    if [[ "$OS_ID" == "ubuntu" ]]; then
+        echo "deb http://ppa.launchpadcontent.net/vbernat/haproxy-2.8/ubuntu $OS_VER main" \
+            | tee /etc/apt/sources.list.d/haproxy.list
+        apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1C61B9CD
+    elif [[ "$OS_ID" == "debian" ]]; then
+        echo "deb http://ppa.launchpadcontent.net/vbernat/haproxy-2.8/debian $OS_VER main" \
+            | tee /etc/apt/sources.list.d/haproxy.list
+        apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1C61B9CD
+    else
+        echo "Your OS ($OS_ID) is not supported for HAProxy official builds."
+        return 1
+    fi
+
+    apt update -y
+    apt install -y haproxy
+    systemctl enable haproxy
+    systemctl start haproxy
+
+    print_success "HAProxy installation complete!"
 }
 # Detect distro codename early for backports/universe (works on old and new releases)
 DIST_CODENAME="$(lsb_release -cs 2>/dev/null || true)"
@@ -1028,6 +1057,7 @@ base_package
 make_folder_xray
 install_domain
 password_default
+haproxy_install
 install_ssl
 install_xray
 ssh
