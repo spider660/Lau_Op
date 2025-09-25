@@ -166,15 +166,34 @@ print_success "Directory Xray"
 }
 clear
 function nginx_install() {
-if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
-print_install "Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
-sudo apt-get install nginx -y
-elif [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "debian" ]]; then
-print_success "Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
-apt -y install nginx
-else
-echo -e " Your OS Is Not Supported ( ${YELLOW}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')${FONT} )"
-fi
+    OS_ID=$(grep -w ID /etc/os-release | head -n1 | cut -d= -f2 | tr -d '"')
+    OS_CODENAME=$(grep -w VERSION_CODENAME /etc/os-release | cut -d= -f2)
+
+    print_install "Installing latest Nginx from official repository for $OS_ID ($OS_CODENAME)"
+
+    # Import nginx signing key
+    curl -fsSL https://nginx.org/keys/nginx_signing.key \
+        | sudo gpg --dearmor -o /usr/share/keyrings/nginx-archive-keyring.gpg
+
+    # Add nginx repo
+    if [[ "$OS_ID" == "ubuntu" ]]; then
+        echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+http://nginx.org/packages/ubuntu $OS_CODENAME nginx" \
+        | sudo tee /etc/apt/sources.list.d/nginx.list
+    elif [[ "$OS_ID" == "debian" ]]; then
+        echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+http://nginx.org/packages/debian $OS_CODENAME nginx" \
+        | sudo tee /etc/apt/sources.list.d/nginx.list
+    else
+        echo -e "Your OS ($OS_ID) is not supported by this installer."
+        return 1
+    fi
+
+    # Update and install
+    sudo apt update
+    sudo apt install -y nginx
+
+    print_success "Nginx installed successfully with full module support."
 }
 # Detect distro codename early for backports/universe (works on old and new releases)
 DIST_CODENAME="$(lsb_release -cs 2>/dev/null || true)"
