@@ -1,6 +1,6 @@
 [Unit]
 Description=WebSocket
-Documentation=https://t.me/chapeey
+Documentation=https://t.me/spid_3r
 After=syslog.target network-online.target
 
 [Service]
