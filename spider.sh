@@ -171,11 +171,10 @@ function nginx_install() {
 
     print_install "Installing latest Nginx from official repository for $OS_ID ($OS_CODENAME)"
 
-    # Import nginx signing key
+    # Import nginx signing key (new keyring method)
     curl -fsSL https://nginx.org/keys/nginx_signing.key \
         | gpg --dearmor -o /usr/share/keyrings/nginx-archive-keyring.gpg
 
-    # Add nginx repo
     if [[ "$OS_ID" == "ubuntu" ]]; then
         echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
 http://nginx.org/packages/ubuntu $OS_CODENAME nginx" \
@@ -195,33 +194,25 @@ http://nginx.org/packages/debian $OS_CODENAME nginx" \
 }
 
 function haproxy_install() {
-    print_install "Installing HAProxy (official build)…"
+    print_install "Installing HAProxy (stable build)…"
 
     OS_ID=$(grep -w ID /etc/os-release | head -n1 | cut -d= -f2 | tr -d '"')
-    OS_VER=$(grep -w VERSION_CODENAME /etc/os-release | head -n1 | cut -d= -f2)
 
     # Remove any old HAProxy
     apt remove --purge -y haproxy* || true
 
-    # Add HAProxy repo
-    if [[ "$OS_ID" == "ubuntu" ]]; then
-        echo "deb http://ppa.launchpadcontent.net/vbernat/haproxy-2.8/ubuntu $OS_VER main" \
-            | tee /etc/apt/sources.list.d/haproxy.list
-        apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1C61B9CD
-    elif [[ "$OS_ID" == "debian" ]]; then
-        echo "deb http://ppa.launchpadcontent.net/vbernat/haproxy-2.8/debian $OS_VER main" \
-            | tee /etc/apt/sources.list.d/haproxy.list
-        apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1C61B9CD
+    # === Recommended approach: use official distro packages ===
+    # Ubuntu 22.04+ and Debian 12+ ship HAProxy 2.8+ directly.
+    if [[ "$OS_ID" == "ubuntu" || "$OS_ID" == "debian" ]]; then
+        apt update -y
+        apt install -y haproxy
     else
-        echo "Your OS ($OS_ID) is not supported for HAProxy official builds."
+        echo "Your OS ($OS_ID) is not supported by this installer."
         return 1
     fi
 
-    apt update -y
-    apt install -y haproxy
     systemctl enable haproxy
     systemctl start haproxy
-
     print_success "HAProxy installation complete!"
 }
 # Detect distro codename early for backports/universe (works on old and new releases)
