@@ -1047,7 +1047,6 @@ nginx_install
 base_package
 make_folder_xray
 install_domain
-password_default
 haproxy_install
 install_ssl
 install_xray
