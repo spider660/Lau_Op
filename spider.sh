@@ -86,7 +86,7 @@ echo -e "${OK} ${BLUE} $1 ${FONT}"
 }
 function print_install() {
 echo -e "${green} ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ${FONT}"
-echo -e "${YELLOW} » $1 ${FONT} $OS_ID ($OS_CODENAME)"
+echo -e "${YELLOW} » $1 ${FONT}"
 echo -e "${green} ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ${FONT}"
 sleep 1
 }
@@ -166,54 +166,15 @@ print_success "Directory Xray"
 }
 clear
 function nginx_install() {
-    OS_ID=$(grep -w ID /etc/os-release | head -n1 | cut -d= -f2 | tr -d '"')
-    OS_CODENAME=$(grep -w VERSION_CODENAME /etc/os-release | cut -d= -f2)
-
-    print_install "Installing latest Nginx from official repository for $OS_ID ($OS_CODENAME)"
-
-    # Import nginx signing key (new keyring method)
-    curl -fsSL https://nginx.org/keys/nginx_signing.key \
-        | gpg --dearmor -o /usr/share/keyrings/nginx-archive-keyring.gpg
-
-    if [[ "$OS_ID" == "ubuntu" ]]; then
-        echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
-http://nginx.org/packages/ubuntu $OS_CODENAME nginx" \
-        | tee /etc/apt/sources.list.d/nginx.list
-    elif [[ "$OS_ID" == "debian" ]]; then
-        echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
-http://nginx.org/packages/debian $OS_CODENAME nginx" \
-        | tee /etc/apt/sources.list.d/nginx.list
-    else
-        echo "Your OS ($OS_ID) is not supported by this installer."
-        return 1
-    fi
-
-    apt update -y
-    apt install -y nginx
-    print_success "Nginx installed successfully with full module support."
-}
-
-function haproxy_install() {
-    print_install "Installing HAProxy (stable build)…"
-
-    OS_ID=$(grep -w ID /etc/os-release | head -n1 | cut -d= -f2 | tr -d '"')
-
-    # Remove any old HAProxy
-    apt remove --purge -y haproxy* || true
-
-    # === Recommended approach: use official distro packages ===
-    # Ubuntu 22.04+ and Debian 12+ ship HAProxy 2.8+ directly.
-    if [[ "$OS_ID" == "ubuntu" || "$OS_ID" == "debian" ]]; then
-        apt update -y
-        apt install -y haproxy
-    else
-        echo "Your OS ($OS_ID) is not supported by this installer."
-        return 1
-    fi
-
-    systemctl enable haproxy
-    systemctl start haproxy
-    print_success "HAProxy installation complete!"
+if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
+print_install "Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
+sudo apt-get install nginx -y
+elif [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "debian" ]]; then
+print_success "Setup nginx For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
+apt -y install nginx
+else
+echo -e " Your OS Is Not Supported ( ${YELLOW}$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')${FONT} )"
+fi
 }
 # Detect distro codename early for backports/universe (works on old and new releases)
 DIST_CODENAME="$(lsb_release -cs 2>/dev/null || true)"
@@ -471,8 +432,8 @@ else
 sts="${Error}"
 fi
 TIMES="10"
-CHATID="5459129686"
-KEY="6623979288:AAHeqh3tO_pZ3UVRz_bIN1qgyQuDPq0q0SI"
+CHATID="8340881349"
+KEY="8264940025:AAFGeZByPFGeLMLp4edjK6J0J7F1WIoT2ok"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
 TIMEZONE=$(printf '%(%H:%M:%S)T')
 TEXT="
@@ -490,100 +451,135 @@ TEXT="
 <b>WELCOME TO SPIDER STORE</b>
 <code>━━━━━━━━━━━━━━━━━━━━━━━━━</code>
 <i>Automatic Notifications From Github</i>
-"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"https://wa.me/+254704348959"}]]}'
+"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"https://wa.me/++254112011036"}]]}'
 curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
 }
 clear
 function install_ssl() {
-clear
-print_install "Installing SSL On Domain"
-rm -rf /etc/xray/xray.key
-rm -rf /etc/xray/xray.crt
-domain=$(cat /root/domain)
-STOPWEBSERVER=$(lsof -i:80 | cut -d' ' -f1 | awk 'NR==2 {print $1}')
-rm -rf /root/.acme.sh
-mkdir /root/.acme.sh
-systemctl stop $STOPWEBSERVER
-systemctl stop nginx
-curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh
-chmod +x /root/.acme.sh/acme.sh
-/root/.acme.sh/acme.sh --upgrade --auto-upgrade
-/root/.acme.sh/acme.sh --set-default-ca --server letsencrypt
-/root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256
-~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc
-chmod 777 /etc/xray/xray.key
-print_success "SSL Certificate"
+  clear
+  print_install "Installing SSL On Domain"
+
+  domain=$(cat /root/domain)
+
+  # Clean old certs
+  rm -rf /etc/xray/xray.key /etc/xray/xray.crt
+  rm -rf /root/.acme.sh
+  mkdir -p /root/.acme.sh
+
+  # Stop web services on port 80
+  STOPWEBSERVER=$(lsof -i:80 | awk 'NR==2 {print $1}')
+  systemctl stop $STOPWEBSERVER 2>/dev/null
+  systemctl stop nginx 2>/dev/null
+  systemctl stop haproxy 2>/dev/null
+
+  # Install acme.sh
+  curl -s https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh
+  chmod +x /root/.acme.sh/acme.sh
+  /root/.acme.sh/acme.sh --upgrade --auto-upgrade
+  /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt
+
+  # Try issuing cert
+  if /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256; then
+      ~/.acme.sh/acme.sh --installcert -d $domain \
+          --fullchainpath /etc/xray/xray.crt \
+          --keypath /etc/xray/xray.key --ecc
+      cat /etc/xray/xray.crt /etc/xray/xray.key > /etc/haproxy/hap.pem
+      chmod 600 /etc/xray/xray.key
+      print_success "SSL Certificate installed - starting services"
+      systemctl enable --now haproxy
+      systemctl enable --now nginx
+  else
+      print_install "Domain not pointed → SSL failed → leaving HAProxy & Nginx OFF"
+      systemctl disable --now haproxy 2>/dev/null
+      systemctl disable --now nginx 2>/dev/null
+  fi
 }
+clear
 function make_folder_xray() {
-rm -rf /etc/vmess/.vmess.db
-rm -rf /etc/vless/.vless.db
-rm -rf /etc/trojan/.trojan.db
-rm -rf /etc/shadowsocks/.shadowsocks.db
-rm -rf /etc/ssh/.ssh.db
-rm -rf /etc/bot/.bot.db
-rm -rf /etc/user-create/user.log
-mkdir -p /etc/bot
-mkdir -p /etc/xray
-mkdir -p /etc/vmess
-mkdir -p /etc/vless
-mkdir -p /etc/trojan
-mkdir -p /etc/shadowsocks
-mkdir -p /etc/ssh
-mkdir -p /usr/bin/xray/
-mkdir -p /var/log/xray/
-mkdir -p /var/www/html
-mkdir -p /etc/kyt/limit/vmess/ip
-mkdir -p /etc/kyt/limit/vless/ip
-mkdir -p /etc/kyt/limit/trojan/ip
-mkdir -p /etc/kyt/limit/ssh/ip
-mkdir -p /etc/limit/vmess
-mkdir -p /etc/limit/vless
-mkdir -p /etc/limit/trojan
-mkdir -p /etc/limit/ssh
-mkdir -p /etc/user-create
-chmod +x /var/log/xray
-touch /etc/xray/domain
-touch /var/log/xray/access.log
-touch /var/log/xray/error.log
-touch /etc/vmess/.vmess.db
-touch /etc/vless/.vless.db
-touch /etc/trojan/.trojan.db
-touch /etc/shadowsocks/.shadowsocks.db
-touch /etc/ssh/.ssh.db
-touch /etc/bot/.bot.db
-echo "& plughin Account" >>/etc/vmess/.vmess.db
-echo "& plughin Account" >>/etc/vless/.vless.db
-echo "& plughin Account" >>/etc/trojan/.trojan.db
-echo "& plughin Account" >>/etc/shadowsocks/.shadowsocks.db
-echo "& plughin Account" >>/etc/ssh/.ssh.db
-echo "echo -e 'Vps Config User Account'" >> /etc/user-create/user.log
+  rm -rf /etc/vmess/.vmess.db
+  rm -rf /etc/vless/.vless.db
+  rm -rf /etc/trojan/.trojan.db
+  rm -rf /etc/shadowsocks/.shadowsocks.db
+  rm -rf /etc/ssh/.ssh.db
+  rm -rf /etc/bot/.bot.db
+  rm -rf /etc/user-create/user.log
+  mkdir -p /etc/bot
+  mkdir -p /etc/xray
+  mkdir -p /etc/vmess
+  mkdir -p /etc/vless
+  mkdir -p /etc/trojan
+  mkdir -p /etc/shadowsocks
+  mkdir -p /etc/ssh
+  mkdir -p /usr/bin/xray/
+  mkdir -p /var/log/xray/
+  mkdir -p /var/www/html
+  mkdir -p /etc/kyt/limit/vmess/ip
+  mkdir -p /etc/kyt/limit/vless/ip
+  mkdir -p /etc/kyt/limit/trojan/ip
+  mkdir -p /etc/kyt/limit/ssh/ip
+  mkdir -p /etc/limit/vmess
+  mkdir -p /etc/limit/vless
+  mkdir -p /etc/limit/trojan
+  mkdir -p /etc/limit/ssh
+  mkdir -p /etc/user-create
+  chmod +x /var/log/xray
+  touch /etc/xray/domain
+  touch /var/log/xray/access.log
+  touch /var/log/xray/error.log
+  touch /etc/vmess/.vmess.db
+  touch /etc/vless/.vless.db
+  touch /etc/trojan/.trojan.db
+  touch /etc/shadowsocks/.shadowsocks.db
+  touch /etc/ssh/.ssh.db
+  touch /etc/bot/.bot.db
+  echo "& plughin Account" >>/etc/vmess/.vmess.db
+  echo "& plughin Account" >>/etc/vless/.vless.db
+  echo "& plughin Account" >>/etc/trojan/.trojan.db
+  echo "& plughin Account" >>/etc/shadowsocks/.shadowsocks.db
+  echo "& plughin Account" >>/etc/ssh/.ssh.db
+  echo "echo -e 'Vps Config User Account'" >> /etc/user-create/user.log
 }
+
 function install_xray() {
-clear
-print_install "Core Xray Latest Version"
-domainSock_dir="/run/xray"
-sudo mkdir -p "$domainSock_dir"
-sudo chown www-data:www-data "$domainSock_dir"
-latest_version="$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
-bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version "$latest_version"
-sudo wget -O /etc/xray/config.json "${REPO}ubuntu/config.json" >/dev/null 2>&1
-sudo wget -O /etc/systemd/system/runn.service "${REPO}ubuntu/runn.service" >/dev/null 2>&1
-domain=$(cat /etc/xray/domain)
-IPVS=$(cat /etc/xray/ipvps)
-print_success "Core Xray Latest Version"
-clear
-sudo curl -s ipinfo.io/city | sudo tee /etc/xray/city
-sudo curl -s ipinfo.io/org | cut -d " " -f 2-10 | sudo tee /etc/xray/isp
-print_install "Installing Packet Configuration"
-sudo wget -O /etc/haproxy/haproxy.cfg "${REPO}ubuntu/haproxy.cfg" >/dev/null 2>&1
-sudo wget -O /etc/nginx/conf.d/xray.conf "${REPO}ubuntu/xray.conf" >/dev/null 2>&1
-sudo sed -i "s/xxx/${domain}/g" /etc/haproxy/haproxy.cfg
-sudo sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf
-sudo curl "${REPO}ubuntu/nginx.conf" > /etc/nginx/nginx.conf
-cat /etc/xray/xray.crt /etc/xray/xray.key | sudo tee /etc/haproxy/hap.pem
-sudo chmod +x /etc/systemd/system/runn.service
-sudo rm -rf /etc/systemd/system/xray.service.d
-sudo bash -c 'cat > /etc/systemd/system/xray.service <<EOF
+  clear
+  print_install "Core Xray Latest Version"
+  domainSock_dir="/run/xray"
+  sudo mkdir -p "$domainSock_dir"
+  sudo chown www-data:www-data "$domainSock_dir"
+
+  latest_version="$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
+  bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version "$latest_version"
+
+  sudo wget -O /etc/xray/config.json "${REPO}ubuntu/config.json" >/dev/null 2>&1
+  sudo wget -O /etc/systemd/system/runn.service "${REPO}ubuntu/runn.service" >/dev/null 2>&1
+
+  domain=$(cat /etc/xray/domain)
+  IPVS=$(cat /etc/xray/ipvps)
+
+  print_success "Core Xray Latest Version"
+  clear
+
+  sudo curl -s ipinfo.io/city | sudo tee /etc/xray/city
+  sudo curl -s ipinfo.io/org | cut -d " " -f 2-10 | sudo tee /etc/xray/isp
+
+  print_install "Installing Packet Configuration"
+  sudo wget -O /etc/haproxy/haproxy.cfg "${REPO}ubuntu/haproxy.cfg" >/dev/null 2>&1
+  sudo wget -O /etc/nginx/conf.d/xray.conf "${REPO}ubuntu/xray.conf" >/dev/null 2>&1
+  sudo sed -i "s/xxx/${domain}/g" /etc/haproxy/haproxy.cfg
+  sudo sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf
+  sudo curl "${REPO}ubuntu/nginx.conf" > /etc/nginx/nginx.conf
+
+  # Check if SSL pem exists
+  if [[ ! -f /etc/haproxy/hap.pem ]]; then
+      print_install "Warning: SSL cert not found - run install_ssl first!"
+  else
+      print_success "Using existing SSL cert from /etc/haproxy/hap.pem"
+  fi
+
+  sudo chmod +x /etc/systemd/system/runn.service
+  sudo rm -rf /etc/systemd/system/xray.service.d
+
+  sudo bash -c 'cat > /etc/systemd/system/xray.service <<EOF
 Description=Xray Service
 Documentation=https://github.com
 After=network.target nss-lookup.target
@@ -600,9 +596,11 @@ LimitNOFILE=1000000
 [Install]
 WantedBy=multi-user.target
 EOF'
-  # reload systemd and enable/start xray (best-effort)
+
+  # reload systemd and enable/start xray
   systemctl daemon-reload >/dev/null 2>&1 || true
   systemctl enable --now xray >/dev/null 2>&1 || true
+
   print_success "Configuration Packet"
 }
 function ssh(){
@@ -1047,7 +1045,7 @@ nginx_install
 base_package
 make_folder_xray
 install_domain
-haproxy_install
+password_default
 install_ssl
 install_xray
 ssh
