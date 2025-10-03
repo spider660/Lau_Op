@@ -1,3 +1,345 @@
-z="
-";LCz='PANE';EBz='serc';Lz='slow';uBz='echo';vBz=' ""';xEz='ti-u';IDz='ur B';mz='e';pCz='fo I';oEz='m ky';Ez='ray/';lBz='pip3';Cz='t /e';qEz='art=';fDz='min'\''';MCz='L   ';JEz='rvic';FEz='yste';tDz='/bin';yBz='3[1;';cFz=': $b';jz='& ap';kz='t up';ADz='h /i';WFz='ata ';SCz='tori';hFz=' : $';aBz='n';dEz='Work';fBz='rf b';iEz='Exec';EFz='emct';vDz='/var';HBz='om/A';ZDz='n/ky';gFz='min ';vEz='edBy';PEz='ript';CFz='END';ACz='36m━';NFz='t ky';eBz='rm -';iCz='n Bo';rEz='alwa';RDz='min';pEz='Rest';nCz='NC}"';XDz='en'\''"';yz=' htt';SBz='unzi';JDz='ot T';sBz='ents';OFz='root';AEz='='\''"'\''';xCz=' per';aDz='t/va';NBz='ain/';gCz='and ';QEz='ion=';iFz='admi';DFz='syst';oz='all ';Zz='bo="';sEz='ys';nEz='n3 -';MFz='star';YBz=' /us';hz='upda';sz='pip ';XFz='Bot"';BDz='nfo$';eFz='ken"';FGz='u on';Az='NS=$';UBz='t.zi';OBz='ubun';HFz='kyt';lCz='Fath';fz='m'\''';MBz='ic/m';ZBz='r/bi';jCz='t : ';rz='on3-';nDz='DOMA';qz='on3 ';hBz='r';az='\e[9';rCz='legr';nBz='tall';OEz='Desc';BCz='━━━━';WEz='r=ne';iBz='tu/k';UEz=' @ky';XCz=' ID ';vFz=' " I';VDz=''\''$bo';Qz='doma';HGz='r bo';HDz='t yo';SEz='le k';eCz='eat ';UCz='reat';KDz='oken';gz='apt ';mFz=' "Pu';eDz=''\''$ad';sCz='am :';DDz='read';dDz='ADMI';Sz='(cat';CBz='.git';FDz='[*] ';QDz='" ad';Oz='er.p';eEz='ingD';Mz='dns/';tCz=' @Mi';dz='NC='\''';CCz='━\03';mCz='er${';CGz='e, t';BBz='/raw';oBz=' -r ';LEz=' END';LBz='ateg';oCz='] In';ZFz='====';VBz='p';PFz='rf k';YCz='Tele';DBz='hubu';Iz='$( c';Kz='etc/';tz='git';xFz='llat';vz='usr/';TEz='yt -';HCz='1m  ';QBz='ot.z';sFz=' "Se';Tz=' /et';SDz='BOT_';lEz='in/p';kFz='main';yEz='ser.';QFz='yt.s';KEz='e <<';IEz='t.se';HEz='m/ky';vCz='se_b';yDz='HOST';fEz='irec';jDz='in/k';Wz='omai';YDz=''\'' >>';UFz=' "Yo';hDz='> /u';sDz='/usr';gEz='tory';GFz='art ';VCz=' Bot';Jz='at /';Vz='ay/d';EEz='tc/s';JCz='ADD ';DGz='ype ';mBz=' ins';BEz='$NS'\''';jFz='n"';TBz='p bo';nz='inst';oFz='PUB"';jBz='yt.z';cEz=']';UDz='N='\''"';Hz='PUB=';GDz='Inpu';kBz='p ky';iz='te &';KCz='BOT ';ODz='t Yo';QCz='renb';KFz=' kyt';GCz='7;10';iDz='sr/b';uDz='/kyt';qBz='requ';wEz='=mul';AFz='targ';RBz='ip';bFz='ken ';wz='bin';hCz='Toke';MEz='[Uni';fFz=' "Ad';mEz='ytho';YFz='"===';jEz='Star';VEz='Afte';NCz='   \';bDz='r.tx';lDz='ar.t';FFz='l st';Yz='gren';NDz='toke';bEz='vice';aFz=' "To';cDz='t';tBz='.txt';qFz='st  ';uEz='Want';uz='cd /';rFz='NS"';xBz='"\03';qCz='d Te';gBz='clea';RCz='o}Tu';ABz='ps:/';FCz='[1;9';YEz='k.ta';bBz='chmo';TFz='ne"';kDz='yt/v';aEz='[Ser';EGz='/men';WDz='ttok';ZCz='gram';VFz='ur D';cz='"';FBz='onte';XBz='ot/*';yFz='ions';uCz='ssRo';qDz='n'\''"'\''';KBz='/str';bCz='}"';pFz=' "Ho';TDz='TOKE';JBz='peey';EDz='-p "';PDz='ur I';WCz=' and';IBz='mcha';Pz='ub )';SFz=' "Do';CEz='cat ';uFz='g do';wCz='ot ,';GGz=' you';RFz='h';WBz='mv b';dFz='otto';cCz='o}[*';aCz='${NC';ez='\e[0';wBz=' -e ';MDz=' bot';BFz='et';fCz='Bot ';DEz='> /e';pDz='"'\''$d';Rz='in=$';REz='Simp';DCz='3[0m';cBz='d +x';Gz=')';Nz='serv';gDz='"'\'' >';nFz='b   ';NEz='t]';bz='2;1m';yCz='inta';Bz='( ca';xz='wget';JFz='able';wDz=''\''"'\''$';OCz='e[0m';CDz='{NC}';AGz=' com';Uz='c/xr';dBz='n/*';BGz='plet';rBz='irem';mDz='xt';lFz=': $d';ICz='    ';tEz='[Ins';GEz='md/s';IGz='t"';tFz='ttin';ECz='" \e';hEz='=/us';dCz='] Cr';ZEz='rget';oDz='IN='\''';rDz=' >> ';IFz='l en';LDz=' : "';kEz='t=/u';Xz='n)';kCz='@Bot';LFz='l re';XEz='twor';lz='grad';pz='pyth';pBz='kyt/';wFz='nsta';Fz='dns ';GBz='nt.c';Dz='tc/x';PCz='"${g';xDz='PUB'\''';PBz='tu/b';TCz='al C';
-eval "$Az$Bz$Cz$Dz$Ez$Fz$Gz$z$Hz$Iz$Jz$Kz$Lz$Mz$Nz$Oz$Pz$z$Qz$Rz$Sz$Tz$Uz$Vz$Wz$Xz$z$Yz$Zz$az$bz$cz$z$dz$ez$fz$z$gz$hz$iz$jz$kz$lz$mz$z$gz$nz$oz$pz$qz$pz$rz$sz$tz$z$uz$vz$wz$z$xz$yz$ABz$BBz$CBz$DBz$EBz$FBz$GBz$HBz$IBz$JBz$KBz$LBz$MBz$NBz$OBz$PBz$QBz$RBz$z$SBz$TBz$UBz$VBz$z$WBz$XBz$YBz$ZBz$aBz$z$bBz$cBz$YBz$ZBz$dBz$z$eBz$fBz$QBz$RBz$z$gBz$hBz$z$xz$yz$ABz$BBz$CBz$DBz$EBz$FBz$GBz$HBz$IBz$JBz$KBz$LBz$MBz$NBz$OBz$iBz$jBz$RBz$z$SBz$kBz$UBz$VBz$z$lBz$mBz$nBz$oBz$pBz$qBz$rBz$sBz$tBz$z$uBz$vBz$z$uBz$wBz$xBz$yBz$ACz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$CCz$DCz$cz$z$uBz$wBz$ECz$FCz$GCz$HCz$ICz$ICz$JCz$KCz$LCz$MCz$ICz$NCz$OCz$cz$z$uBz$wBz$xBz$yBz$ACz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$CCz$DCz$cz$z$uBz$wBz$PCz$QCz$RCz$SCz$TCz$UCz$VCz$WCz$XCz$YCz$ZCz$aCz$bCz$z$uBz$wBz$PCz$QCz$cCz$dCz$eCz$fCz$gCz$hCz$iCz$jCz$kCz$lCz$mCz$nCz$z$uBz$wBz$PCz$QCz$cCz$oCz$pCz$qCz$rCz$sCz$tCz$uCz$vCz$wCz$xCz$yCz$ADz$BDz$CDz$cz$z$uBz$wBz$xBz$yBz$ACz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$BCz$CCz$DCz$cz$z$DDz$wBz$EDz$FDz$GDz$HDz$IDz$JDz$KDz$LDz$MDz$NDz$aBz$z$DDz$wBz$EDz$FDz$GDz$ODz$PDz$qCz$rCz$sCz$QDz$RDz$z$uBz$wBz$SDz$TDz$UDz$VDz$WDz$XDz$YDz$YBz$ZBz$ZDz$aDz$bDz$cDz$z$uBz$wBz$dDz$UDz$eDz$fDz$gDz$hDz$iDz$jDz$kDz$lDz$mDz$z$uBz$wBz$nDz$oDz$pDz$Wz$qDz$rDz$sDz$tDz$uDz$vDz$tBz$z$uBz$wBz$Hz$wDz$xDz$gDz$hDz$iDz$jDz$kDz$lDz$mDz$z$uBz$wBz$yDz$AEz$BEz$gDz$hDz$iDz$jDz$kDz$lDz$mDz$z$gBz$hBz$z$CEz$DEz$EEz$FEz$GEz$FEz$HEz$IEz$JEz$KEz$LEz$z$MEz$NEz$z$OEz$PEz$QEz$REz$SEz$TEz$UEz$cDz$z$VEz$WEz$XEz$YEz$ZEz$z$aEz$bEz$cEz$z$dEz$eEz$fEz$gEz$hEz$ZBz$aBz$z$iEz$jEz$kEz$iDz$lEz$mEz$nEz$oEz$cDz$z$pEz$qEz$rEz$sEz$z$tEz$nBz$cEz$z$uEz$vEz$wEz$xEz$yEz$AFz$BFz$z$CFz$z$DFz$EFz$FFz$GFz$HFz$z$DFz$EFz$IFz$JFz$KFz$z$DFz$EFz$LFz$MFz$NFz$cDz$z$uz$OFz$z$eBz$PFz$QFz$RFz$z$uBz$SFz$TFz$z$uBz$UFz$VFz$WFz$XFz$z$uBz$wBz$YFz$ZFz$ZFz$ZFz$ZFz$ZFz$ZFz$ZFz$cz$z$uBz$aFz$bFz$fCz$ICz$ICz$cFz$dFz$eFz$z$uBz$fFz$gFz$ICz$ICz$hFz$iFz$jFz$z$uBz$SFz$kFz$ICz$ICz$lFz$Wz$jFz$z$uBz$mFz$nFz$ICz$ICz$hFz$oFz$z$uBz$pFz$qFz$ICz$ICz$hFz$rFz$z$uBz$wBz$YFz$ZFz$ZFz$ZFz$ZFz$ZFz$ZFz$ZFz$cz$z$uBz$sFz$tFz$uFz$TFz$z$gBz$hBz$z$uBz$vFz$wFz$xFz$yFz$AGz$BGz$CGz$DGz$EGz$FGz$GGz$HGz$IGz"
+#!/bin/bash
+set -euo pipefail
+
+# kyt installer - fixed and robust
+# Preserves original intent: download bot + kyt, install, write vars, create systemd service
+
+# --- helpers ---
+log() { echo -e "\033[36m$*\033[0m"; }
+err() { echo -e "\033[31m$*\033[0m" >&2; }
+
+# --- read system values with safe fallbacks ---
+DNS_FILE="/etc/xray/dns"
+SLOWDNS_PUB="/etc/slowdns/server.pub"
+DOMAIN_FILE="/etc/xray/domain"
+NS_FILE="/etc/xray/ns"
+
+DNS_VAL=""
+PUB_VAL=""
+DOMAIN_VAL=""
+NS_VAL=""
+
+if [[ -r "$DNS_FILE" ]]; then
+    DNS_VAL="$(tr -d '\n' < "$DNS_FILE")"
+fi
+
+if [[ -r "$SLOWDNS_PUB" ]]; then
+    PUB_VAL="$(tr -d '\n' < "$SLOWDNS_PUB")"
+fi
+
+if [[ -r "$DOMAIN_FILE" ]]; then
+    DOMAIN_VAL="$(tr -d '\n' < "$DOMAIN_FILE")"
+fi
+
+if [[ -r "$NS_FILE" ]]; then
+    NS_VAL="$(tr -d '\n' < "$NS_FILE")"
+fi
+
+# fallback for NS if not set
+if [[ -z "$NS_VAL" ]]; then
+    NS_VAL="${DNS_VAL:-$(hostname -f 2>/dev/null || hostname)}"
+fi
+
+# --- install packages ---
+log "Updating package lists and installing dependencies..."
+export DEBIAN_FRONTEND=noninteractive
+apt update -y && apt upgrade -y
+apt install -y python3 python3-pip unzip wget git || {
+    err "Failed to install required packages"
+    exit 1
+}
+
+# --- prepare directories ---
+INSTALL_DIR="/usr/bin/kyt"
+TMPDIR="/tmp/kyt_install_$$"
+mkdir -p "$TMPDIR" "$INSTALL_DIR"
+
+# --- download and extract bot (if applicable) ---
+log "Downloading bot package..."
+BOT_ZIP_URL="https://raw.githubusercontent.com/spider660/Lau_Op/main/ubuntu/bot.zip"
+BOT_ZIP="/tmp/bot.zip"
+if wget -q -O "$BOT_ZIP" "$BOT_ZIP_URL"; then
+    unzip -o "$BOT_ZIP" -d "$TMPDIR/bot" >/dev/null 2>&1 || true
+    if [[ -d "$TMPDIR/bot" ]]; then
+        # move bot files into install dir (create subdir 'bot' to avoid clobbering)
+        mkdir -p "$INSTALL_DIR/bot"
+        cp -r "$TMPDIR/bot/"* "$INSTALL_DIR/bot/" 2>/dev/null || true
+        log "Bot files installed to $INSTALL_DIR/bot"
+    else
+        log "No bot content found in $BOT_ZIP"
+    fi
+    rm -f "$BOT_ZIP"
+else
+    log "Failed to download bot.zip (continuing if not required)"
+fi
+
+# --- download and extract kyt ---
+log "Downloading kyt package..."
+KYT_ZIP_URL="https://raw.githubusercontent.com/spider660/Lau_Op/main/ubuntu/kyt.zip"
+KYT_ZIP="/tmp/kyt.zip"
+if wget -q -O "$KYT_ZIP" "$KYT_ZIP_URL"; then
+    unzip -o "$KYT_ZIP" -d "$TMPDIR/kyt" >/dev/null 2>&1 || true
+    if [[ -d "$TMPDIR/kyt" ]]; then
+        cp -r "$TMPDIR/kyt/"* "$INSTALL_DIR/" || true
+        log "Kyt files installed to $INSTALL_DIR"
+    else
+        err "No kyt content found in archive."
+        rm -f "$KYT_ZIP"
+        exit 1
+    fi
+    rm -f "$KYT_ZIP"
+else
+    err "Failed to download kyt.zip"
+    exit 1
+fi
+
+# --- set permissions ---
+chmod -R 755 "$INSTALL_DIR" || true
+
+# --- install python requirements if present ---
+REQ_FILE="$INSTALL_DIR/requirements.txt"
+if [[ -f "$REQ_FILE" ]]; then
+    log "Installing Python requirements..."
+    pip3 install -r "$REQ_FILE" || {
+        err "pip install failed"
+        # continue; service may still work without optional deps
+    }
+fi
+
+# --- prompt user for Bot Token and Admin ID ---
+echo ""
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log "          ADD BOT PANEL"
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log "Tutorial: Create Bot and get Bot Token from @BotFather"
+log "Get your Telegram ID from @MissRose_bot (use /info)"
+echo ""
+read -r -p "[*] Input your Bot Token: " BOT_TOKEN
+read -r -p "[*] Input your Admin Telegram ID: " ADMIN_ID
+
+# --- write var file ---
+VAR_FILE="$INSTALL_DIR/var.txt"
+cat > "$VAR_FILE" <<EOF
+BOT_TOKEN="${BOT_TOKEN}"
+ADMIN_ID="${ADMIN_ID}"
+DOMAIN="${DOMAIN_VAL}"
+PUB="${PUB_VAL}"
+HOST="${NS_VAL}"
+EOF
+chmod 600 "$VAR_FILE"
+log "Configuration written to $VAR_FILE"
+
+# --- create systemd service ---
+SERVICE_FILE="/etc/systemd/system/kyt.service"
+cat > "$SERVICE_FILE" <<'EOF'
+[Unit]
+Description=Simple kyt - @kyt
+After=network.target
+
+[Service]
+WorkingDirectory=/usr/bin/kyt
+ExecStart=/usr/bin/python3 -m kyt
+Restart=always
+User=root
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+log "Reloading systemd and enabling service..."
+systemctl daemon-reload
+systemctl enable kyt.service
+systemctl restart kyt.service || {
+    err "Failed to start kyt.service; check 'journalctl -u kyt.service' for details"
+}
+
+# --- cleanup ---
+rm -rf "$TMPDIR"
+# optional: remove installer script if running from same file
+# rm -f "$0" || true
+
+# --- summary output ---
+echo ""
+log "Done"
+echo "Your Bot Data:"
+echo "Token Bot : $BOT_TOKEN"
+echo "Admin ID  : $ADMIN_ID"
+echo "Domain    : ${DOMAIN_VAL:-N/A}"
+echo "Pub       : ${PUB_VAL:-N/A}"
+echo "Host      : ${NS_VAL:-N/A}"
+echo ""
+log "Setting done. Installations complete. Send /menu to your bot (if supported)."
+```// filepath: c:\Users\LAU-SPIDEY\Downloads\Lau_Op-main\kyt.sh
+#!/bin/bash
+set -euo pipefail
+
+# kyt installer - fixed and robust
+# Preserves original intent: download bot + kyt, install, write vars, create systemd service
+
+# --- helpers ---
+log() { echo -e "\033[36m$*\033[0m"; }
+err() { echo -e "\033[31m$*\033[0m" >&2; }
+
+# --- read system values with safe fallbacks ---
+DNS_FILE="/etc/xray/dns"
+SLOWDNS_PUB="/etc/slowdns/server.pub"
+DOMAIN_FILE="/etc/xray/domain"
+NS_FILE="/etc/xray/ns"
+
+DNS_VAL=""
+PUB_VAL=""
+DOMAIN_VAL=""
+NS_VAL=""
+
+if [[ -r "$DNS_FILE" ]]; then
+    DNS_VAL="$(tr -d '\n' < "$DNS_FILE")"
+fi
+
+if [[ -r "$SLOWDNS_PUB" ]]; then
+    PUB_VAL="$(tr -d '\n' < "$SLOWDNS_PUB")"
+fi
+
+if [[ -r "$DOMAIN_FILE" ]]; then
+    DOMAIN_VAL="$(tr -d '\n' < "$DOMAIN_FILE")"
+fi
+
+if [[ -r "$NS_FILE" ]]; then
+    NS_VAL="$(tr -d '\n' < "$NS_FILE")"
+fi
+
+# fallback for NS if not set
+if [[ -z "$NS_VAL" ]]; then
+    NS_VAL="${DNS_VAL:-$(hostname -f 2>/dev/null || hostname)}"
+fi
+
+# --- install packages ---
+log "Updating package lists and installing dependencies..."
+export DEBIAN_FRONTEND=noninteractive
+apt update -y && apt upgrade -y
+apt install -y python3 python3-pip unzip wget git || {
+    err "Failed to install required packages"
+    exit 1
+}
+
+# --- prepare directories ---
+INSTALL_DIR="/usr/bin/kyt"
+TMPDIR="/tmp/kyt_install_$$"
+mkdir -p "$TMPDIR" "$INSTALL_DIR"
+
+# --- download and extract bot (if applicable) ---
+log "Downloading bot package..."
+BOT_ZIP_URL="https://raw.githubusercontent.com/Amchapeey/strategic/main/ubuntu/bot.zip"
+BOT_ZIP="/tmp/bot.zip"
+if wget -q -O "$BOT_ZIP" "$BOT_ZIP_URL"; then
+    unzip -o "$BOT_ZIP" -d "$TMPDIR/bot" >/dev/null 2>&1 || true
+    if [[ -d "$TMPDIR/bot" ]]; then
+        # move bot files into install dir (create subdir 'bot' to avoid clobbering)
+        mkdir -p "$INSTALL_DIR/bot"
+        cp -r "$TMPDIR/bot/"* "$INSTALL_DIR/bot/" 2>/dev/null || true
+        log "Bot files installed to $INSTALL_DIR/bot"
+    else
+        log "No bot content found in $BOT_ZIP"
+    fi
+    rm -f "$BOT_ZIP"
+else
+    log "Failed to download bot.zip (continuing if not required)"
+fi
+
+# --- download and extract kyt ---
+log "Downloading kyt package..."
+KYT_ZIP_URL="https://raw.githubusercontent.com/Amchapeey/strategic/main/ubuntu/kyt.zip"
+KYT_ZIP="/tmp/kyt.zip"
+if wget -q -O "$KYT_ZIP" "$KYT_ZIP_URL"; then
+    unzip -o "$KYT_ZIP" -d "$TMPDIR/kyt" >/dev/null 2>&1 || true
+    if [[ -d "$TMPDIR/kyt" ]]; then
+        cp -r "$TMPDIR/kyt/"* "$INSTALL_DIR/" || true
+        log "Kyt files installed to $INSTALL_DIR"
+    else
+        err "No kyt content found in archive."
+        rm -f "$KYT_ZIP"
+        exit 1
+    fi
+    rm -f "$KYT_ZIP"
+else
+    err "Failed to download kyt.zip"
+    exit 1
+fi
+
+# --- set permissions ---
+chmod -R 755 "$INSTALL_DIR" || true
+
+# --- install python requirements if present ---
+REQ_FILE="$INSTALL_DIR/requirements.txt"
+if [[ -f "$REQ_FILE" ]]; then
+    log "Installing Python requirements..."
+    pip3 install -r "$REQ_FILE" || {
+        err "pip install failed"
+        # continue; service may still work without optional deps
+    }
+fi
+
+# --- prompt user for Bot Token and Admin ID ---
+echo ""
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log "          ADD BOT PANEL"
+log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log "Tutorial: Create Bot and get Bot Token from @BotFather"
+log "Get your Telegram ID from @MissRose_bot (use /info)"
+echo ""
+read -r -p "[*] Input your Bot Token: " BOT_TOKEN
+read -r -p "[*] Input your Admin Telegram ID: " ADMIN_ID
+
+# --- write var file ---
+VAR_FILE="$INSTALL_DIR/var.txt"
+cat > "$VAR_FILE" <<EOF
+BOT_TOKEN="${BOT_TOKEN}"
+ADMIN_ID="${ADMIN_ID}"
+DOMAIN="${DOMAIN_VAL}"
+PUB="${PUB_VAL}"
+HOST="${NS_VAL}"
+EOF
+chmod 600 "$VAR_FILE"
+log "Configuration written to $VAR_FILE"
+
+# --- create systemd service ---
+SERVICE_FILE="/etc/systemd/system/kyt.service"
+cat > "$SERVICE_FILE" <<'EOF'
+[Unit]
+Description=Simple kyt - @kyt
+After=network.target
+
+[Service]
+WorkingDirectory=/usr/bin/kyt
+ExecStart=/usr/bin/python3 -m kyt
+Restart=always
+User=root
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+log "Reloading systemd and enabling service..."
+systemctl daemon-reload
+systemctl enable kyt.service
+systemctl restart kyt.service || {
+    err "Failed to start kyt.service; check 'journalctl -u kyt.service' for details"
+}
+
+# --- cleanup ---
+rm -rf "$TMPDIR"
+# optional: remove installer script if running from same file
+# rm -f "$0" || true
+
+# --- summary output ---
+echo ""
+log "Done"
+echo "Your Bot Data:"
+echo "Token Bot : $BOT_TOKEN"
+echo "Admin ID  : $ADMIN_ID"
+echo "Domain    : ${DOMAIN_VAL:-N/A}"
+echo "Pub       : ${PUB_VAL:-N/A}"
+echo "Host      : ${NS_VAL:-N/A}"
+echo ""
+log "Setting done. Installations complete. Send /menu to your bot (if supported)."

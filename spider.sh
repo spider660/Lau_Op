@@ -1,3 +1,4 @@
+#!/bin/bash
 Green="\e[92;1m"
 RED="\033[31m"
 YELLOW="\033[33m"
@@ -15,22 +16,87 @@ sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y figlet
 clear
+# Lightweight typewriter effect (safer printing)
 typing_banner() {
-local text="$1"
-local color="$2"
-echo -e "${color}\e[1m"  # Set color and make bold
-for (( i=0; i<${#text}; i++ )); do
-echo -ne "${text:i:1}"
-sleep 0.1  # Adjust speed
-done
-echo -e "${NC}"  # Reset color
+    local text="$1"
+    local color="${2:-$NC}"
+    printf "%b" "${color}\e[1m"
+    local i
+    for (( i=0; i<${#text}; i++ )); do
+        printf "%s" "${text:i:1}"
+        sleep 0.03
+    done
+    printf "%b\n" "${NC}"
 }
-echo -e "\e[92m$(figlet -f small -w 80 'SPIDER STORE')\e[0m"  # Changed font to 'small'
-typing_banner "Programmer: SPIDER" "$Green"
-typing_banner "©2024: STABLE EDITION" "$Green"
-typing_banner "⚠️ ATTENTION!" "$RED"
-typing_banner "This is the Original script; any cloned version of my script is pirated. Don't install it, it is bugged. t.me/ spide_3r for more info." "$BLUE"
-typing_banner "Happy Tunneling!" "$YELLOW"
+
+# Simple spinner for long steps
+spinner_start() {
+    spin_pid=""
+    ( while :; do for s in '/' '-' '\' '|' ; do printf "\r%s" "$s"; sleep 0.08; done; done ) & spin_pid=$!
+    printf " "
+}
+spinner_stop() {
+    if [ -n "${spin_pid:-}" ]; then
+        kill "$spin_pid" >/dev/null 2>&1 || true
+        wait "$spin_pid" 2>/dev/null || true
+        unset spin_pid
+        printf "\r"
+    fi
+}
+
+# --- ADD: install animation (glitchy cyberpunk) ---
+install_anim_loop() {
+    local frames=( "◴" "◷" "◶" "◵" "▉" "▊" "▋" "▌" )
+    local colors=( "${GREEN}" "${BLUE}" "${YELLOW}" "${RED}" )
+    local clen=${#colors[@]}
+    while true; do
+        for f in "${frames[@]}"; do
+            # create a short random binary "glitch" snippet
+            local rand_bin="$(head -c 8 /dev/urandom 2>/dev/null | tr -dc '01' | head -c6)"
+            local col="${colors[$((RANDOM % clen))]}"
+            printf "\r%b %bINSTALLING...%b %s%b" "${col}" "${f}" "${NC}" "${rand_bin}" " "
+            sleep 0.06
+        done
+    done
+}
+
+ANIM_PID=""
+install_animation_start() {
+    # don't start twice
+    if [ -n "$ANIM_PID" ] && kill -0 "$ANIM_PID" 2>/dev/null; then
+        return
+    fi
+    install_anim_loop >/dev/null 2>&1 & ANIM_PID=$!
+    # ensure animation cleaned up on exit
+    trap 'install_animation_stop' EXIT INT TERM
+}
+
+install_animation_stop() {
+    if [ -n "$ANIM_PID" ]; then
+        kill "$ANIM_PID" 2>/dev/null || true
+        wait "$ANIM_PID" 2>/dev/null || true
+        ANIM_PID=""
+    fi
+    # clear animation line
+    printf "\r\033[K"
+    # remove trap only if it points to our cleanup
+    trap - EXIT INT TERM || true
+}
+# --- END ADD ---
+
+# Small cyberpunk/hacker banner
+hacker_banner() {
+    clear
+    echo -e "${Green}  ===============================================${NC}"
+    echo -e "${BLUE}        ███ SPIDER STORE — CYBER INSTALL ███${NC}"
+    echo -e "${Green}  ===============================================${NC}"
+    glitch_write "Programmer: SPIDER" "$Green"
+    glitch_write "©2024: STABLE EDITION" "$Green"
+    glitch_write "⚠️ ATTENTION! Only run on supported OS" "$RED"
+    printf "\n"
+}
+echo -e "\e[92m$(figlet -f small -w 80 'SPIDER  WEBX  STORE ')\e[0m"  # Changed font to 'small'
+glitch_write "THIS IS THE OFFICIAL SCRIPT ✅. Unofficial clones are unsupported and may be unsafe. t.me/spide_3r OWNER ✅" "$BLUE"
 export IP=$(curl -sS ipv4.icanhazip.com)
 clear
 if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
@@ -436,46 +502,59 @@ clear
 fi
 }
 clear
+# Fix: restart_system - remove broken assignment and call datediff properly (safe)
 restart_system(){
-MYIP=$(curl -sS ipv4.icanhazip.com)
-echo -e "\e[32mloading...\e[0m"
-clear
-izinsc="https://raw.githubusercontent.com/spider660/Lau_Op/main/keygen"
-rm -f /usr/bin/user
-username=$(curl $izinsc | grep $MYIP | awk '{print $2}')
-echo "$username" >/usr/bin/user
-expx=$(curl $izinsc | grep $MYIP | awk '{print $3}')
-echo "$expx" >/usr/bin/e
-username=$(cat /usr/bin/user)
-oid=$(cat /usr/bin/ver)
-exp=$(cat /usr/bin/e)
-clear
-d1=$(date -d "$valid" +%s)
-d2=$(date -d "$today" +%s)
-certifacate=$(((d1 - d2) / 86400))
-DATE=$(date +'%Y-%m-%d')
-datediff() {
-d1=$(date -d "$1" +%s)
-d2=$(date -d "$2" +%s)
-echo -e "$COLOR1 $NC Expiry In   : $(( (d1 - d2) / 86400 )) Days"
-}
-mai="datediff "$Exp" "$DATE""
-ISP=$(curl -s ipinfo.io/org | cut -d " " -f 2-10 )
-Info="(${green}Active${NC})"
-Error="(${RED}Expired${NC})"
-today=`date -d "0 days" +"%Y-%m-%d"`
-Exp1=$(curl $izinsc | grep $MYIP | awk '{print $4}')
-if [[ $today < $Exp1 ]]; then
-sts="${Info}"
-else
-sts="${Error}"
-fi
-TIMES="10"
-CHATID="5459129686"
-KEY="6623979288:AAHeqh3tO_pZ3UVRz_bIN1qgyQuDPq0q0SI"
-URL="https://api.telegram.org/bot$KEY/sendMessage"
-TIMEZONE=$(printf '%(%H:%M:%S)T')
-TEXT="
+    MYIP=$(curl -sS ipv4.icanhazip.com || true)
+    echo -e "\e[32mloading...\e[0m"
+    clear
+    izinsc="https://raw.githubusercontent.com/spider660/Lau_Op/main/keygen"
+    rm -f /usr/bin/user
+    username=$(curl -s "$izinsc" | grep "$MYIP" | awk '{print $2}' || echo "unknown")
+    echo "$username" >/usr/bin/user 2>/dev/null || true
+    expx=$(curl -s "$izinsc" | grep "$MYIP" | awk '{print $3}' || echo "")
+    echo "$expx" >/usr/bin/e 2>/dev/null || true
+    username=$(cat /usr/bin/user 2>/dev/null || echo "$username")
+    oid=$(cat /usr/bin/ver 2>/dev/null || true)
+    exp=$(cat /usr/bin/e 2>/dev/null || echo "$expx")
+    clear
+    # compute certificate days safely
+    if [[ -n "$exp" ]]; then
+        d1=$(date -d "$exp" +%s 2>/dev/null || echo 0)
+        d2=$(date -d "$(date -d "0 days" +"%Y-%m-%d")" +%s 2>/dev/null || echo 0)
+        certificate=$(( (d1 - d2) / 86400 ))
+    else
+        certificate=0
+    fi
+
+    DATE=$(date +'%Y-%m-%d')
+    datediff() {
+        if [ -z "$1" ] || [ -z "$2" ]; then
+            echo -e " Expiry In   : N/A"
+            return
+        fi
+        d1=$(date -d "$1" +%s 2>/dev/null || echo 0)
+        d2=$(date -d "$2" +%s 2>/dev/null || echo 0)
+        echo -e " Expiry In   : $(( (d1 - d2) / 86400 )) Days"
+    }
+
+    ISP=$(curl -s ipinfo.io/org | cut -d " " -f 2-10 || true)
+    Info="(${green}Active${NC})"
+    Error="(${RED}Expired${NC})"
+    today=$(date -d "0 days" +"%Y-%m-%d")
+    Exp1=$(curl -s "$izinsc" | grep "$MYIP" | awk '{print $4}' || echo "")
+    if [[ -n "$Exp1" && "$today" < "$Exp1" ]]; then
+        sts="${Info}"
+    else
+        sts="${Error}"
+    fi
+
+    # notify via telegram (best-effort)
+    TIMES="10"
+    CHATID="5459129686"
+    KEY="6623979288:AAHeqh3tO_pZ3UVRz_bIN1qgyQuDPq0q0SI"
+    URL="https://api.telegram.org/bot$KEY/sendMessage"
+    TIMEZONE=$(printf '%(%H:%M:%S)T')
+    TEXT=$(cat <<EOF
 <code>━━━━━━━━━━━━━━━━━━━━━━━━━</code>
 <b>WELCOME TO SPIDER STORE</b>
 <code>━━━━━━━━━━━━━━━━━━━━━━━━━</code>
@@ -487,11 +566,9 @@ TEXT="
 <code>Time     :</code><code>$TIMEZONE</code>
 <code>Exp Sc.  :</code><code>$exp</code>
 <code>━━━━━━━━━━━━━━━━━━━━━━━━━</code>
-<b>WELCOME TO SPIDER STORE</b>
-<code>━━━━━━━━━━━━━━━━━━━━━━━━━</code>
-<i>Automatic Notifications From Github</i>
-"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"https://wa.me/+254704348959"}]]}'
-curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
+EOF
+)
+    curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null 2>&1 || true
 }
 clear
 function install_ssl() {
@@ -705,10 +782,10 @@ function ins_SSHD(){
 clear
 print_install "Installing SSHD"
 wget -q -O /etc/ssh/sshd_config "${REPO}ubuntu/sshd" >/dev/null 2>&1
-chmod 700 /etc/ssh/sshd_config
-/etc/init.d/ssh restart
-systemctl restart ssh
-/etc/init.d/ssh status
+chmod 644 /etc/ssh/sshd_config || true
+/etc/init.d/ssh restart >/dev/null 2>&1 || true
+systemctl restart ssh >/dev/null 2>&1 || true
+/etc/init.d/ssh status >/dev/null 2>&1 || true
 print_success "SSHD"
 }
 clear
@@ -727,22 +804,41 @@ function ins_vnstat(){
 clear
 print_install "Installing Vnstat"
 apt -y install vnstat > /dev/null 2>&1
-/etc/init.d/vnstat restart
-apt -y install libsqlite3-dev > /dev/null 2>&1
-wget https://humdi.net/vnstat/vnstat-2.8.tar.gz
-tar zxvf vnstat-2.8.tar.gz
-cd vnstat-2.8
-./configure --prefix=/usr --sysconfdir=/etc && make && make install
-cd
-vnstat -u -i $NET
-sed -i 's/Interface "'""eth0""'"/Interface "'""$NET""'"/g' /etc/vnstat.conf
-chown vnstat:vnstat /var/lib/vnstat -R
-systemctl enable vnstat
-/etc/init.d/vnstat restart
-/etc/init.d/vnstat status
-rm -f /root/vnstat-2.8.tar.gz
-rm -rf /root/vnstat-2.8
-print_success "Vnstat"
+
+    # Detect primary interface (best-effort)
+    NET=""
+    NET=$(ip route get 1.1.1.1 2>/dev/null | awk '/dev/ {for(i=1;i<=NF;i++){if($i=="dev"){print $(i+1); exit}}}')
+    NET=${NET:-$(ip -o -4 addr show scope global | awk '{print $2; exit}')}
+    NET=${NET:-eth0}
+
+    /etc/init.d/vnstat restart > /dev/null 2>&1
+    apt -y install libsqlite3-dev > /dev/null 2>&1
+
+    # Build only if packaged source needed (safe - many distros already ship vnstat)
+    if ! command -v vnstat > /dev/null 2>&1; then
+        wget -q https://humdi.net/vnstat/vnstat-2.8.tar.gz -O /tmp/vnstat.tar.gz
+        tar zxvf /tmp/vnstat.tar.gz -C /tmp > /dev/null 2>&1 || true
+        if [ -d /tmp/vnstat-2.8 ]; then
+            pushd /tmp/vnstat-2.8 > /dev/null 2>&1
+            ./configure --prefix=/usr --sysconfdir=/etc > /dev/null 2>&1 || true
+            make > /dev/null 2>&1 || true
+            make install > /dev/null 2>&1 || true
+            popd > /dev/null 2>&1
+        fi
+        rm -f /tmp/vnstat.tar.gz
+        rm -rf /tmp/vnstat-2.8
+    fi
+
+    # Initialize vnstat database for chosen interface (guarded)
+    if command -v vnstat > /dev/null 2>&1; then
+        vnstat -u -i "$NET" > /dev/null 2>&1 || true
+        sed -i "s/Interface \".*\"/Interface \"$NET\"/g" /etc/vnstat.conf > /dev/null 2>&1 || true
+        chown vnstat:vnstat /var/lib/vnstat -R > /dev/null 2>&1 || true
+        systemctl enable vnstat > /dev/null 2>&1 || true
+        /etc/init.d/vnstat restart > /dev/null 2>&1 || true
+    fi
+
+    print_success "Vnstat"
 }
 function ins_openvpn(){
 clear
@@ -1043,6 +1139,8 @@ clear
 }
 function instal(){
 clear
+install_animation_start    # start existing install animation
+matrix_start               # start matrix rain background
 first_setup
 nginx_install
 base_package
@@ -1067,20 +1165,38 @@ menu
 profile
 enable_services
 restart_system
+install_animation_stop    # stop existing install animation
+matrix_stop                # stop matrix background
 }
+hacker_banner
 instal
-echo ""
-history -c
-rm -rf /root/menu
-rm -rf /root/*.zip
-rm -rf /root/*.sh
-rm -rf /root/LICENSE
-rm -rf /root/README.md
-rm -rf /root/domain
-secs_to_human "$(($(date +%s) - ${start}))"
-sudo hostnamectl set-hostname $username
+spinner_stop >/dev/null 2>&1 || true
+
+# --- Consolidated cleanup and finalization (single reboot prompt) ---
+# show elapsed time
+secs_to_human "$(($(date +%s) - ${start}))" 2>/dev/null || true
+
+# clean temporary/install files
+rm -rf /root/menu \
+       /root/*.zip \
+       /root/*.sh \
+       /root/LICENSE \
+       /root/README.md \
+       /root/domain || true
+
+# set hostname if username available
+if [ -n "${username:-}" ]; then
+    sudo hostnamectl set-hostname "$username" >/dev/null 2>&1 || true
+fi
+
 clear
-echo -e "${green} Installation is completed Happy Tunneling"
+echo -e "${green} Installation is completed. Happy Tunneling${NC}"
 echo ""
+glitch_write "Rebooting soon..." "$YELLOW"
 read -p "$( echo -e "Press ${YELLOW}[ ${NC}${YELLOW}Enter${NC} ${YELLOW}]${NC} For reboot") "
+
+# ensure animations/spinners stopped, then reboot
+install_animation_stop >/dev/null 2>&1 || true
+matrix_stop >/dev/null 2>&1 || true
+spinner_stop >/dev/null 2>&1 || true
 reboot
