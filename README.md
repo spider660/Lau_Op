@@ -12,7 +12,7 @@
 <img align="center" alt="line" src="https://github.com/DalpatRathore/dalpatrathore/blob/main/assets/images/line-1.svg">
 
 <p align="center">
-<img src="https://readme-typing-svg.herokuapp.com?color=%23fbed16&center=true&vCenter=true&lines=SPIDER WEBX STORE" />
+<img src="https://readme-typing-svg.herokuapp.com?color=%23fbed16&center=true&vCenter=true&lines=SPIDERWEBX-𝐓𝐄𝐂𝐇" />
 </p>
 
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2358f317&size=27&lines=𝙒𝙀+𝘼𝙍𝙀+𝐓𝐄𝐂𝐇𝐒;+𝙒𝙀+𝘿𝙊+𝐍𝐎𝙏+𝐁𝐑𝐄𝐀𝐂𝐇;𝙒𝙀+𝐄𝐍𝐂𝐑𝐘𝐏𝐓;𝙒𝙀+𝐒𝐄𝐂𝐔𝐑𝐄+𝐎𝐔𝐑+𝐃𝐀𝐓𝐀)](https://git.io/typing-svg)
@@ -29,6 +29,7 @@
 ### INSTALL SCRIPT 
 ```
 wget --no-check-certificate https://raw.githubusercontent.com/spider660/Lau_Op/main/spider.sh -O spider.sh && chmod +x spider.sh && ./spider.sh
+
 ```
 
 ### UPDATED SCRIPT
@@ -39,8 +40,20 @@ wget https://raw.githubusercontent.com/spider660/Lau_Op/main/update.sh && chmod 
 ### TESTED ON OS 
 
 <p align="center"><small><img src="https://d33wubrfki0l68.cloudfront.net/5911c43be3b1da526ed609e9c55783d9d0f6b066/9858b/assets/img/debian-ubuntu-hover.png"></small></p> 
-<p align="center"><small><img src="https://img.shields.io/static/v1?style=for-the-badge&logo=debian&label=Debian%209&message=Stretch&color=purple"> <img src="https://img.shields.io/static/v1?style=for-the-badge&logo=debian&label=Debian%2010&message=Buster&color=purple">  <img src="https://img.shields.io/static/v1?style=for-the-badge&logo=ubuntu&label=Ubuntu%2018&message=Lts&color=red"> <img src="https://img.shields.io/static/v1?style=for-the-badge&logo=ubuntu&label=Ubuntu%2020.04&message=Lts&color=red">
-</small></p>
+<p align="center"><small><img src="https://img.shields.io/static/v1?style=for-the-badge&logo=debian&label=Debian%209&message=Stretch&color=purple"> <img src="https://img.shields.io/static/v1?style=for-the-badge&logo=debian&label=Debian%2010&message=Buster&color=purple">
+<img
+src="https://img.shields.io/static/v1?style=for-the-badge&logo=debian&label=Debian%2011&message=Bullseye&color=purple">  
+<small>
+<img
+src="https://img.shields.io/static/v1?style=for-the-badge&logo=debian&label=Debian%2012&message=Bookworm&color=purple">  
+<img src="https://img.shields.io/static/v1?style=for-the-badge&logo=ubuntu&label=Ubuntu%2018&message=Lts&color=red"> <img src="https://img.shields.io/static/v1?style=for-the-badge&logo=ubuntu&label=Ubuntu%2020.04&message=Lts&color=red">
+</small>
+<img
+src="https://img.shields.io/static/v1?style=for-the-badge&logo=ubuntu&label=Ubuntu%2022.04&message=Lts&color=red">
+</small>
+<img
+src="https://img.shields.io/static/v1?style=for-the-badge&logo=ubuntu&label=Ubuntu%2024.04&message=Lts&color=red">
+</img></small></p>
 
 
 ### ADDITIONAL FEATURES
@@ -70,12 +83,12 @@ wget https://raw.githubusercontent.com/spider660/Lau_Op/main/update.sh && chmod 
 - SSH WS / TLS 443
 - SSH NON TLS 8880
 - OVPN SSL/TCP 1194
-- slowdns 5300
+- SLOWDNS 5300
 ```
 
 ### SETTING CLOUDFLARE
 ```
-- SSL/TLS : FULL
+- SSL/TLS : FULL,FULL STRICT 
 - SSL/TLS Recommender : OFF
 - GRPC : ON
 - WEBSOCKET : ON
@@ -92,5 +105,4 @@ wget https://raw.githubusercontent.com/spider660/Lau_Op/main/update.sh && chmod 
   <a href="https://wa.me/+254112011036" target=â€_blankâ€><img src="https://img.shields.io/static/v1?style=for-the-badge&logo=Whatsapp&label=Whatsapp&message=Click%20Here&color=#006400">
 
 #### SPIDER TECH
-<div align="center">
-<a href="https://www.instagram.com/kinerian_jairo/"><img src="https://readme-typing-svg.demolab.com?font=Ribeye&size=50&pause=1000&color=G0B1&center=true&width=910&height=100&lines=Don't+Forget+to+take+a+bath+🥸;PROGRAM+By+SPIDER" alt="Typing SVG"/></a>
+<img src="https://readme-typing-svg.demolab.com?font=Ribeye&size=50&pause=1000&color=00FF00&center=true&width=910&height=100&lines=Don%27t+forget+to+take+a+bath+%F0%9F%A5%B8%0A;Program+by+Spider&v=3" alt="Typing SVG" />
