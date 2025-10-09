@@ -894,29 +894,50 @@ chronyc tracking -v
 wget "${REPO}ubuntu/bbr.sh" &&  chmod +x bbr.sh && ./bbr.sh
 print_success "Swap 1 G"
 }
-function ins_Fail2ban(){
-clear
-print_install "Installing Fail2ban"
+function ins_Fail2ban() {
+  clear
+  print_install "Installing Fail2ban"
 
-# Install Fail2Ban
-apt -y install fail2ban > /dev/null 2>&1
-systemctl enable --now fail2ban > /dev/null 2>&1
-systemctl restart fail2ban > /dev/null 2>&1
-systemctl status fail2ban --no-pager
+  # Update package lists (non-fatal)
+  apt update -y >/dev/null 2>&1 || echo "Warning: apt update failed, continuing..."
 
-# DDoS directory check
-if [ -d '/usr/local/ddos' ]; then
+  # Install Fail2Ban (report on failure)
+  if ! apt -y install fail2ban >/dev/null 2>&1; then
+    echo "ERROR: fail2ban install failed. Check network / apt sources." >&2
+  else
+    echo "Fail2Ban installed."
+  fi
+
+  # Enable and start using systemd (show an informative message if it fails)
+  if systemctl enable --now fail2ban >/dev/null 2>&1; then
+    systemctl restart fail2ban >/dev/null 2>&1 || echo "Warning: could not restart fail2ban"
+    echo "Fail2Ban enabled and started."
+  else
+    echo "Warning: could not enable/start fail2ban (systemctl failed)."
+  fi
+
+  # Show brief status (non-blocking)
+  systemctl status fail2ban --no-pager >/dev/null 2>&1 || echo "Note: fail2ban service not active."
+
+  # DDoS directory check — remove previous installation and continue (no exit)
+  DDOS_DIR="/usr/local/ddos"
+  if [ -d "$DDOS_DIR" ]; then
     echo
     echo "Old version detected — uninstalling previous DDoS files..."
-    rm -rf /usr/local/ddos
+    rm -rf "$DDOS_DIR" || echo "Warning: failed to remove $DDOS_DIR"
     echo "Previous version removed successfully."
-fi
+  fi
 
-# Fresh install setup
-mkdir -p /usr/local/ddos
-echo "New DDoS directory created at /usr/local/ddos"
-fi
-clear
+  # Fresh install setup
+  if mkdir -p "$DDOS_DIR"; then
+    chown root:root "$DDOS_DIR" 2>/dev/null || true
+    chmod 755 "$DDOS_DIR" 2>/dev/null || true
+    echo "New DDoS directory created at $DDOS_DIR"
+  else
+    echo "ERROR: could not create $DDOS_DIR" >&2
+  fi
+
+  clear
 echo "Banner /etc/kyt.txt" >>/etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/kyt.txt"@g' /etc/default/dropbear
 wget -O /etc/kyt.txt "${REPO}ubuntu/issue.net"
