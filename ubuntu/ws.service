@@ -1,5 +1,5 @@
 [Unit]
-Description=WebSocket
+Description=WebSocket ePRO
 Documentation=https://t.me/spid_3r
 After=syslog.target network-online.target
 
@@ -7,8 +7,8 @@ After=syslog.target network-online.target
 User=root
 NoNewPrivileges=true
 ExecStart=/usr/bin/ws -f /usr/bin/tun.conf
-Restart=on-failure
-RestartPreventExitStatus=23
+Restart=always
+RestartSec=5
 LimitNPROC=10000
 LimitNOFILE=1000000
 
