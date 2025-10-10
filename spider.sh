@@ -12,60 +12,45 @@ GRAY="\e[1;30m"
 NC='\e[0m'
 red='\e[1;31m'
 green='\e[0;32m'
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install -y figlet
+clear
+# --- NEW: make apt/cfg non-interactive and auto-restart services to avoid the "Daemons using outdated libraries" dialog ---
+export DEBIAN_FRONTEND=noninteractive
+export APT_LISTCHANGES_FRONTEND=none
+export UCF_FORCE_CONFFNEW=1
+export UCF_FORCE_CONFFOLD=0
+export APT::Get::Assume-Yes="true"
+export NEEDRESTART_MODE=1
 
-# --- added: missing color vars used later ---
-MAGENTA="\e[95m"
-CYAN="\e[96m"
-# --- added: strict mode for safer execution ---
-set -o errexit
-set -o nounset
-set -o pipefail
-umask 022
-
-# --- New: force apt to use IPv4 (idempotent) ---
+# Ensure apt prefers IPv4 (idempotent)
 if [ ! -f /etc/apt/apt.conf.d/99force-ipv4 ]; then
   printf '%s\n' 'Acquire::ForceIPv4 "true";' > /etc/apt/apt.conf.d/99force-ipv4 || true
 fi
 
-# --- New: resilient curl/wget wrappers (force IPv4, add timeouts) ---
-# Define functions named curl/wget so all subsequent calls in this script use them.
-# These call the real program with safe options.
-curl() {
-  command curl -4 -fsS --connect-timeout 10 --max-time 30 "$@"
-}
-wget() {
-  # Keep -q out if a download must be visible; default quiet, retry 3 times, use IPv4 and timeouts
-  command wget --inet4-only --timeout=30 --tries=3 --no-verbose "$@"
-}
+# Configure needrestart to auto-restart services (idempotent)
+if command -v perl >/dev/null 2>&1; then
+  if [ -f /etc/needrestart/needrestart.conf ]; then
+    sed -i "s/^#\?nrconf{restart}.*$/nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf 2>/dev/null || true
+    sed -i "s/^#\?nrconf{kernelhints}.*$/nrconf{kernelhints} = 0;/" /etc/needrestart/needrestart.conf 2>/dev/null || true
+  else
+    mkdir -p /etc/needrestart >/dev/null 2>&1 || true
+    cat > /etc/needrestart/needrestart.conf <<'EOF'
+# Auto-restart services when libraries are updated
+nrconf{restart} = 'a';
+# don't prompt about kernel hints
+nrconf{kernelhints} = 0;
+EOF
+  fi
+fi
 
-# --- New: small network probe with retries for critical hosts ---
-wait_for_network() {
-  local url="${1:-https://raw.githubusercontent.com}"
-  local tries="${2:-6}"
-  local i
-  for i in $(seq 1 "$tries"); do
-    if command -v curl >/dev/null 2>&1 && curl -4 -sS --head --max-time 8 "$url" >/dev/null 2>&1; then
-      return 0
-    fi
-    sleep 3
-  done
-  echo -e "${YELLOW}[WARN] Could not reach $url via IPv4 within timeout. Remote downloads may fail or hang.${NC}" >&2
-  return 1
-}
-
-# --- New: call network probe early to give clearer failure instead of hanging at "Connecting..." ---
-# Try reaching GitHub Raw (used by many downloads). If it fails, we keep going but warn user.
-wait_for_network "https://raw.githubusercontent.com" 6 || true
-
-# --- replaced ad-hoc apt update/upgrade/install with resilient wrappers ---
-# sudo apt update -y
-# sudo apt upgrade -y
-# sudo apt install -y figlet
-
+# --- Update apt helpers to include Dpkg options to avoid interactive package configuration ---
 apt_retry() {
   local tries=3 delay=4 i
   for i in $(seq 1 $tries); do
-    if apt-get update -y && apt-get -y upgrade; then
+    if apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" update -y && \
+       apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -y upgrade; then
       return 0
     fi
     sleep $delay
@@ -75,18 +60,13 @@ apt_retry() {
 }
 apt_install() {
   local pkg="$1"
-  apt-get install -y --no-install-recommends "$pkg" || return 1
+  apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install -y --no-install-recommends "$pkg" || return 1
 }
 
-# perform initial apt ops and install figlet
-apt_retry || true
-apt_install figlet || echo -e "${YELLOW}[WARN] figlet install failed${NC}"
-
-clear
 # Typing effect
 typing() {
     local text="$1"
-    local color="${2:-${NC}}"
+    local color="$2"
     echo -ne "${color}\e[1m"
     for (( i=0; i<${#text}; i++ )); do
         echo -ne "${text:i:1}"
@@ -208,6 +188,7 @@ if [ "$IP_ALLOWED" = true ]; then
     blink_symbol "✅" "$Green"
     typing "Your IP ($IP) is in the database!" "$Green"
     echo ""
+    read -p "$(echo -e "Press ${Green}[Enter]${NC}${Green} to continue${NC}")"
 else
     blink_symbol "❌" "$RED"
     typing "Your IP ($IP) is NOT in the database!" "$RED"
@@ -530,7 +511,7 @@ function base_package() {
     libselinux1-dev libevent-dev zlib1g-dev libssl-dev libsqlite3-dev \
     libxml-parser-perl cmake cmake-data speedtest-cli vnstat easy-rsa openvpn \
     msmtp-mta bsd-mailx rclone chrony ntpdate jq \
-    nginx haproxy dropbear fail2ban kennel daemos # ensure these are attempted as packages
+    nginx haproxy dropbear fail2ban # ensure these are attempted as packages
   )
 
   apt-get update -y || true
@@ -960,29 +941,50 @@ chronyc tracking -v
 wget "${REPO}ubuntu/bbr.sh" &&  chmod +x bbr.sh && ./bbr.sh
 print_success "Swap 1 G"
 }
-function ins_Fail2ban(){
-clear
-print_install "Installing Fail2ban"
+function ins_Fail2ban() {
+  clear
+  print_install "Installing Fail2ban"
 
-# Install Fail2Ban
-apt -y install fail2ban > /dev/null 2>&1
-systemctl enable --now fail2ban > /dev/null 2>&1
-systemctl restart fail2ban > /dev/null 2>&1
-systemctl status fail2ban --no-pager
+  # Update package lists (non-fatal)
+  apt update -y >/dev/null 2>&1 || echo "Warning: apt update failed, continuing..."
 
-# DDoS directory check
-if [ -d '/usr/local/ddos' ]; then
+  # Install Fail2Ban (report on failure)
+  if ! apt -y install fail2ban >/dev/null 2>&1; then
+    echo "ERROR: fail2ban install failed. Check network / apt sources." >&2
+  else
+    echo "Fail2Ban installed."
+  fi
+
+  # Enable and start using systemd (show an informative message if it fails)
+  if systemctl enable --now fail2ban >/dev/null 2>&1; then
+    systemctl restart fail2ban >/dev/null 2>&1 || echo "Warning: could not restart fail2ban"
+    echo "Fail2Ban enabled and started."
+  else
+    echo "Warning: could not enable/start fail2ban (systemctl failed)."
+  fi
+
+  # Show brief status (non-blocking)
+  systemctl status fail2ban --no-pager >/dev/null 2>&1 || echo "Note: fail2ban service not active."
+
+  # DDoS directory check — remove previous installation and continue (no exit)
+  DDOS_DIR="/usr/local/ddos"
+  if [ -d "$DDOS_DIR" ]; then
     echo
     echo "Old version detected — uninstalling previous DDoS files..."
-    rm -rf /usr/local/ddos
+    rm -rf "$DDOS_DIR" || echo "Warning: failed to remove $DDOS_DIR"
     echo "Previous version removed successfully."
-fi
+  fi
 
-# Fresh install setup
-mkdir -p /usr/local/ddos
-echo "New DDoS directory created at /usr/local/ddos"
-fi
-clear
+  # Fresh install setup
+  if mkdir -p "$DDOS_DIR"; then
+    chown root:root "$DDOS_DIR" 2>/dev/null || true
+    chmod 755 "$DDOS_DIR" 2>/dev/null || true
+    echo "New DDoS directory created at $DDOS_DIR"
+  else
+    echo "ERROR: could not create $DDOS_DIR" >&2
+  fi
+
+  clear
 echo "Banner /etc/kyt.txt" >>/etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/kyt.txt"@g' /etc/default/dropbear
 wget -O /etc/kyt.txt "${REPO}ubuntu/issue.net"
