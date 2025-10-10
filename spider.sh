@@ -1000,6 +1000,7 @@ wget -O /usr/bin/tun.conf "${REPO}ubuntu/tun.conf" >/dev/null 2>&1
 wget -O /etc/systemd/system/ws.service "${REPO}ubuntu/ws.service" >/dev/null 2>&1
 chmod +x /usr/bin/ws /etc/systemd/system/ws.service
 chmod 644 /usr/bin/tun.conf
+sudo systemctl daemon-reload
 systemctl disable ws
 systemctl stop ws
 systemctl enable ws
