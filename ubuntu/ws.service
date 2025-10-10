@@ -1,14 +1,14 @@
 [Unit]
-Description=WebSocket ePRO
-Documentation=https://t.me/spid_3r
+Description=WebSocket Proxy Server
+Documentation=https://github.com/Amchapeey
 After=syslog.target network-online.target
 
 [Service]
 User=root
 NoNewPrivileges=true
-ExecStart=/usr/bin/ws -f /usr/bin/tun.conf
-Restart=always
-RestartSec=5
+ExecStart=/usr/bin/ws
+Restart=on-failure
+RestartPreventExitStatus=23
 LimitNPROC=10000
 LimitNOFILE=1000000
 
