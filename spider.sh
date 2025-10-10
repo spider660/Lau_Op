@@ -719,7 +719,9 @@ sudo sed -i "s/xxx/${domain}/g" /etc/haproxy/haproxy.cfg
 sudo sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf
 sudo curl "${REPO}ubuntu/nginx.conf" > /etc/nginx/nginx.conf
 # Replace previous cat command with a properly formatted command:
-sudo bash -c 'printf "%s\n%s\n" "$(cat /etc/xray/xray.crt)" "$(cat /etc/xray/xray.key)" > /etc/haproxy/hap.pem'
+sudo mkdir -p /etc/haproxy
+sudo cat /etc/xray/xray.crt /etc/xray/xray.key | sudo tee /etc/haproxy/hap.pem > /dev/null
+sudo chmod 600 /etc/haproxy/hap.pem
 sudo chmod +x /etc/systemd/system/runn.service
 sudo rm -rf /etc/systemd/system/xray.service.d
 sudo bash -c 'cat > /etc/systemd/system/xray.service <<EOF
