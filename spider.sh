@@ -718,33 +718,42 @@ sudo wget -O /etc/nginx/conf.d/xray.conf "${REPO}ubuntu/xray.conf" >/dev/null 2>
 sudo sed -i "s/xxx/${domain}/g" /etc/haproxy/haproxy.cfg
 sudo sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf
 sudo curl "${REPO}ubuntu/nginx.conf" > /etc/nginx/nginx.conf
-# Replace previous cat command with a properly formatted command:
+
+# Ensure haproxy directory exists before any modifications
 sudo mkdir -p /etc/haproxy
-sudo cat /etc/xray/xray.crt /etc/xray/xray.key | sudo tee /etc/haproxy/hap.pem > /dev/null
-sudo chmod 600 /etc/haproxy/hap.pem
-sudo chmod +x /etc/systemd/system/runn.service
-sudo rm -rf /etc/systemd/system/xray.service.d
-sudo bash -c 'cat > /etc/systemd/system/xray.service <<EOF
-Description=Xray Service
-Documentation=https://github.com
-After=network.target nss-lookup.target
-[Service]
-User=www-data
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
-NoNewPrivileges=true
-ExecStart=/usr/local/bin/xray run -config /etc/xray/config.json
-Restart=on-failure
-RestartPreventExitStatus=23
-LimitNPROC=10000
-LimitNOFILE=1000000
-[Install]
-WantedBy=multi-user.target
-EOF'
-  # reload systemd and enable/start xray (best-effort)
-  systemctl daemon-reload >/dev/null 2>&1 || true
-  systemctl enable --now xray >/dev/null 2>&1 || true
-  print_success "Configuration Packet"
+
+# Sanitize haproxy.cfg: remove duplicate 'pidfile' directives but keep the first occurrence
+if [ -f /etc/haproxy/haproxy.cfg ]; then
+  # keep only the first "pidfile" line (if present)
+  awk '{
+    if ($1 == "pidfile") {
+      if (!seen_pid) { print; seen_pid=1; }
+      next;
+    }
+    print;
+  }' /etc/haproxy/haproxy.cfg > /tmp/haproxy.cfg.$$ && sudo mv /tmp/haproxy.cfg.$$ /etc/haproxy/haproxy.cfg || true
+fi
+
+# Build hap.pem robustly: use existing cert+key, otherwise generate a temporary self-signed cert
+sudo mkdir -p /etc/xray >/dev/null 2>&1
+if [ -s /etc/xray/xray.crt ] && [ -s /etc/xray/xray.key ]; then
+  sudo cat /etc/xray/xray.crt /etc/xray/xray.key | sudo tee /etc/haproxy/hap.pem > /dev/null
+else
+  echo "[INFO] /etc/xray/xray.crt or xray.key missing or empty. Generating temporary self-signed certificate..."
+  # Generate ephemeral self-signed cert (non-interactive)
+  sudo openssl req -x509 -nodes -newkey rsa:2048 -days 365 \
+    -subj "/CN=${domain:-localhost}/O=spider" \
+    -keyout /etc/xray/xray.key -out /etc/xray/xray.crt >/dev/null 2>&1 || true
+  sudo cat /etc/xray/xray.crt /etc/xray/xray.key | sudo tee /etc/haproxy/hap.pem > /dev/null
+fi
+
+# Set safe permissions and ownership so HAProxy can read the PEM during startup
+sudo chown root:root /etc/haproxy/hap.pem || true
+sudo chmod 600 /etc/haproxy/hap.pem || true
+
+# Try to reload systemd and show info (best-effort)
+sudo systemctl daemon-reload >/dev/null 2>&1 || true
+  print_success "Installing Packet Configuration"
 }
 function ssh(){
 clear
