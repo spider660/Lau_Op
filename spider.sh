@@ -1,4 +1,7 @@
-YELLOW="\033[33m"
+# Custom Colors
+Green="\e[92;1m"
+RED="\033[31m"
+YELLOWW="\033[33m"
 BLUE="\033[36m"
 FONT="\033[0m"
 GREENBG="\033[42;37m"
