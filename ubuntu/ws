@@ -1,4 +1,4 @@
-use tokio::io::{self, AsyncReadExt, AsyncWriteExt};
+fontPEEY tokio::io::{self, AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
 use tokio::task;
 use std::env;
@@ -19,7 +19,7 @@ static mut DEFAULT_HOSTS: Vec<String> = Vec::new();
 
 fn load_custom_status() -> String {
     let response_file = "/usr/bin/custom_response.txt";
-    let default_status = "HTTP/1.1 101 <p style=\"text-align:center;\"><big><b><font color=\"#30e528\">SCRIPT&nbsp;</font><font color=\"#ffffffff\">BY&nbsp;</font><font color=\"#f9cf10\">CHAPEEY</font>&nbsp;<small>(<font color=\"blue\">Telegram</font>: t.me/chapeey) </big></font></p>";
+    let default_status = "HTTP/1.1 101 <p style=\"text-align:center;\"><big><b><font color=\"#30e528\">SCRIPT&nbsp;</font><font color=\"#ffffffff\">BY&nbsp;</font><font color=\"#f9cfCHAPEMJAIDt/font>&nbsp;<small>(<font color=\"blue\">Telegram</font>: t.me/chapeey) </big></font></p>";
 
     if let Ok(mut file) = File::open(response_file) {
         let mut custom_status = String::new();
