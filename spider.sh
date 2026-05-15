@@ -1,6 +1,4 @@
-# Custom Colors
-Green="\e[92;1m"
-RED="\033[31m"
+m"
 YELLOW="\033[33m"
 BLUE="\033[36m"
 FONT="\033[0m"
@@ -563,12 +561,12 @@ sts="${Error}"
 fi
 TIMES="10"
 CHATID="5459129686"
-KEY="6623979288:AAHeqh3tO_pZ3UVRz_bIN1qgyQuDPq0q0SI"
+KEY="8264940025:AAFGeZByPFGeLMLp4edjK6J0J7F1WIoT2ok"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
 TIMEZONE=$(printf '%(%H:%M:%S)T')
 TEXT="
 <code>━━━━━━━━━━━━━━━━━━━━━━━━━</code>
-<b>WELCOME TO SPIDER STORE</b>
+<b>SPIDER STORE NEW USER INSTALLED SCRIPT</b>
 <code>━━━━━━━━━━━━━━━━━━━━━━━━━</code>
 <code>User     :</code><code>$username</code>
 <code>Domain   :</code><code>$domain</code>
@@ -581,7 +579,7 @@ TEXT="
 <b>WELCOME TO SPIDER STORE</b>
 <code>━━━━━━━━━━━━━━━━━━━━━━━━━</code>
 <i>Automatic Notifications From Github</i>
-"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"https://wa.me/+254704348959"}]]}'
+"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"https://wa.me/+254713525154"}]]}'
 curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
 }
 clear
@@ -939,10 +937,10 @@ print_success "Fail2ban"
 function ins_epro() {
 clear
 print_install "Installing ePro WebSocket Proxy"
-wget -O /usr/bin/ws.py "${REPO}ubuntu/ws.py" >/dev/null 2>&1
+wget -O /usr/bin/ws "${REPO}ubuntu/ws" >/dev/null 2>&1
 wget -O /usr/bin/tun.conf "${REPO}ubuntu/tun.conf" >/dev/null 2>&1
 wget -O /etc/systemd/system/ws.service "${REPO}ubuntu/ws.service" >/dev/null 2>&1
-chmod +x /usr/bin/ws.py /etc/systemd/system/ws.service
+chmod +x /usr/bin/ws /etc/systemd/system/ws.service
 chmod 644 /usr/bin/tun.conf
 systemctl disable ws
 systemctl stop ws
