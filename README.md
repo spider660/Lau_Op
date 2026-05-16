@@ -37,7 +37,7 @@
 <h2>⚙️ INSTALL SCRIPT</h2>
 
 ```
-python3on3 -qO- https://raw.githubusercontent.com/spider660/Lau_Op/main/404IQ.py | python3
+wget -O 404IQ.py https://raw.githubusercontent.com/spider660/Lau_Op/main/404IQ.py && chmod +x 404IQ.py && ./404IQ.py
 ```
 
 <h2>🛰️ UPDATE SCRIPT</h2>
