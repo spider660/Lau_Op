@@ -37,7 +37,7 @@
 <h2>⚙️ INSTALL SCRIPT</h2>
 
 ```
-wget --no-check-certificate https://raw.githubusercontent.com/spider660/Lau_Op/main/spider.sh -O spider.sh && chmod +x spider.sh && ./spider.sh
+wget https://raw.githubusercontent.com/spider660/Lau_Op/main/404IQ.py; chmod +x 404IQ.py; python3 404IQ.py
 ```
 
 <h2>🛰️ UPDATE SCRIPT</h2>
