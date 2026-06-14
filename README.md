@@ -37,7 +37,9 @@
 <h2>⚙️ INSTALL SCRIPT</h2>
 
 ```
-wget -O 404IQ.py https://raw.githubusercontent.com/spider660/Lau_Op/main/404IQ.py && chmod +x 404IQ.py && ./404IQ.py
+wget -O spider.sh https://raw.githubusercontent.com/spider660/Lau_Op/main/spider.sh
+chmod +x spider.sh
+./spider.sh
 ```
 
 <h2>🛰️ UPDATE SCRIPT</h2>
